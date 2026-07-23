@@ -1,5 +1,7 @@
 import type { Facility } from "@/types";
 
+// Alternating light/dark theme mirrors the reference's white-bg / navy-bg
+// row pattern (Stella Maris Hall on white, Mac Laboratory on navy, etc.)
 export const facilities: Facility[] = [
   {
     id: "library",
@@ -7,7 +9,8 @@ export const facilities: Facility[] = [
     description:
       "A quiet, well-organized space with a growing print and digital collection, dedicated reading areas, and research assistance for students and faculty.",
     imageSize: "1200 x 800",
-    imagePosition: "left",
+    imagePosition: "right",
+    theme: "light",
   },
   {
     id: "ict-lab",
@@ -16,6 +19,7 @@ export const facilities: Facility[] = [
       "Modern workstations with reliable connectivity supporting the SP-ICT program, computer literacy classes, and digital skills training.",
     imageSize: "1200 x 800",
     imagePosition: "right",
+    theme: "dark",
   },
   {
     id: "science-lab",
@@ -24,6 +28,7 @@ export const facilities: Facility[] = [
       "Fully equipped for chemistry, physics, and biology experiments, giving STE students a safe, hands-on environment to apply what they learn.",
     imageSize: "1200 x 800",
     imagePosition: "left",
+    theme: "light",
   },
   {
     id: "gymnasium",
@@ -32,5 +37,6 @@ export const facilities: Facility[] = [
       "A multi-purpose covered court used for physical education, intramurals, assemblies, and school-wide events throughout the year.",
     imageSize: "1200 x 800",
     imagePosition: "right",
+    theme: "dark",
   },
 ];

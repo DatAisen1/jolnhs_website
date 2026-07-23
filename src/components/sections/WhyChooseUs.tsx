@@ -1,54 +1,39 @@
-import { GraduationCap, Users, HeartHandshake } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Card } from "@/components/ui/Card";
-import { features } from "@/data/stats";
-import type { FeatureCard } from "@/types";
-
-const icons: Record<FeatureCard["icon"], typeof GraduationCap> = {
-  quality: GraduationCap,
-  inclusive: Users,
-  community: HeartHandshake,
-};
+import { Button } from "@/components/ui/Button";
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { whyChoose } from "@/data/whyChoose";
 
 /**
- * Rendered on the primary blue background (unlike the reference, which used
- * a busy background photo here) — a flat, confident color block reads more
- * premium and keeps text contrast reliably at AA without an overlay.
+ * Full-bleed navy block with a faint background photo showing through
+ * a dark overlay, left-aligned heading + paragraph + outlined button —
+ * matches the reference's "WHY CHOOSE CIC?" section exactly.
  */
 export function WhyChooseUs() {
   return (
-    <section className="bg-primary py-section-sm md:py-section" aria-labelledby="why-heading">
-      <Container>
-        <SectionHeading
-          eyebrow="Why JOLNHS"
-          title="Why Choose JOLNHS?"
-          subtitle="A learning community built on quality instruction, genuine inclusion, and shared purpose."
-          align="center"
-          light
+    <section className="relative overflow-hidden bg-primary py-section-sm md:py-section" aria-labelledby="why-heading">
+      <div className="absolute inset-0 opacity-20">
+        <ImagePlaceholder
+          alt="Students on campus"
+          label="Background Photo"
+          recommendedSize="1920 x 800"
+          className="h-full rounded-none border-none bg-transparent text-transparent"
         />
+      </div>
+      <div className="absolute inset-0 bg-primary/70" />
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {features.map((feature) => {
-            const Icon = icons[feature.icon];
-            return (
-              <Card
-                key={feature.id}
-                as="article"
-                className="border-white/10 bg-white/5 text-center backdrop-blur-sm"
-              >
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-secondary/20">
-                  <Icon className="h-7 w-7 text-secondary" aria-hidden="true" />
-                </div>
-                <h3 className="mt-5 text-subtitle text-white">
-                  {feature.title}
-                </h3>
-                <p className="mt-3 text-body text-blue-100">
-                  {feature.description}
-                </p>
-              </Card>
-            );
-          })}
+      <Container className="relative">
+        <div className="max-w-xl">
+          <h2 id="why-heading" className="text-heading text-white">
+            {whyChoose.heading}
+          </h2>
+          <p className="mt-5 text-body text-blue-50">{whyChoose.paragraph}</p>
+          <Button
+            variant="outline"
+            href="/about"
+            className="mt-8"
+          >
+            {whyChoose.buttonLabel}
+          </Button>
         </div>
       </Container>
     </section>

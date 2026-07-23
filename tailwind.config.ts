@@ -3,20 +3,24 @@ import type { Config } from "tailwindcss";
 // Design tokens are centralized here so every color/spacing/type decision
 // in the codebase traces back to ONE source of truth (no magic hex values
 // scattered across components).
+//
+// Palette: deep blue + white. Change ONLY these hex values to re-theme
+// the entire site.
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#1E3A8A", // Deep Academic Blue
+          DEFAULT: "#1E3A8A", // Deep Academic Blue — main brand color
           50: "#EEF2FB",
-          100: "#D6DFF5",
-          600: "#1E40AF", // hover
-          700: "#1E3A8A",
+          100: "#D6E1F5",
+          600: "#1E40AF", // hover state (slightly brighter blue)
+          700: "#16265C", // darkest tier — utility bar, dark section shade
         },
         secondary: {
-          DEFAULT: "#3B82F6", // Sky Blue
+          DEFAULT: "#FFFFFF", // White — nav bar / CTA block color
+          light: "#93C5FD", // pale sky-blue — hover accents on dark backgrounds
         },
         surface: "#FFFFFF",
         background: "#F8FAFC",
