@@ -4,7 +4,7 @@ import { MobileNav } from "./MobileNav";
 import { Container } from "@/components/ui/Container";
 
 /**
- * Header: a thin dark utility bar, then a solid gold navigation bar with
+ * Header: a thin dark utility bar, then a solid white navigation bar with
  * the school crest on the left and the DepEd seal on the right — always
  * solid (not transparent-over-hero), matching the reference layout.
  */
@@ -13,7 +13,7 @@ export function Header() {
     <header className="sticky top-0 z-40 shadow-sm">
       <TopUtilityBar />
 
-      <div className="bg-secondary">
+      <div className="border-b border-border bg-secondary">
         <Container className="flex h-20 items-center justify-between">
           {/* LEFT: school identity */}
           <a href="/" className="flex items-center gap-3">

@@ -25,7 +25,7 @@ export function NavDropdown({ item }: NavDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Nav always sits on the solid gold bar, so text is always maroon.
+  // Nav always sits on the solid white bar, so text is always navy.
   const textColor = "text-primary hover:text-primary-600";
 
   if (!item.dropdown) {

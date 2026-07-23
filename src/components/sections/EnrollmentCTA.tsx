@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/Button";
 
 export function EnrollmentCTA() {
   return (
-    <section className="bg-secondary py-10" aria-labelledby="enroll-heading">
+    <section className="border-y border-border bg-secondary py-10" aria-labelledby="enroll-heading">
       <Container className="flex flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left">
         <div>
           <h2 id="enroll-heading" className="text-subtitle text-primary">

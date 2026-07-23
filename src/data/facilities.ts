@@ -1,7 +1,7 @@
 import type { Facility } from "@/types";
 
-// Alternating light/dark theme mirrors the reference's white-bg / maroon-bg
-// row pattern (Stella Maris Hall on white, Mac Laboratory on maroon, etc.)
+// Alternating light/dark theme mirrors the reference's white-bg / navy-bg
+// row pattern (Stella Maris Hall on white, Mac Laboratory on navy, etc.)
 export const facilities: Facility[] = [
   {
     id: "library",

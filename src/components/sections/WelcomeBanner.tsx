@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { welcome } from "@/data/welcome";
 
 /**
- * Two-column maroon banner: bold heading on the left, supporting
+ * Two-column navy banner: bold heading on the left, supporting
  * paragraph + button on the right. Mirrors the reference's
  * "WELCOME HOME CICIANS!" section layout.
  */

@@ -2,7 +2,7 @@ import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { spotlight } from "@/data/spotlight";
 
 /**
- * Full-bleed split block: light image panel on the left, solid maroon
+ * Full-bleed split block: light image panel on the left, solid blue
  * text panel on the right. Directly mirrors the reference's "Bachelor of
  * Science in Tourism Management" section — same 50/50 split, same
  * eyebrow-over-heading-over-paragraph rhythm.

@@ -4,7 +4,7 @@ import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { whyChoose } from "@/data/whyChoose";
 
 /**
- * Full-bleed maroon block with a faint background photo showing through
+ * Full-bleed navy block with a faint background photo showing through
  * a dark overlay, left-aligned heading + paragraph + outlined button —
  * matches the reference's "WHY CHOOSE CIC?" section exactly.
  */

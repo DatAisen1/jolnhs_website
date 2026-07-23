@@ -6,7 +6,7 @@ import type { Facility } from "@/types";
 /**
  * One reusable full-bleed row: image touches the section edge, text sits
  * in a padded column, background alternates light/dark per facility.
- * Mirrors the reference's white-bg / maroon-bg alternating facility blocks.
+ * Mirrors the reference's white-bg / navy-bg alternating facility blocks.
  */
 function FacilityRow({ facility }: { facility: Facility }) {
   const imageFirst = facility.imagePosition === "left";

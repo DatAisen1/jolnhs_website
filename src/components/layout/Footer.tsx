@@ -29,7 +29,7 @@ export function Footer() {
               JO
             </div>
             <div
-              className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-secondary text-small font-bold text-secondary"
+              className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary-600 text-small font-bold text-primary-600"
               role="img"
               aria-label="DepEd seal placeholder"
             >
