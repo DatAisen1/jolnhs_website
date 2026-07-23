@@ -23,7 +23,7 @@ export function MobileNav() {
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
         aria-expanded={isOpen}
-        className="rounded-md p-2 text-white"
+        className="rounded-md p-2 text-primary"
       >
         <Menu className="h-7 w-7" aria-hidden="true" />
       </button>

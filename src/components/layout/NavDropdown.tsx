@@ -4,7 +4,6 @@ import type { NavItem } from "@/types";
 
 interface NavDropdownProps {
   item: NavItem;
-  isHeaderSolid: boolean;
 }
 
 /**
@@ -22,19 +21,18 @@ interface NavDropdownProps {
  * - Escape closes the menu and returns focus to the trigger
  * - opens on hover (mouse) AND focus/click (keyboard), closes on blur-out
  */
-export function NavDropdown({ item, isHeaderSolid }: NavDropdownProps) {
+export function NavDropdown({ item }: NavDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const textColor = isHeaderSolid
-    ? "text-text-primary hover:text-primary"
-    : "text-white hover:text-blue-100";
+  // Nav always sits on the solid gold bar, so text is always maroon.
+  const textColor = "text-primary hover:text-primary-600";
 
   if (!item.dropdown) {
     return (
       <a
         href={item.href}
-        className={`text-body font-medium transition-colors ${textColor}`}
+        className={`text-body font-semibold transition-colors ${textColor}`}
       >
         {item.label}
       </a>
@@ -50,8 +48,6 @@ export function NavDropdown({ item, isHeaderSolid }: NavDropdownProps) {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={close}
       onBlur={(e) => {
-        // Only close once focus has left the whole dropdown, not between
-        // its own children (button -> first link, etc.)
         if (!containerRef.current?.contains(e.relatedTarget as Node)) {
           close();
         }
@@ -65,7 +61,7 @@ export function NavDropdown({ item, isHeaderSolid }: NavDropdownProps) {
         onKeyDown={(e) => {
           if (e.key === "Escape") close();
         }}
-        className={`flex items-center gap-1 text-body font-medium transition-colors ${textColor}`}
+        className={`flex items-center gap-1 text-body font-semibold transition-colors ${textColor}`}
       >
         {item.label}
         <ChevronDown

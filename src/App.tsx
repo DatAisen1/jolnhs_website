@@ -11,7 +11,7 @@ import { HomePage } from "@/pages/HomePage";
  */
 function StubPage({ title }: { title: string }) {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center pt-20">
+    <div className="flex min-h-[60vh] items-center justify-center">
       <p className="text-subtitle text-text-secondary">{title} — coming soon</p>
     </div>
   );

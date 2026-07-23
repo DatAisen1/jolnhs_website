@@ -3,20 +3,24 @@ import type { Config } from "tailwindcss";
 // Design tokens are centralized here so every color/spacing/type decision
 // in the codebase traces back to ONE source of truth (no magic hex values
 // scattered across components).
+//
+// Palette: deep maroon + gold, matching the reference layout's visual
+// identity. Change ONLY these hex values to re-theme the entire site.
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#1E3A8A", // Deep Academic Blue
-          50: "#EEF2FB",
-          100: "#D6DFF5",
-          600: "#1E40AF", // hover
-          700: "#1E3A8A",
+          DEFAULT: "#6E1423", // Deep maroon — main brand color
+          50: "#FBEEEF",
+          100: "#F1D2D6",
+          600: "#8B1A2E", // hover state (slightly lighter maroon)
+          700: "#5C1019", // darkest tier — utility bar, header-scrolled shadow
         },
         secondary: {
-          DEFAULT: "#3B82F6", // Sky Blue
+          DEFAULT: "#C9A227", // Gold — accent, CTAs, dividers
+          light: "#E4C767",
         },
         surface: "#FFFFFF",
         background: "#F8FAFC",

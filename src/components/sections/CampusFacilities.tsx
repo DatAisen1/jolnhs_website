@@ -1,25 +1,40 @@
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { facilities } from "@/data/facilities";
 import type { Facility } from "@/types";
 
-/** One reusable row instead of hand-writing 4 near-identical layouts. */
+/**
+ * One reusable full-bleed row: image touches the section edge, text sits
+ * in a padded column, background alternates light/dark per facility.
+ * Mirrors the reference's white-bg / maroon-bg alternating facility blocks.
+ */
 function FacilityRow({ facility }: { facility: Facility }) {
   const imageFirst = facility.imagePosition === "left";
+  const isDark = facility.theme === "dark";
 
   return (
-    <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+    <div
+      className={`grid grid-cols-1 lg:grid-cols-2 ${
+        isDark ? "bg-primary" : "bg-white"
+      }`}
+    >
       <div className={imageFirst ? "lg:order-1" : "lg:order-2"}>
         <ImagePlaceholder
           alt={`Photo of the ${facility.name}`}
           label={facility.name}
           recommendedSize={facility.imageSize}
+          className="min-h-[280px] rounded-none border-none"
         />
       </div>
-      <div className={imageFirst ? "lg:order-2" : "lg:order-1"}>
-        <h3 className="text-subtitle text-text-primary">{facility.name}</h3>
-        <p className="mt-4 text-body text-text-secondary">
+      <div
+        className={`flex flex-col justify-center px-8 py-12 sm:px-14 ${
+          imageFirst ? "lg:order-2" : "lg:order-1"
+        }`}
+      >
+        <h3 className={`text-subtitle ${isDark ? "text-white" : "text-text-primary"}`}>
+          {facility.name}
+        </h3>
+        <p className={`mt-4 max-w-md text-body ${isDark ? "text-blue-50" : "text-text-secondary"}`}>
           {facility.description}
         </p>
       </div>
@@ -29,15 +44,9 @@ function FacilityRow({ facility }: { facility: Facility }) {
 
 export function CampusFacilities() {
   return (
-    <section className="bg-white py-section-sm md:py-section" aria-labelledby="facilities-heading">
-      <Container>
-        <SectionHeading
-          eyebrow="Campus"
-          title="Campus Facilities"
-          subtitle="Spaces built to support every program, from science research to varsity training."
-        />
-
-        <div className="mt-14 flex flex-col gap-16">
+    <section aria-label="Campus Facilities">
+      <Container className="!max-w-none !px-0">
+        <div className="flex flex-col">
           {facilities.map((facility) => (
             <FacilityRow key={facility.id} facility={facility} />
           ))}
