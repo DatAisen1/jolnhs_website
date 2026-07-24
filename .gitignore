@@ -2,3 +2,5 @@ node_modules
 dist
 .DS_Store
 *.local
+public/videos/*.mp4
+public/videos/*.mov
