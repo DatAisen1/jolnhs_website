@@ -5,14 +5,16 @@ import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { TaglineBanner } from "@/components/sections/TaglineBanner";
 import { WelcomeBanner } from "@/components/sections/WelcomeBanner";
 import { CampusFacilities } from "@/components/sections/CampusFacilities";
-import { EnrollmentCTA } from "@/components/sections/EnrollmentCTA";
+import { MissionStatement } from "@/components/sections/MissionStatement";
 
 /**
  * Thin composition root. HomePage owns ORDER only — every section is a
  * self-contained, independently reusable component with its own data
- * and layout logic. Order mirrors the reference layout:
- * hero -> program spotlight -> milestone -> why choose us -> tagline
- * -> welcome -> alternating facility rows -> enrollment CTA.
+ * and layout logic. Order:
+ * hero (clean, no CTA/stats) -> program spotlight -> milestone
+ * -> why choose us -> tagline -> welcome (white/image, breaks up the
+ * navy run) -> alternating facility rows -> mission statement (closing
+ * "what is JOLNHS" identity block, no CTA — this site is informational).
  */
 export function HomePage() {
   return (
@@ -24,7 +26,7 @@ export function HomePage() {
       <TaglineBanner />
       <WelcomeBanner />
       <CampusFacilities />
-      <EnrollmentCTA />
+      <MissionStatement />
     </>
   );
 }

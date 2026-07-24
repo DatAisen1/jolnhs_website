@@ -1,6 +1,6 @@
 export const milestone = {
-  heading: "Julia Ortiz Luis National High School Foundation Celebration",
+  heading: "Educating with Purpose, Leading with Excellence",
   paragraph:
-    "Every school year, JOLNHS pauses to look back on the journey that brought us here — from a small secondary school to a growing institution serving thousands of learners. This milestone reminds us of our shared history and renews our commitment to molding minds and building futures for the community we serve.",
+    "Julia Ortiz Luis National High School is dedicated to nurturing lifelong learners through quality education, innovation, and strong community partnerships. As a public educational institution under the Department of Education, JOLNHS provides a safe, inclusive, and supportive learning environment where students are encouraged to develop academically, socially, and morally.Together with our administrators, teachers, staff, parents, alumni, and stakeholders, we continue to uphold our commitment to excellence, integrity, and service as we prepare learners for a brighter future.",
   buttonLabel: "See More",
 };

@@ -1,6 +1,6 @@
 export const welcome = {
-  heading: "Welcome, JOLNHS Community!",
+  heading: "WELCOME HOME JOLIANS!",
   paragraph:
-    "Every school year is both a blessing and a new beginning. As we start another year, we are reminded that we are more than a school community — we are a family united by shared purpose, coming together to study, teach, work, and serve.",
+    "Every school year marks a new beginning-a chance to learn, grow, and achieve new goals. At Julia Ortiz Luis National High School, we are more than a learning institution; we are a community that inspires excellence, nurtures character, and empowers every learner to reach their full potential. As one JOLNHS family, we remain committed to providing quality education, fostering innovation, and building a future where every student is equipped with the knowledge, skills, and values needed to make a positive impact in society.",
   buttonLabel: "See More",
 };

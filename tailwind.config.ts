@@ -31,7 +31,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"], // body text, UI, buttons, nav
+        heading: ["Playfair Display", "Georgia", "serif"], // h1–h4 only, see index.css base layer
       },
       fontSize: {
         hero: ["60px", { lineHeight: "1.05", fontWeight: "800" }],
