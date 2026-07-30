@@ -1,4 +1,4 @@
 export const tagline = {
-  heading: "JOLNHS: Molding Minds, Building Futures",
+  heading: "We Soar With Pride. Soar High, JOLIANS!",
   buttonLabel: "Read More",
 };

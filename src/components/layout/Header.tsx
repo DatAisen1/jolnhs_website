@@ -10,9 +10,9 @@ import { SchoolBadge } from "@/components/ui/SchoolBadge";
  */
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 shadow-sm">
-      <div className="border-b border-border bg-secondary">
-        <Container className="flex h-20 items-center justify-between">
+    <header className="sticky top-4 z-[1000]">
+      <div className="relative mx-4 overflow-visible rounded-full border border-white/15 bg-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.2)] backdrop-blur-[24px] backdrop-saturate-[180%] transition duration-300 ease-out hover:bg-white/20 hover:shadow-[0_12px_40px_rgba(0,0,0,0.22)]">
+        <Container className="flex h-20 items-center justify-between px-4">
           {/* LEFT: school identity */}
           <a href="/" className="flex items-center gap-3">
             <SchoolBadge label="JO" ariaLabel="JOLNHS crest" size={48} src="/images/logo-jolnhs.png" />

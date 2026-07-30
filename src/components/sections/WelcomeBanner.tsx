@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { welcome } from "@/data/welcome";
 
 /**
@@ -36,11 +35,14 @@ export function WelcomeBanner() {
           </Button>
         </motion.div>
 
-        <ImagePlaceholder
-          alt="Students and faculty at a JOLNHS school event"
-          label="Insert Community Photo Here"
-          recommendedSize="1000 x 800"
-        />
+        <div className="overflow-hidden rounded-3xl bg-slate-100">
+          <img
+            src="/facilities/welcomehome.png"
+            alt="Students and faculty at a JOLNHS school event"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        </div>
       </Container>
     </section>
   );
