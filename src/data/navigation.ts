@@ -7,10 +7,10 @@ export const navigation: NavItem[] = [
     href: "/about",
     dropdown: [
       { label: "Overview", href: "/about/overview" },
-      { label: "Administrators", href: "/about/administrators" },
-      { label: "JHS Faculty", href: "/about/jhs-faculty" },
-      { label: "SHS Faculty", href: "/about/shs-faculty" },
-      { label: "Staff", href: "/about/staff" },
+      { label: "Administrators", href: "/about/faculty-staff?category=administrators" },
+      { label: "JHS Faculty", href: "/about/faculty-staff?category=jhs-faculty" },
+      { label: "SHS Faculty", href: "/about/faculty-staff?category=shs-faculty" },
+      { label: "Staff", href: "/about/faculty-staff?category=staff" },
     ],
   },
   {

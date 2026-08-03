@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { useParallax } from "@/hooks/useParallax";
 import { whyChoose } from "@/data/whyChoose";
 
@@ -18,13 +17,13 @@ export function WhyChooseUs() {
 
   return (
     <section className="relative overflow-hidden bg-primary py-section-sm md:py-section" aria-labelledby="why-heading">
-      <div ref={parallaxRef} className="absolute inset-0 overflow-hidden opacity-20">
+      <div ref={parallaxRef} className="absolute inset-0 overflow-hidden opacity-60">
         <motion.div style={{ y }} className="absolute inset-x-0 -top-[15%] h-[130%]">
-          <ImagePlaceholder
+          <img
+            src="/facilities/side.png"
             alt="Students on campus"
-            label="Background Photo"
-            recommendedSize="1920 x 800"
-            className="h-full rounded-none border-none bg-transparent text-transparent"
+            className="h-full w-full object-cover"
+            loading="lazy"
           />
         </motion.div>
       </div>

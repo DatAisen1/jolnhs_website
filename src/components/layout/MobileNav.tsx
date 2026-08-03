@@ -33,7 +33,7 @@ export function MobileNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="fixed inset-0 z-50 bg-white"
+          className="fixed inset-0 z-50 bg-white/15 backdrop-blur-[24px] backdrop-saturate-[180%]"
         >
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
             <span className="text-subtitle text-primary">Menu</span>

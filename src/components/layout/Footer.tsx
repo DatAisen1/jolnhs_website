@@ -1,6 +1,6 @@
   import { MapPin, Mail, FacebookIcon, Clock } from "lucide-react";
   import { Container } from "@/components/ui/Container";
-  
+  import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
   import { SchoolBadge } from "@/components/ui/SchoolBadge";
   import { officeHours } from "@/data/officeHours";
 
