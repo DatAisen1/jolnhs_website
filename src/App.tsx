@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HomePage } from "@/pages/HomePage";
+import { FacultyStaffPage } from "@/pages/FacultyStaffPage";
+import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
 
 /**
  * Routing is scaffolded for the whole site even though only the homepage
@@ -28,9 +30,11 @@ export default function App() {
 
       <Header />
 
-      <main>
+      <main id="main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about/overview" element={<AboutOverviewPage />} />
+          <Route path="/about/faculty-staff" element={<FacultyStaffPage />} />
           <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />
           <Route path="/academics/*" element={<StubPage title="Academics" />} />
           <Route path="/campus-life/*" element={<StubPage title="Campus Life" />} />

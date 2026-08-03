@@ -17,21 +17,18 @@ import { Container } from "@/components/ui/Container";
 export function HeroBanner() {
   return (
     <section
-      id="main-content"
       className="relative h-[420px] w-full overflow-hidden bg-primary-700 md:h-[520px]"
     >
-      {
-<video
-  autoPlay
-  muted
-  loop
-  playsInline
-  poster="/images/hero-poster.jpg"
-  className="absolute inset-0 h-full w-full object-cover"
->
-  <source src="public/videos/Jolnhs Promotional Video.mp4" type="video/mp4" />
-</video>
-}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/images/hero-poster.jpg"
+        className="absolute inset-0 h-full w-full object-cover"
+      >
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
       <Container className="absolute inset-x-0 bottom-0 z-10 pb-16 sm:pb-20">
