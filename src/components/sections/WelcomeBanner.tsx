@@ -36,13 +36,6 @@ export function WelcomeBanner() {
           </Button>
         </motion.div>
 
-<<<<<<< HEAD
-        <ImagePlaceholder
-          alt="Students and faculty at a JOLNHS school event"
-          label="Insert Community Photo Here"
-          recommendedSize="1000 x 800"
-        />
-=======
         <div className="overflow-hidden rounded-3xl bg-slate-100">
           <img
             src="/facilities/welcomehome.png"
@@ -51,7 +44,6 @@ export function WelcomeBanner() {
             loading="lazy"
           />
         </div>
->>>>>>> development
       </Container>
     </section>
   );
