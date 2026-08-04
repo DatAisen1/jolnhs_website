@@ -3,6 +3,8 @@
 
 export const aboutOverview = {
   heroHeading: "Welcome to JOLNHS",
+  heroDescription:
+    "Discover our history, mission, values, and the people committed to providing every learner with a quality education.",
   introEyebrow: "Who We Are",
   introHeading: "JOLNHS is a Public Learning Community",
   introParagraphs: [
