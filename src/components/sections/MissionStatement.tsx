@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { mission } from "@/data/mission";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
 /**
  * MissionStatement
@@ -17,14 +18,16 @@ import { mission } from "@/data/mission";
  *           job is just introducing the school.
  */
 export function MissionStatement() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="border-y border-border bg-white py-section-sm md:py-section" aria-labelledby="mission-heading">
       <Container className="text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          variants={fadeUp}
+          initial={shouldReduceMotion ? "show" : "hidden"}
+          whileInView="show"
+          viewport={viewportOnce}
           className="mx-auto max-w-2xl"
         >
           <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">

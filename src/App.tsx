@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HomePage } from "@/pages/HomePage";
@@ -12,6 +13,8 @@ import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
  * are follow-up work — each is a drop-in <Route> + page component.
  */
 function StubPage({ title }: { title: string }) {
+  usePageTitle(title);
+
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
       <p className="text-subtitle text-text-secondary">{title} — coming soon</p>

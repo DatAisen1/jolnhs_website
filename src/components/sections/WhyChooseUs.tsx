@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { useParallax } from "@/hooks/useParallax";
 import { whyChoose } from "@/data/whyChoose";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
 /**
  * Full-bleed navy block with a faint background photo showing through
@@ -14,6 +15,7 @@ import { whyChoose } from "@/data/whyChoose";
  */
 export function WhyChooseUs() {
   const { ref: parallaxRef, y } = useParallax(40);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section className="relative overflow-hidden bg-primary py-section-sm md:py-section" aria-labelledby="why-heading">
@@ -21,7 +23,7 @@ export function WhyChooseUs() {
         <motion.div style={{ y }} className="absolute inset-x-0 -top-[15%] h-[130%]">
           <img
             src="/facilities/side.png"
-            alt="Students on campus"
+            alt=""
             className="h-full w-full object-cover"
             loading="lazy"
           />
@@ -31,10 +33,10 @@ export function WhyChooseUs() {
 
       <Container className="relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          variants={fadeUp}
+          initial={shouldReduceMotion ? "show" : "hidden"}
+          whileInView="show"
+          viewport={viewportOnce}
           className="max-w-xl"
         >
           <h2 id="why-heading" className="text-heading text-white">

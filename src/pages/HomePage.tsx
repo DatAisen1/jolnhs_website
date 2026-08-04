@@ -1,3 +1,4 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { HeroBanner } from "@/components/sections/HeroBanner";
 import { ProgramSpotlight } from "@/components/sections/ProgramSpotlight";
 import { MilestoneSection } from "@/components/sections/MilestoneSection";
@@ -17,6 +18,8 @@ import { MissionStatement } from "@/components/sections/MissionStatement";
  * "what is JOLNHS" identity block, no CTA — this site is informational).
  */
 export function HomePage() {
+  usePageTitle();
+
   return (
     <>
       <HeroBanner />

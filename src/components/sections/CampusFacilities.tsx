@@ -1,19 +1,28 @@
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { facilities } from "@/data/facilities";
 import type { Facility } from "@/types";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
 /**
  * One reusable full-bleed row: image touches the section edge, text sits
  * in a padded column, background alternates light/dark per facility.
  * Mirrors the reference's white-bg / navy-bg alternating facility blocks.
+ * Fades/slides in on scroll like every other homepage section (previously
+ * the only section that rendered instantly with no entrance animation).
  */
 function FacilityRow({ facility }: { facility: Facility }) {
   const imageFirst = facility.imagePosition === "left";
   const isDark = facility.theme === "dark";
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div
+    <motion.div
+      variants={fadeUp}
+      initial={shouldReduceMotion ? "show" : "hidden"}
+      whileInView="show"
+      viewport={viewportOnce}
       className={`grid grid-cols-1 lg:grid-cols-2 ${
         isDark ? "bg-primary" : "bg-white"
       }`}
@@ -38,7 +47,7 @@ function FacilityRow({ facility }: { facility: Facility }) {
           {facility.description}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
@@ -26,6 +27,8 @@ const teamGridColsClass =
       : "grid-cols-1";
 
 export function AboutOverviewPage() {
+  usePageTitle("About JOLNHS");
+
   // Drives every scroll-in animation below. When the user has OS-level
   // "reduce motion" on, every motion element starts in its "show" state
   // instead of "hidden" — content just appears, no fly-in/scale/fade.
@@ -178,4 +181,4 @@ export function AboutOverviewPage() {
       </section>
     </>
   );
-}
+}   
