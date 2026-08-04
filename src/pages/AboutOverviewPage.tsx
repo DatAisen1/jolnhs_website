@@ -178,4 +178,4 @@ export function AboutOverviewPage() {
       </section>
     </>
   );
-}
+}   
