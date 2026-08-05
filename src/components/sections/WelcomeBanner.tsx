@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { welcome } from "@/data/welcome";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
 /**
  * White, image-paired block — deliberately NOT another flat navy section.
@@ -13,14 +14,16 @@ import { welcome } from "@/data/welcome";
  * rows begin.
  */
 export function WelcomeBanner() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="bg-white py-section-sm md:py-section" aria-labelledby="welcome-heading">
       <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          variants={fadeUp}
+          initial={shouldReduceMotion ? "show" : "hidden"}
+          whileInView="show"
+          viewport={viewportOnce}
         >
           <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
             Community

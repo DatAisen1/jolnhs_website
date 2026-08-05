@@ -1,7 +1,8 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search } from "lucide-react";
-import { motion } from "framer-motion";
+import { Search, X } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -9,8 +10,21 @@ import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
 import { FacultyFilterTabs } from "@/components/faculty/FacultyFilterTabs";
 import { staffMembers, staffCategories } from "@/data/facultyStaff";
+import { scaleIn, staggerContainer } from "@/lib/motion";
 
 const VALID_CATEGORY_IDS = new Set(staffCategories.map((c) => c.id));
+
+// Result-grid column count follows how many cards actually matched, so a
+// small filtered set (e.g. 2 Administrators) doesn't leave a visibly empty
+// trailing column next to the real cards — same fix pattern as the About
+// page's team preview grid, just computed per-render since the count here
+// changes with every filter/search instead of being fixed at build time.
+function getResultsGridColsClass(count: number): string {
+  if (count <= 1) return "grid-cols-1";
+  if (count === 2) return "grid-cols-2 sm:grid-cols-2 lg:grid-cols-2";
+  if (count === 3) return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3";
+  return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4";
+}
 
 /**
  * FacultyStaffPage
@@ -21,15 +35,22 @@ const VALID_CATEGORY_IDS = new Set(staffCategories.map((c) => c.id));
  * reads that value on load to pre-select the matching filter tab, then
  * search/filtering happens entirely client-side (no backend — this is a
  * static site).
+ *
+ * Category and search query are also written back to the URL (`category`,
+ * `q`) as the person interacts, so a filtered/searched view can be
+ * bookmarked, shared, or restored with the browser back button.
  */
 export function FacultyStaffPage() {
-  const [searchParams] = useSearchParams();
+  usePageTitle("Faculty & Staff");
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const requestedCategory = searchParams.get("category");
   const initialCategory =
     requestedCategory && VALID_CATEGORY_IDS.has(requestedCategory) ? requestedCategory : "all";
 
   const [activeCategory, setActiveCategory] = useState(initialCategory);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const shouldReduceMotion = useReducedMotion();
 
   // If the person navigates here again from a different nav link (e.g.
   // "JHS Faculty" after already being on this page filtered to
@@ -39,6 +60,28 @@ export function FacultyStaffPage() {
       setActiveCategory(requestedCategory);
     }
   }, [requestedCategory]);
+
+  function handleCategoryChange(categoryId: string) {
+    setActiveCategory(categoryId);
+    const next = new URLSearchParams(searchParams);
+    if (categoryId === "all") {
+      next.delete("category");
+    } else {
+      next.set("category", categoryId);
+    }
+    setSearchParams(next, { replace: true });
+  }
+
+  function handleQueryChange(value: string) {
+    setQuery(value);
+    const next = new URLSearchParams(searchParams);
+    if (value.trim().length === 0) {
+      next.delete("q");
+    } else {
+      next.set("q", value);
+    }
+    setSearchParams(next, { replace: true });
+  }
 
   const filteredMembers = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -95,25 +138,45 @@ export function FacultyStaffPage() {
               <input
                 type="search"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => handleQueryChange(e.target.value)}
                 placeholder="Search by name or position..."
-                className="w-full rounded-full border border-border bg-background py-3 pl-11 pr-4 text-body text-text-primary placeholder:text-text-secondary focus-visible:border-primary"
+                className="w-full rounded-full border border-border bg-background py-3 pl-11 pr-10 text-body text-text-primary placeholder:text-text-secondary outline-none focus-visible:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               />
+              {query.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => handleQueryChange("")}
+                  aria-label="Clear search"
+                  className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-border/60 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <X className="h-4 w-4" aria-hidden="true" />
+                </button>
+              )}
             </label>
           </div>
 
-          <FacultyFilterTabs active={activeCategory} onChange={setActiveCategory} />
+          <FacultyFilterTabs active={activeCategory} onChange={handleCategoryChange} />
+
+          {/* Screen-reader-only status message: sighted users see the grid
+              update instantly, but that visual change is otherwise silent
+              for anyone using a screen reader (WCAG 4.1.3 Status Messages). */}
+          <p aria-live="polite" className="sr-only">
+            {filteredMembers.length} staff member
+            {filteredMembers.length === 1 ? "" : "s"} found
+          </p>
 
           {filteredMembers.length > 0 ? (
             <motion.div
-              key={activeCategory + query}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4"
+              key={activeCategory}
+              variants={staggerContainer}
+              initial={shouldReduceMotion ? "show" : "hidden"}
+              animate="show"
+              className={`mt-10 grid gap-6 ${getResultsGridColsClass(filteredMembers.length)}`}
             >
               {filteredMembers.map((member) => (
-                <FacultyCard key={member.id} member={member} />
+                <motion.div key={member.id} variants={scaleIn}>
+                  <FacultyCard member={member} />
+                </motion.div>
               ))}
             </motion.div>
           ) : (

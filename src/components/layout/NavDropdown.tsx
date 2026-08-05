@@ -49,7 +49,7 @@ export function NavDropdown({ item }: NavDropdownProps) {
   return (
     <div
       ref={containerRef}
-      className="relative"
+      className="relative flex items-center"
       onMouseEnter={openMenu}
       onMouseLeave={closeMenu}
       onBlur={(e) => {
@@ -58,20 +58,34 @@ export function NavDropdown({ item }: NavDropdownProps) {
         }
       }}
     >
+      {/* Label navigates to the section's own landing page (e.g.
+          "Academics" -> /academics) — it's a real link, not just a
+          dropdown trigger. Hovering the whole group still opens the
+          submenu preview via onMouseEnter above. */}
+      <a
+        href={item.href}
+        className={`text-body font-semibold transition-colors ${textColor}`}
+      >
+        {item.label}
+      </a>
+
+      {/* Chevron is its OWN button, separate from the label link, so
+          keyboard/touch users can open the submenu without navigating
+          away, and aria-expanded stays on the element that actually
+          controls the panel. */}
       <button
         type="button"
         aria-haspopup="true"
         aria-expanded={isOpen}
+        aria-label={`Toggle ${item.label} submenu`}
         onClick={() => setIsOpen((prev) => !prev)}
         onKeyDown={(e) => {
           if (e.key === "Escape") {
             setIsOpen(false);
           }
         }}
-        className={`flex items-center gap-1 text-body font-semibold transition-colors ${textColor}`}
+        className={`ml-1 flex items-center transition-colors ${textColor}`}
       >
-        {item.label}
-
         <ChevronDown
           className={`h-4 w-4 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
