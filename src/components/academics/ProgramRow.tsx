@@ -80,13 +80,13 @@ export function ProgramRow({ program }: { program: AcademicProgram }) {
         >
           {program.eyebrow}
         </p>
-        <h3 className={`text-subtitle ${isDark ? "text-white" : "text-text-primary"}`}>
+        <h2 className={`text-subtitle ${isDark ? "text-white" : "text-text-primary"}`}>
           {program.name}
-        </h3>
-        <p className={`mt-1 text-small font-medium ${isDark ? "text-blue-100" : "text-text-secondary"}`}>
+        </h2>
+        <p className={`mt-1 text-small font-medium ${isDark ? "text-secondary-100" : "text-text-secondary"}`}>
           {program.fullName}
         </p>
-        <p className={`mt-4 max-w-md text-body ${isDark ? "text-blue-50" : "text-text-secondary"}`}>
+        <p className={`mt-4 max-w-md text-body ${isDark ? "text-secondary-50" : "text-text-secondary"}`}>
           {program.description}
         </p>
         <Button

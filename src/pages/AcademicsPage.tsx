@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
@@ -23,6 +24,7 @@ import { fadeUp, viewportOnce } from "@/lib/motion";
  * into the programs themselves.
  */
 export function AcademicsPage() {
+  usePageTitle("Academics");
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
@@ -33,12 +35,12 @@ export function AcademicsPage() {
           alt="JOLNHS students in a classroom"
           label="Insert Academics Hero Photo Here"
           recommendedSize="1920 x 900"
-          className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-blue-100"
+          className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
         />
         <div className="pointer-events-none absolute inset-0 bg-primary/60" />
         <div className="relative px-6 text-center text-white">
           <h1 className="text-heading sm:text-hero">{academicsOverview.heroHeading}</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-body text-blue-100">
+          <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">
             {academicsOverview.heroDescription}
           </p>
         </div>

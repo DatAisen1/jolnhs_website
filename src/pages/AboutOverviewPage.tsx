@@ -47,12 +47,12 @@ export function AboutOverviewPage() {
           alt="JOLNHS campus and students"
           label="Insert Overview Hero Photo Here"
           recommendedSize="1920 x 900"
-          className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-blue-100"
+          className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
         />
         <div className="pointer-events-none absolute inset-0 bg-primary/60" />
         <div className="relative px-6 text-center text-white">
           <h1 className="text-heading sm:text-hero">{aboutOverview.heroHeading}</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-body text-blue-100">
+          <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">
             {aboutOverview.heroDescription}
           </p>
         </div>
@@ -181,4 +181,4 @@ export function AboutOverviewPage() {
       </section>
     </>
   );
-}   
+}

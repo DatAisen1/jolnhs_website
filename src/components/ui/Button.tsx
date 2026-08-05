@@ -1,11 +1,13 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 type Variant = "primary" | "secondary" | "outline" | "ghost";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: Variant;
-  href?: string; // when provided, renders as an <a> styled identically
+  href?: string; // when provided, renders as a router <Link> (or a plain
+  // <a> for external/mailto/tel URLs) styled identically to <button>
 }
 
 const variantStyles: Record<Variant, string> = {
@@ -35,10 +37,25 @@ export function Button({
   const classes = `${base} ${variantStyles[variant]} ${className}`;
 
   if (href) {
+    // External links (full URLs) and mailto/tel links must stay real
+    // anchors — React Router's <Link> only handles in-app routes.
+    // Everything else (every internal /path used across this site) goes
+    // through <Link> so navigation is a client-side route swap instead
+    // of a full page reload.
+    const isExternal = /^([a-z]+:)?\/\//i.test(href) || /^(mailto|tel):/i.test(href);
+
+    if (isExternal) {
+      return (
+        <a href={href} className={classes}>
+          {children}
+        </a>
+      );
+    }
+
     return (
-      <a href={href} className={classes}>
+      <Link to={href} className={classes}>
         {children}
-      </a>
+      </Link>
     );
   }
 

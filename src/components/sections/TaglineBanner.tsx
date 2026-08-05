@@ -15,7 +15,7 @@ import { tagline } from "@/data/tagline";
 export function TaglineBanner() {
   return (
     <section
-      className="bg-gradient-to-br from-primary via-primary-600 to-blue-500 py-16 text-center sm:py-20"
+      className="bg-gradient-to-br from-primary via-primary-600 to-primary-400 py-16 text-center sm:py-20"
       aria-labelledby="tagline-heading"
     >
       <Container>

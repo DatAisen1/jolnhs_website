@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { academicPrograms } from "@/data/academics";
 
 const links = [
@@ -23,13 +24,13 @@ const links = [
 export function AcademicsSubNav({ current }: { current: string }) {
   return (
     <nav aria-label="Academic program sections" className="border-b border-border bg-white">
-      <div className="mx-auto flex max-w-content gap-1 overflow-x-auto px-6 md:px-10">
+      <div className="mx-auto flex max-w-content gap-1 overflow-x-auto px-6 md:px-10 max-md:[mask-image:linear-gradient(to_right,black_92%,transparent)]">
         {links.map((link) => {
           const isActive = link.href === current;
           return (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
+              to={link.href}
               aria-current={isActive ? "page" : undefined}
               className={`whitespace-nowrap border-b-2 px-4 py-3 text-small font-medium transition-colors ${
                 isActive
@@ -38,7 +39,7 @@ export function AcademicsSubNav({ current }: { current: string }) {
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           );
         })}
       </div>

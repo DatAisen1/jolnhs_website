@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
@@ -29,7 +30,7 @@ function ProgramHero({ program }: { program: AcademicProgram }) {
             alt={`Photo of ${program.name} students`}
             label={`Insert ${program.name} Hero Photo Here`}
             recommendedSize={program.visual.imageSize}
-            className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-blue-100"
+            className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
           />
           <div className="pointer-events-none absolute inset-0 bg-primary/60" />
         </>
@@ -46,7 +47,7 @@ function ProgramHero({ program }: { program: AcademicProgram }) {
           {program.eyebrow}
         </p>
         <h1 className="text-heading sm:text-hero">{program.name}</h1>
-        <p className="mx-auto mt-2 max-w-2xl text-body text-blue-100">{program.fullName}</p>
+        <p className="mx-auto mt-2 max-w-2xl text-body text-secondary-100">{program.fullName}</p>
       </div>
     </section>
   );
@@ -55,6 +56,7 @@ function ProgramHero({ program }: { program: AcademicProgram }) {
 export function ProgramDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const program = academicPrograms.find((p) => p.slug === slug);
+  usePageTitle(program ? program.name : "Program Not Found");
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
@@ -107,7 +109,7 @@ export function ProgramDetailPage() {
             initial={initial}
             whileInView="show"
             viewport={viewportOnce}
-            className="sticky top-28 h-fit self-start rounded-card border border-border bg-background p-6"
+            className="h-fit self-start rounded-card border border-border bg-background p-6 lg:sticky lg:top-28"
           >
             <p className="text-small font-semibold uppercase tracking-widest text-primary">
               Quick Facts
@@ -186,7 +188,7 @@ export function ProgramDetailPage() {
                   className="rounded-card bg-primary p-6"
                 >
                   <h3 className="text-subtitle text-white">{strand.name}</h3>
-                  <p className="mt-3 text-body text-blue-50">{strand.description}</p>
+                  <p className="mt-3 text-body text-secondary-50">{strand.description}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -228,7 +230,7 @@ export function ProgramDetailPage() {
             className="mx-auto max-w-2xl"
           >
             <h2 className="text-section text-white">Interested in {program.name}?</h2>
-            <p className="mt-5 text-body text-blue-50">{academicsOverview.ctaBlurb}</p>
+            <p className="mt-5 text-body text-secondary-50">{academicsOverview.ctaBlurb}</p>
             <Button variant="outline" href={academicsOverview.ctaHref} className="mt-8">
               {academicsOverview.ctaLabel}
             </Button>

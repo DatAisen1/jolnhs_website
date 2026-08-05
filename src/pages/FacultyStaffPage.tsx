@@ -102,7 +102,7 @@ export function FacultyStaffPage() {
           alt="JOLNHS faculty in a staff meeting"
           label="Insert Faculty & Staff Header Photo Here"
           recommendedSize="1920 x 600"
-          className="absolute inset-0 h-full rounded-none border-none bg-primary text-blue-100"
+          className="absolute inset-0 h-full rounded-none border-none bg-primary text-secondary-100"
         />
         <div className="pointer-events-none absolute inset-0 bg-primary/75" />
         <Container className="relative">
@@ -110,7 +110,7 @@ export function FacultyStaffPage() {
             About JOLNHS
           </p>
           <h1 className="text-heading text-white">Faculty &amp; Staff</h1>
-          <p className="mx-auto mt-4 max-w-xl text-body text-blue-50">
+          <p className="mx-auto mt-4 max-w-xl text-body text-secondary-50">
             Meet the administrators, teachers, and staff members who make
             JOLNHS run.
           </p>

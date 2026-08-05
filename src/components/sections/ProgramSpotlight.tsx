@@ -24,7 +24,7 @@ export function ProgramSpotlight() {
         <h2 id="spotlight-heading" className="text-heading text-white">
           {spotlight.title}
         </h2>
-        <p className="mt-5 max-w-md text-body text-blue-50">
+        <p className="mt-5 max-w-md text-body text-secondary-50">
           {spotlight.description}
         </p>
       </div>
