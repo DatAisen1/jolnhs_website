@@ -17,6 +17,7 @@ export const navigation: NavItem[] = [
     label: "Academics",
     href: "/academics",
     dropdown: [
+      { label: "Overview", href: "/academics" },
       { label: "STE", href: "/academics/ste" },
       { label: "SP-ICT", href: "/academics/sp-ict" },
       { label: "SNED", href: "/academics/sned" },

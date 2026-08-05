@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { usePageTitle } from "@/hooks/usePageTitle";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HomePage } from "@/pages/HomePage";
 import { FacultyStaffPage } from "@/pages/FacultyStaffPage";
 import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
+import { AcademicsPage } from "@/pages/AcademicsPage";
+import { ProgramDetailPage } from "@/pages/ProgramDetailPage";
 
 /**
  * Routing is scaffolded for the whole site even though only the homepage
@@ -13,8 +14,6 @@ import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
  * are follow-up work — each is a drop-in <Route> + page component.
  */
 function StubPage({ title }: { title: string }) {
-  usePageTitle(title);
-
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
       <p className="text-subtitle text-text-secondary">{title} — coming soon</p>
@@ -39,7 +38,8 @@ export default function App() {
           <Route path="/about/overview" element={<AboutOverviewPage />} />
           <Route path="/about/faculty-staff" element={<FacultyStaffPage />} />
           <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />
-          <Route path="/academics/*" element={<StubPage title="Academics" />} />
+          <Route path="/academics" element={<AcademicsPage />} />
+          <Route path="/academics/:slug" element={<ProgramDetailPage />} />
           <Route path="/campus-life/*" element={<StubPage title="Campus Life" />} />
           <Route path="/budget/*" element={<StubPage title="Budget Transparency" />} />
           <Route path="/enroll" element={<StubPage title="Enrollment" />} />
