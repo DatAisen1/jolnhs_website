@@ -42,7 +42,7 @@ export function WhyChooseUs() {
           <h2 id="why-heading" className="text-heading text-white">
             {whyChoose.heading}
           </h2>
-          <p className="mt-5 text-body text-blue-50">{whyChoose.paragraph}</p>
+          <p className="mt-5 text-body text-secondary-50">{whyChoose.paragraph}</p>
           <Button
             variant="outline"
             href="/about"

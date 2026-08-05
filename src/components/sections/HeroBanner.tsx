@@ -76,7 +76,7 @@ export function HeroBanner() {
           <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl">
             Molding Minds. Building Futures.
           </h1>
-          <p className="mt-4 max-w-md text-body text-blue-50">
+          <p className="mt-4 max-w-md text-body text-secondary-50">
             A public secondary school committed to quality, inclusive, and
             community-centered education for every learner.
           </p>

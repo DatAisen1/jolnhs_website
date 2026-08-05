@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export interface BreadcrumbItem {
   label: string;
@@ -22,20 +23,20 @@ export interface BreadcrumbItem {
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
     <nav aria-label="Breadcrumb" className="bg-primary-700">
-      <div className="mx-auto flex max-w-content items-center gap-2 px-6 py-3 text-small text-blue-100 md:px-10">
+      <div className="mx-auto flex max-w-content items-center gap-2 px-6 py-3 text-small text-secondary-100 md:px-10">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
             <span key={item.label} className="flex items-center gap-2">
-              {index > 0 && <ChevronRight className="h-3.5 w-3.5 text-blue-300" aria-hidden="true" />}
+              {index > 0 && <ChevronRight className="h-3.5 w-3.5 text-secondary-300" aria-hidden="true" />}
               {isLast || !item.href ? (
                 <span aria-current={isLast ? "page" : undefined} className="font-medium text-white">
                   {item.label}
                 </span>
               ) : (
-                <a href={item.href} className="transition-colors hover:text-white">
+                <Link to={item.href} className="transition-colors hover:text-white">
                   {item.label}
-                </a>
+                </Link>
               )}
             </span>
           );

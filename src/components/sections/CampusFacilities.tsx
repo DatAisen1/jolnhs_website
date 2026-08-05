@@ -43,7 +43,7 @@ function FacilityRow({ facility }: { facility: Facility }) {
         <h3 className={`text-subtitle ${isDark ? "text-white" : "text-text-primary"}`}>
           {facility.name}
         </h3>
-        <p className={`mt-4 max-w-md text-body ${isDark ? "text-blue-50" : "text-text-secondary"}`}>
+        <p className={`mt-4 max-w-md text-body ${isDark ? "text-secondary-50" : "text-text-secondary"}`}>
           {facility.description}
         </p>
       </div>
