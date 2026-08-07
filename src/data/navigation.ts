@@ -29,6 +29,7 @@ export const navigation: NavItem[] = [
     label: "Campus Life",
     href: "/campus-life",
     dropdown: [
+      { label: "Overview", href: "/campus-life" },
       { label: "Organizations", href: "/campus-life/organizations" },
       { label: "PTA", href: "/campus-life/pta" },
       { label: "Athletes", href: "/campus-life/athletes" },

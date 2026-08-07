@@ -77,3 +77,36 @@ export interface AcademicProgram {
   admissionRequirements: string[];
   strands?: ProgramStrand[];
 }
+
+export interface CampusLifeStat {
+  label: string;
+  value: string;
+}
+
+export interface CampusLifeHighlight {
+  title: string;
+  description: string;
+}
+
+export interface CampusLifeGalleryItem {
+  label: string;
+  imageSize: string;
+}
+
+export interface CampusLifeSection {
+  id: string;
+  slug: string;
+  icon: LucideIcon;
+  eyebrow: string;
+  name: string;
+  tagline: string;
+  description: string;
+  imagePosition: "left" | "right";
+  theme: "light" | "dark";
+  heroImageSize: string;
+  stats: CampusLifeStat[];
+  highlights: CampusLifeHighlight[];
+  gallery: CampusLifeGalleryItem[];
+  ctaLabel: string;
+  ctaHref: string;
+}

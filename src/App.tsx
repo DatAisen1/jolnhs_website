@@ -6,12 +6,15 @@ import { FacultyStaffPage } from "@/pages/FacultyStaffPage";
 import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
 import { AcademicsPage } from "@/pages/AcademicsPage";
 import { ProgramDetailPage } from "@/pages/ProgramDetailPage";
+import { CampusLifePage } from "@/pages/CampusLifePage";
+import { CampusLifeSectionPage } from "@/pages/CampusLifeSectionPage";
 
 /**
- * Routing is scaffolded for the whole site even though only the homepage
- * is implemented, so nav links resolve to a real (stub) route instead of
- * dead links. Additional pages (About, Academics, Campus Life, Budget)
- * are follow-up work — each is a drop-in <Route> + page component.
+ * Routing is scaffolded for the whole site even though only some sections
+ * are fully implemented, so nav links resolve to a real (stub) route
+ * instead of dead links. About, Academics, and Campus Life are built out;
+ * Budget Transparency, Enrollment, and Contact remain follow-up work —
+ * each is a drop-in <Route> + page component.
  */
 function StubPage({ title }: { title: string }) {
   return (
@@ -40,7 +43,8 @@ export default function App() {
           <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />
           <Route path="/academics" element={<AcademicsPage />} />
           <Route path="/academics/:slug" element={<ProgramDetailPage />} />
-          <Route path="/campus-life/*" element={<StubPage title="Campus Life" />} />
+          <Route path="/campus-life" element={<CampusLifePage />} />
+          <Route path="/campus-life/:slug" element={<CampusLifeSectionPage />} />
           <Route path="/budget/*" element={<StubPage title="Budget Transparency" />} />
           <Route path="/enroll" element={<StubPage title="Enrollment" />} />
           <Route path="/contact" element={<StubPage title="Contact Us" />} />
