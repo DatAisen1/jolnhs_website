@@ -101,9 +101,7 @@ export interface CampusLifeSection {
   name: string;
   tagline: string;
   description: string;
-  imagePosition: "left" | "right";
   theme: "light" | "dark";
-  heroImageSize: string;
   stats: CampusLifeStat[];
   highlights: CampusLifeHighlight[];
   gallery: CampusLifeGalleryItem[];

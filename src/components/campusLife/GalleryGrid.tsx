@@ -15,12 +15,14 @@ import type { CampusLifeGalleryItem } from "@/types";
  *       once, reuse everywhere" reasoning as every other shared
  *       component in this codebase.
  * WHEN: Any place a set of CampusLifeGalleryItem should render as a
- *       photo wall. Pass `columns` to control density: 4 for a compact
- *       landing-page teaser, 2 or 3 for a section's own larger gallery.
+ *       photo wall. `columns` is optional — omit it and the grid picks
+ *       its own density from item count (>4 items -> 3 cols, else 2);
+ *       pass an explicit value to override (e.g. 4 for a compact
+ *       landing-page teaser).
  */
 export function GalleryGrid({
   items,
-  columns = 3,
+  columns,
 }: {
   items: CampusLifeGalleryItem[];
   columns?: 2 | 3 | 4;
@@ -28,10 +30,15 @@ export function GalleryGrid({
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
+  // No explicit density passed in — pick it from item count so every call
+  // site doesn't have to re-derive the same "more items = more columns"
+  // rule (e.g. section detail pages with a big vs. small gallery).
+  const resolvedColumns = columns ?? (items.length > 4 ? 3 : 2);
+
   const colsClass =
-    columns === 4
+    resolvedColumns === 4
       ? "sm:grid-cols-2 lg:grid-cols-4"
-      : columns === 3
+      : resolvedColumns === 3
         ? "sm:grid-cols-2 lg:grid-cols-3"
         : "sm:grid-cols-2";
 

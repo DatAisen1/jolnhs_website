@@ -19,9 +19,7 @@ export const campusLifeSections: CampusLifeSection[] = [
     tagline: "Find your people, find your purpose.",
     description:
       "From the Supreme Student Government to subject-based and special-interest clubs, JOLNHS organizations give every student a place to lead, create, and grow outside the classroom. Whichever club a student joins, the goal is the same: turn a shared interest into real skill, and real skill into confidence.",
-    imagePosition: "left",
-    theme: "light",
-    heroImageSize: "1920 x 900",
+    theme: "dark",
     stats: [
       { label: "Active Organizations", value: "18+" },
       { label: "Student Members", value: "1,200+" },
@@ -67,9 +65,7 @@ export const campusLifeSections: CampusLifeSection[] = [
     tagline: "A partnership built on a shared commitment to every learner.",
     description:
       "The JOLNHS PTA connects every homeroom to the school administration, turning parent involvement into real support — from classroom resources to campus improvement projects. It's the bridge that makes sure no family feels like an outsider to their child's education.",
-    imagePosition: "right",
-    theme: "dark",
-    heroImageSize: "1920 x 900",
+    theme: "light",
     stats: [
       { label: "Homeroom Chapters", value: "32" },
       { label: "Active Parent Volunteers", value: "250+" },
@@ -114,9 +110,7 @@ export const campusLifeSections: CampusLifeSection[] = [
     tagline: "Discipline on the court. Character for life.",
     description:
       "JOLNHS varsity teams train year-round across a full slate of sports, competing at the district and regional level while keeping academics the top priority. Beyond the medals, the athletics program builds the discipline, teamwork, and resilience that carry over long after the final whistle.",
-    imagePosition: "left",
     theme: "light",
-    heroImageSize: "1920 x 900",
     stats: [
       { label: "Varsity Teams", value: "12" },
       { label: "Student Athletes", value: "180+" },
@@ -162,9 +156,7 @@ export const campusLifeSections: CampusLifeSection[] = [
     tagline: "Every story starts in this newsroom.",
     description:
       "The JOLNHS campus paper is written, edited, photographed, and laid out entirely by students, covering everything from academic milestones to student life. Campus journalism here isn't a once-a-year requirement — it's a working newsroom that trains writers, editors, and photographers for regional press conferences.",
-    imagePosition: "right",
-    theme: "dark",
-    heroImageSize: "1920 x 900",
+    theme: "light",
     stats: [
       { label: "Publications per Year", value: "4" },
       { label: "Writers & Editors", value: "35" },
@@ -209,9 +201,7 @@ export const campusLifeSections: CampusLifeSection[] = [
     tagline: "A living scrapbook of everyday JOLNHS.",
     description:
       "From flag ceremonies to championship wins, the Campus Gallery is where every corner of JOLNHS life gets documented — academics, sports, culture, and the small everyday moments in between. Most of it is shot by our own campus journalists and student volunteers.",
-    imagePosition: "left",
     theme: "light",
-    heroImageSize: "1920 x 900",
     stats: [
       { label: "Photos Archived", value: "1,000+" },
       { label: "Events Covered", value: "60+" },

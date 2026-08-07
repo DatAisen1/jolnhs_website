@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { CampusLifeCard } from "@/components/campusLife/CampusLifeCard";
 import { CommunityStats } from "@/components/campusLife/CommunityStats";
+import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
 import { QuoteCard } from "@/components/campusLife/QuoteCard";
 import { campusLifeSections } from "@/data/campusLife";
 import { campusLifeOverview } from "@/data/campusLifeOverview";
@@ -24,7 +25,10 @@ import { fadeUp, fadeIn, staggerContainer, viewportOnce } from "@/lib/motion";
  * communicate: scale and atmosphere, not curriculum facts.
  */
 export function CampusLifePage() {
-  usePageTitle("Campus Life");
+  usePageTitle(
+    "Campus Life",
+    "Explore student organizations, athletics, the PTA, and campus journalism at Julia Ortiz Luis National High School."
+  );
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
@@ -98,6 +102,31 @@ export function CampusLifePage() {
               <CampusLifeCard key={section.id} section={section} />
             ))}
           </motion.div>
+        </Container>
+      </section>
+
+      {/* Photo teaser — one shot pulled from each section's own gallery,
+          so "campus life" feels shown, not just described, before the
+          visitor ever clicks into a sub-page. Reuses GalleryGrid at its
+          4-column density, same component the section detail pages use
+          for their own (larger) galleries. */}
+      <section className="bg-white py-section-sm md:py-section">
+        <Container>
+          <motion.h2
+            variants={fadeUp}
+            initial={initial}
+            whileInView="show"
+            viewport={viewportOnce}
+            className="text-section text-text-primary"
+          >
+            Campus Life in Pictures
+          </motion.h2>
+          <div className="mt-10">
+            <GalleryGrid
+              items={campusLifeSections.map((section) => section.gallery[0])}
+              columns={4}
+            />
+          </div>
         </Container>
       </section>
 

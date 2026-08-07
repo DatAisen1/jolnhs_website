@@ -26,7 +26,7 @@ export function CommunityStats({ stats }: { stats: CampusLifeStat[] }) {
   return (
     <section className="bg-primary-700 py-section-sm md:py-section">
       <Container>
-        <motion.div
+        <motion.dl
           variants={staggerContainer}
           initial={initial}
           whileInView="show"
@@ -35,13 +35,13 @@ export function CommunityStats({ stats }: { stats: CampusLifeStat[] }) {
         >
           {stats.map((stat) => (
             <motion.div key={stat.label} variants={fadeUp} className="flex flex-col gap-2">
-              <span className="text-heading text-white">{stat.value}</span>
-              <span className="text-small font-medium uppercase tracking-widest text-secondary-light">
+              <dd className="text-heading text-white">{stat.value}</dd>
+              <dt className="text-small font-medium uppercase tracking-widest text-secondary-light">
                 {stat.label}
-              </span>
+              </dt>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.dl>
       </Container>
     </section>
   );

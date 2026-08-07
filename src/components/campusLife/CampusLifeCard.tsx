@@ -14,7 +14,7 @@ export function CampusLifeCard({ section }: { section: CampusLifeSection }) {
     <MotionLink
       to={`/campus-life/${section.slug}`}
       variants={scaleIn}
-      className={`group flex flex-col rounded-card border p-8 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(15,33,72,0.12)] ${
+      className={`group flex flex-col rounded-card border p-8 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:rounded-card focus-visible:outline-offset-4 ${
         isDark ? "border-primary-700 bg-primary text-white" : "border-border bg-white text-text-primary"
       }`}
     >

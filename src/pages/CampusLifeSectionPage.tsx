@@ -44,7 +44,7 @@ function SectionHero({ section }: { section: CampusLifeSection }) {
 export function CampusLifeSectionPage() {
   const { slug } = useParams<{ slug: string }>();
   const section = campusLifeSections.find((s) => s.slug === slug);
-  usePageTitle(section ? section.name : "Section Not Found");
+  usePageTitle(section ? section.name : "Section Not Found", section?.tagline);
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
@@ -162,7 +162,7 @@ export function CampusLifeSectionPage() {
             Gallery
           </motion.h2>
           <div className="mt-10">
-            <GalleryGrid items={section.gallery} columns={section.gallery.length > 4 ? 3 : 2} />
+            <GalleryGrid items={section.gallery} />
           </div>
         </Container>
       </section>
