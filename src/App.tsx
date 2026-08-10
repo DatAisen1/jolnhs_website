@@ -8,13 +8,14 @@ import { AcademicsPage } from "@/pages/AcademicsPage";
 import { ProgramDetailPage } from "@/pages/ProgramDetailPage";
 import { CampusLifePage } from "@/pages/CampusLifePage";
 import { CampusLifeSectionPage } from "@/pages/CampusLifeSectionPage";
+import { BudgetPage } from "@/pages/BudgetPage";
 
 /**
  * Routing is scaffolded for the whole site even though only some sections
  * are fully implemented, so nav links resolve to a real (stub) route
- * instead of dead links. About, Academics, and Campus Life are built out;
- * Budget Transparency, Enrollment, and Contact remain follow-up work —
- * each is a drop-in <Route> + page component.
+ * instead of dead links. About, Academics, Campus Life, and Budget
+ * Transparency are built out; Enrollment and Contact remain follow-up
+ * work — each is a drop-in <Route> + page component.
  */
 function StubPage({ title }: { title: string }) {
   return (
@@ -45,7 +46,14 @@ export default function App() {
           <Route path="/academics/:slug" element={<ProgramDetailPage />} />
           <Route path="/campus-life" element={<CampusLifePage />} />
           <Route path="/campus-life/:slug" element={<CampusLifeSectionPage />} />
-          <Route path="/budget/*" element={<StubPage title="Budget Transparency" />} />
+          {/* Single page, not /budget/proposed, /budget/allocation, etc. —
+              those three used to be separate routes reachable via the
+              header dropdown; they're now sections of this one page
+              (see BudgetSectionNav's in-page anchors). Old bookmarks to
+              those sub-paths fall through to the StubPage catch-all
+              below rather than 404ing outright. */}
+          <Route path="/budget" element={<BudgetPage />} />
+          <Route path="/budget/*" element={<BudgetPage />} />
           <Route path="/enroll" element={<StubPage title="Enrollment" />} />
           <Route path="/contact" element={<StubPage title="Contact Us" />} />
         </Routes>

@@ -37,13 +37,11 @@ export const navigation: NavItem[] = [
       { label: "Campus Gallery", href: "/campus-life/gallery" },
     ],
   },
-  {
-    label: "Budget Transparency",
-    href: "/budget",
-    dropdown: [
-      { label: "Proposed Budget", href: "/budget/proposed" },
-      { label: "Budget Allocation", href: "/budget/allocation" },
-      { label: "Accomplishments", href: "/budget/accomplishments" },
-    ],
-  },
+  // No `dropdown` here on purpose: Proposed Budget, Budget Allocation, and
+  // Accomplishments used to be three separate routes (each with its own
+  // dropdown link below). They're now three sections of ONE page
+  // (/budget), reached via BudgetSectionNav's in-page anchors instead —
+  // see src/components/budget/BudgetSectionNav.tsx. Omitting `dropdown`
+  // makes NavDropdown/MobileNav render this as a plain link automatically.
+  { label: "Budget Transparency", href: "/budget" },
 ];
