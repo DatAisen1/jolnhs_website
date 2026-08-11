@@ -26,12 +26,12 @@ export function BudgetStatsBand({ stats }: { stats: BudgetStat[] }) {
           initial={initial}
           whileInView="show"
           viewport={viewportOnce}
-          className="grid grid-cols-2 gap-8 text-center sm:grid-cols-4"
+          className="grid grid-cols-2 gap-8 text-center sm:grid-cols-4 sm:divide-x sm:divide-white/10"
         >
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <motion.div key={stat.label} variants={fadeUp} className="flex flex-col items-center gap-2">
+              <motion.div key={stat.label} variants={fadeUp} className="flex flex-col items-center gap-2 sm:px-4">
                 <Icon className="h-6 w-6 text-secondary-300" aria-hidden="true" strokeWidth={1.75} />
                 <dd className="text-heading text-white">{stat.value}</dd>
                 <dt className="text-small font-medium uppercase tracking-widest text-secondary-light">

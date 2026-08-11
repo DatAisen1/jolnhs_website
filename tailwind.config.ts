@@ -42,6 +42,16 @@ export default {
           primary: "#0B1730", // deep ink-navy instead of generic slate — ties body copy into the brand
           secondary: "#4A5B7C", // blue-gray secondary text, same family as primary
         },
+        // Semantic status colors for the Budget page's accomplishment
+        // badges and info/warning banners. Centralized here (like every
+        // other color) instead of reaching for Tailwind's default
+        // green-100/amber-100/etc inline, so re-theming status colors
+        // is a one-line edit here rather than a grep-and-replace.
+        status: {
+          success: { bg: "#E6F4EA", text: "#1E7B34", DEFAULT: "#2F9E44" },
+          warning: { bg: "#FDF3D8", text: "#92660B", DEFAULT: "#D9A611" },
+          info: { bg: "#EEF3FC", text: "#1C3E7C", DEFAULT: "#1C3E7C" },
+        },
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"], // body text, UI, buttons, nav

@@ -45,12 +45,18 @@ export function ProposedBudgetTable({ categories, total }: { categories: BudgetC
           </tr>
         </thead>
         <tbody className="divide-y divide-border bg-white">
-          {categories.map((category) => {
+          {categories.map((category, index) => {
             const Icon = category.icon;
             return (
-              <motion.tr key={category.id} variants={fadeUp}>
+              <motion.tr
+                key={category.id}
+                variants={fadeUp}
+                className={`transition-colors hover:bg-primary-50/60 ${index % 2 === 1 ? "bg-background/60" : ""}`}
+              >
                 <th scope="row" className="flex items-center gap-3 px-6 py-4 text-body font-medium text-text-primary">
-                  <Icon className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" strokeWidth={1.75} />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-50">
+                    <Icon className="h-4 w-4 text-primary" aria-hidden="true" strokeWidth={1.75} />
+                  </span>
                   {category.name}
                 </th>
                 <td className="px-6 py-4 text-body text-text-primary">{formatPHP(category.amount)}</td>
@@ -81,7 +87,9 @@ export function ProposedBudgetTable({ categories, total }: { categories: BudgetC
               className="rounded-card border border-border bg-white p-5"
             >
               <div className="flex items-center gap-3">
-                <Icon className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" strokeWidth={1.75} />
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-50">
+                  <Icon className="h-4 w-4 text-primary" aria-hidden="true" strokeWidth={1.75} />
+                </span>
                 <span className="text-body font-medium text-text-primary">{category.name}</span>
               </div>
               <div className="mt-3 flex items-baseline justify-between">

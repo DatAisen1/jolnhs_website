@@ -48,7 +48,7 @@ export function BudgetPage() {
           recommendedSize="1920 x 900"
           className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
         />
-        <div className="pointer-events-none absolute inset-0 bg-primary/60" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary-900/75 via-primary/60 to-primary-700/70" />
         <div className="relative px-6 text-center text-white">
           <h1 className="text-heading sm:text-hero">{budgetOverview.heroHeading}</h1>
           <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">{budgetOverview.heroDescription}</p>
@@ -83,10 +83,10 @@ export function BudgetPage() {
             initial={initial}
             whileInView="show"
             viewport={viewportOnce}
-            className="mt-8 flex items-start gap-3 rounded-card border border-amber-200 bg-amber-50 p-4 text-left"
+            className="mt-8 flex items-start gap-3 rounded-card border border-status-warning bg-status-warning-bg p-4 text-left"
           >
-            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
-            <p className="text-small text-amber-900">{budgetOverview.disclaimer}</p>
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-status-warning" aria-hidden="true" />
+            <p className="text-small text-status-warning-text">{budgetOverview.disclaimer}</p>
           </motion.div>
         </Container>
       </section>
@@ -94,7 +94,7 @@ export function BudgetPage() {
       <BudgetStatsBand stats={stats} />
 
       {/* Section 1: Proposed Budget */}
-      <section id="proposed-budget" className="scroll-mt-28 bg-background py-section-sm md:py-section">
+      <section id="proposed-budget" className="scroll-mt-36 bg-background py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
@@ -116,7 +116,7 @@ export function BudgetPage() {
       </section>
 
       {/* Section 2: Budget Allocation */}
-      <section id="budget-allocation" className="scroll-mt-28 bg-white py-section-sm md:py-section">
+      <section id="budget-allocation" className="scroll-mt-36 bg-white py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">AT A GLANCE</p>
@@ -134,7 +134,7 @@ export function BudgetPage() {
       </section>
 
       {/* Section 3: Accomplishments */}
-      <section id="accomplishments" className="scroll-mt-28 bg-background py-section-sm md:py-section">
+      <section id="accomplishments" className="scroll-mt-36 bg-background py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">RESULTS</p>
