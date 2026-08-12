@@ -240,6 +240,6 @@ export function getBudgetStats(
     { label: "Total Proposed Budget", value: formatCompactPHP(overview.totalProposedBudget), icon: Wallet },
     { label: "Budget Categories", value: String(categories.length), icon: LayoutGrid },
     { label: "Funded Accomplishments", value: String(accomplishments.length), icon: CheckCircle2 },
-    { label: "Fiscal Year", value: overview.fiscalYear, icon: CalendarClock },
+    { label: "yearyaeres Year", value: overview.fiscalYear, icon: CalendarClock },
   ];
 }
