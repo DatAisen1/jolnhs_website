@@ -8,12 +8,10 @@ import { tagline } from "@/data/tagline";
 import { schoolContact } from "@/data/schoolContact";
 
 // Reuses the header's nav data (same labels/hrefs the top nav uses) plus
-// two routes that exist (see App.tsx) but aren't in the main nav —
-// Enroll and Contact both deserve a footer link even though they don't
-// need a full dropdown menu of their own.
+// the Contact route, which exists (see App.tsx) but isn't in the main
+// nav — it still deserves a footer link even without a full dropdown.
 const footerQuickLinks = [
   ...navigation.map(({ label, href }) => ({ label, href })),
-  { label: "Enroll Now", href: "/enroll" },
   { label: "Contact Us", href: "/contact" },
 ];
 
