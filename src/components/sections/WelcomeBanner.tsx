@@ -1,7 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { welcome } from "@/data/welcome";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 

@@ -5,9 +5,9 @@ import { useAuth } from "@/context/AuthContext";
 
 const NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/admin/staff", label: "Staff & Faculty", icon: Users },
-  { to: "/admin/campus-life", label: "Campus Life", icon: Building2 },
-  { to: "/admin/budget", label: "Budget", icon: Wallet },
+  { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false },
+  { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false },
+  { to: "/admin/budget", label: "Budget", icon: Wallet, end: false },
 ] as const;
 
 /** Shared shell for every /admin/* page (except /admin/login). Sidebar
