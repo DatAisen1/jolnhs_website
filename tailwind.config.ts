@@ -51,6 +51,7 @@ export default {
           success: { bg: "#E6F4EA", text: "#1E7B34", DEFAULT: "#2F9E44" },
           warning: { bg: "#FDF3D8", text: "#92660B", DEFAULT: "#D9A611" },
           info: { bg: "#EEF3FC", text: "#1C3E7C", DEFAULT: "#1C3E7C" },
+          error: { bg: "#FCEAEA", text: "#B42318", DEFAULT: "#D92D20" },
         },
       },
       fontFamily: {

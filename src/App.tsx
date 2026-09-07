@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { Users, Wallet } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HomePage } from "@/pages/HomePage";
@@ -12,6 +13,7 @@ import { CampusLifeSectionPage } from "@/pages/CampusLifeSectionPage";
 import { BudgetPage } from "@/pages/BudgetPage";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import { AdminStubPage } from "@/pages/admin/AdminStubPage";
 
 const LoginPage = lazy(() =>
   import("@/pages/admin/LoginPage").then((m) => ({ default: m.LoginPage }))
@@ -118,6 +120,11 @@ export default function App() {
               </Suspense>
             }
           />
+          {/* Not built yet — stubbed so the sidebar links in AdminLayout
+              resolve to a clear "coming soon" page instead of a blank
+              no-match screen. Replace with real pages as they're built. */}
+          <Route path="/admin/staff" element={<AdminStubPage title="Staff & Faculty" icon={Users} />} />
+          <Route path="/admin/budget" element={<AdminStubPage title="Budget" icon={Wallet} />} />
         </Route>
       </Routes>
     </BrowserRouter>

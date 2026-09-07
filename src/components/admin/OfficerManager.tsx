@@ -1,8 +1,9 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Plus, Trash2, User } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { CampusLifeOfficer } from "@/lib/data/campusLife";
 import { useSaveOfficer, useArchiveOfficer } from "@/lib/data/campusLife";
+import { getErrorMessage } from "@/lib/errors";
 
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -12,7 +13,7 @@ interface OfficerManagerProps {
   officers: CampusLifeOfficer[];
 }
 
-/** Photo + name + position, with archive (not delete) and replace —
+/** Photo + name + position, with archive (not delete) and replace â€”
  *  built generically enough that Staff & Faculty (Phase 2) can reuse
  *  this same component against the staff_members table instead of a
  *  second near-identical implementation. */
@@ -66,6 +67,12 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
   return (
     <div className="space-y-3">
       {error && <p className="text-small text-red-600">{error}</p>}
+      {saveOfficer.isError && (
+        <p className="text-small text-red-600">{getErrorMessage(saveOfficer.error, "Couldn't save officer.")}</p>
+      )}
+      {archiveOfficer.isError && (
+        <p className="text-small text-red-600">{getErrorMessage(archiveOfficer.error, "Couldn't archive officer.")}</p>
+      )}
 
       {officers.map((officer) => (
         <div key={officer.id} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3">
@@ -90,7 +97,7 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
             />
             {uploadingId === officer.id && (
               <span className="absolute inset-0 flex items-center justify-center bg-white/70 text-[10px] text-text-secondary">
-                …
+                â€¦
               </span>
             )}
           </label>
@@ -138,10 +145,11 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
       <button
         type="button"
         onClick={handleAddOfficer}
-        className="flex items-center gap-1.5 text-small font-medium text-primary hover:text-primary-700"
+        disabled={saveOfficer.isPending}
+        className="flex items-center gap-1.5 text-small font-medium text-primary hover:text-primary-700 disabled:opacity-50"
       >
         <Plus size={15} />
-        Add officer
+        {saveOfficer.isPending ? "Adding…" : "Add officer"}
       </button>
     </div>
   );

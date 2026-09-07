@@ -81,10 +81,17 @@ export function useCampusLifeSection(slug: string) {
 }
 
 /** Saves the section's own text fields (name, tagline, description) plus
- *  a full replace of its stats and highlights lists. Bundled into one
- *  mutation so "Save changes" commits everything on the form together,
- *  matching the transactional feel from the plan — not five separate
- *  network calls for five separate fields. */
+ *  a full replace of its stats and highlights lists.
+ *
+ *  This is a SINGLE call to the `save_campus_life_section` Postgres
+ *  function (see supabase/migrations/0003_save_campus_life_section_rpc.sql)
+ *  instead of five separate delete/update/insert round trips. That
+ *  matters for correctness, not just tidiness: the old version could
+ *  successfully delete a section's stats and then fail on the insert
+ *  (network drop, validation error, etc.), leaving the section
+ *  permanently missing data. The RPC runs as one Postgres transaction —
+ *  if any part fails, the whole save rolls back and the section is left
+ *  exactly as it was before the click. */
 export function useSaveCampusLifeSection() {
   const queryClient = useQueryClient();
 
@@ -99,37 +106,16 @@ export function useSaveCampusLifeSection() {
       stats: Array<{ label: string; value: string }>;
       highlights: Array<{ title: string; description: string }>;
     }) => {
-      const { error: sectionError } = await supabase
-        .from("campus_life_sections")
-        .update({
-          eyebrow: input.eyebrow,
-          name: input.name,
-          tagline: input.tagline,
-          description: input.description,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", input.sectionId);
-      if (sectionError) throw sectionError;
-
-      // Replace-all for the lists — simplest correct approach for a
-      // handful of rows edited by one admin. At this scale, diffing
-      // individual row changes would add complexity without a real
-      // performance benefit.
-      await supabase.from("campus_life_stats").delete().eq("section_id", input.sectionId);
-      if (input.stats.length > 0) {
-        const { error } = await supabase.from("campus_life_stats").insert(
-          input.stats.map((s, i) => ({ section_id: input.sectionId, label: s.label, value: s.value, sort_order: i }))
-        );
-        if (error) throw error;
-      }
-
-      await supabase.from("campus_life_highlights").delete().eq("section_id", input.sectionId);
-      if (input.highlights.length > 0) {
-        const { error } = await supabase.from("campus_life_highlights").insert(
-          input.highlights.map((h, i) => ({ section_id: input.sectionId, title: h.title, description: h.description, sort_order: i }))
-        );
-        if (error) throw error;
-      }
+      const { error } = await supabase.rpc("save_campus_life_section", {
+        p_section_id: input.sectionId,
+        p_eyebrow: input.eyebrow,
+        p_name: input.name,
+        p_tagline: input.tagline,
+        p_description: input.description,
+        p_stats: input.stats,
+        p_highlights: input.highlights,
+      });
+      if (error) throw error;
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["campus-life-section", variables.slug] });

@@ -4,10 +4,10 @@ import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X } from "luci
 import { useAuth } from "@/context/AuthContext";
 
 const NAV_ITEMS = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false },
-  { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false },
-  { to: "/admin/budget", label: "Budget", icon: Wallet, end: false },
+  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true, soon: false },
+  { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false, soon: true },
+  { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false, soon: false },
+  { to: "/admin/budget", label: "Budget", icon: Wallet, end: false, soon: true },
 ] as const;
 
 /** Shared shell for every /admin/* page (except /admin/login). Sidebar
@@ -56,7 +56,7 @@ export function AdminLayout() {
         </div>
 
         <nav className="flex-1 space-y-1 px-3" aria-label="Admin navigation">
-          {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
+          {NAV_ITEMS.map(({ to, label, icon: Icon, end, soon }) => (
             <NavLink
               key={to}
               to={to}
@@ -71,7 +71,12 @@ export function AdminLayout() {
               }
             >
               <Icon size={17} aria-hidden="true" />
-              {label}
+              <span className="flex-1">{label}</span>
+              {soon && (
+                <span className="rounded-full bg-background px-2 py-0.5 text-[11px] font-medium text-text-secondary">
+                  Soon
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>

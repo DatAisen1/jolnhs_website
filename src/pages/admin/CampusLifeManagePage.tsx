@@ -1,5 +1,6 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useCampusLifeSection, useSaveCampusLifeSection } from "@/lib/data/campusLife";
+import { getErrorMessage } from "@/lib/errors";
 import { ListEditor } from "@/components/admin/ListEditor";
 import { OfficerManager } from "@/components/admin/OfficerManager";
 import { Button } from "@/components/ui/Button";
@@ -20,7 +21,7 @@ function timeAgo(iso: string) {
 }
 
 function SectionEditor({ slug, hasOfficers }: { slug: string; hasOfficers: boolean }) {
-  const { data, isLoading, error } = useCampusLifeSection(slug);
+  const { data, isLoading, isError, error, refetch, isFetching } = useCampusLifeSection(slug);
   const saveSection = useSaveCampusLifeSection();
 
   const [name, setName] = useState("");
@@ -45,7 +46,24 @@ function SectionEditor({ slug, hasOfficers }: { slug: string; hasOfficers: boole
   }
 
   if (isLoading) return <p className="text-small text-text-secondary">Loading…</p>;
-  if (error || !data) return <p className="text-small text-red-600">Failed to load this section.</p>;
+
+  if (isError || !data) {
+    return (
+      <div role="alert" className="rounded-lg border border-status-error bg-status-error-bg px-4 py-3">
+        <p className="text-small font-medium text-status-error-text">Couldn't load this section</p>
+        <p className="mt-0.5 text-small text-status-error-text/80">
+          {getErrorMessage(error, "Something went wrong talking to the database.")}
+        </p>
+        <button
+          onClick={() => void refetch()}
+          disabled={isFetching}
+          className="mt-2 rounded-md border border-status-error px-3 py-1.5 text-small font-medium text-status-error-text hover:bg-status-error-bg/60 disabled:opacity-50"
+        >
+          {isFetching ? "Retrying…" : "Retry"}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -115,24 +133,33 @@ function SectionEditor({ slug, hasOfficers }: { slug: string; hasOfficers: boole
         </section>
       )}
 
-      <Button
-        onClick={() =>
-          saveSection.mutate({
-            sectionId: data.id,
-            slug,
-            eyebrow,
-            name,
-            tagline,
-            description,
-            stats,
-            highlights,
-          })
-        }
-        disabled={saveSection.isPending}
-      >
-        {saveSection.isPending ? "Saving…" : "Save changes"}
-      </Button>
-      {saveSection.isSuccess && <p className="text-small text-status-success-text">Saved.</p>}
+      <div className="flex items-center gap-3">
+        <Button
+          onClick={() =>
+            saveSection.mutate({
+              sectionId: data.id,
+              slug,
+              eyebrow,
+              name,
+              tagline,
+              description,
+              stats,
+              highlights,
+            })
+          }
+          disabled={saveSection.isPending}
+        >
+          {saveSection.isPending ? "Saving…" : "Save changes"}
+        </Button>
+        {saveSection.isSuccess && !saveSection.isError && (
+          <p className="text-small text-status-success-text">Saved.</p>
+        )}
+      </div>
+      {saveSection.isError && (
+        <p className="mt-2 text-small text-status-error-text">
+          {getErrorMessage(saveSection.error, "Couldn't save this section.")}
+        </p>
+      )}
     </div>
   );
 }
