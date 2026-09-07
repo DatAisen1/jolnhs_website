@@ -1,9 +1,10 @@
 ﻿import { useState } from "react";
-import { Plus, Trash2, User } from "lucide-react";
+import { Plus, User } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { CampusLifeOfficer } from "@/lib/data/campusLife";
 import { useSaveOfficer, useArchiveOfficer } from "@/lib/data/campusLife";
 import { getErrorMessage } from "@/lib/errors";
+import { ConfirmButton } from "@/components/admin/ConfirmButton";
 
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -131,14 +132,11 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
             />
           </div>
 
-          <button
-            type="button"
-            onClick={() => archiveOfficer.mutate(officer.id)}
-            aria-label={`Archive ${officer.name}`}
-            className="text-text-secondary hover:text-red-600"
-          >
-            <Trash2 size={16} />
-          </button>
+          <ConfirmButton
+            label={`Archive ${officer.name}`}
+            onConfirm={() => archiveOfficer.mutate(officer.id)}
+            disabled={archiveOfficer.isPending}
+          />
         </div>
       ))}
 

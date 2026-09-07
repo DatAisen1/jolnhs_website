@@ -1,4 +1,5 @@
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import { ConfirmButton } from "@/components/admin/ConfirmButton";
 
 interface ListEditorProps<T> {
   items: T[];
@@ -60,14 +61,7 @@ export function ListEditor<T extends Record<string, string>>({
               </div>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => removeItem(index)}
-            aria-label="Remove item"
-            className="self-start text-text-secondary hover:text-red-600"
-          >
-            <Trash2 size={16} />
-          </button>
+          <ConfirmButton label="Remove item" onConfirm={() => removeItem(index)} />
         </div>
       ))}
 
