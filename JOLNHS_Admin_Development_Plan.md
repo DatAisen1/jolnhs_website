@@ -201,16 +201,16 @@ Fixed by adding one shared `ConfirmButton` component (`src/components/admin/Conf
 
 This is intentionally the minimal P1.1 slice, not the full `ListItemCard` tri-state component Phase 4 will extract later (Principle 7 — no premature infrastructure). `npx tsc -b` passes clean with no new errors.
 
-### [ ] P1.2 Unsaved-changes guard on tab switch
+### [x] P1.2 Unsaved-changes guard on tab switch
 `CampusLifeManagePage` remounts `SectionEditor` via `key={activeTab}` when switching Athletes/PTA/Journalists — this silently discards any unsaved edits with zero warning. Track an `isDirty` flag and confirm before switching (and ideally on `beforeunload`/route change too).
 
-### [ ] P1.3 Minimal input validation
+### [x] P1.3 Minimal input validation
 Empty officer names, empty stat labels/values, and empty highlight titles can currently all be saved. Add a small Zod schema (already a project dependency) per form and block Save until valid.
 
-### [ ] P1.4 Fix orphaned officer photo files in storage
+### [x] P1.4 Fix orphaned officer photo files in storage
 Replacing a photo with a different file extension currently leaves the old file in the `staff-photos` bucket forever. Standardize the storage path (convert to a fixed extension client-side, or delete the old path before uploading the new one).
 
-### [ ] P1.5 Stable keys in `ListEditor`
+### [x] P1.5 Stable keys in `ListEditor`
 Currently keys list items by array `index`, which can cause input-focus loss or wrong-row edits when removing/reordering mid-list. Add a client-generated `id` (`crypto.randomUUID()`) per item on creation.
 
 ### Acceptance Criteria

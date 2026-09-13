@@ -5,6 +5,7 @@ import type { CampusLifeOfficer } from "@/lib/data/campusLife";
 import { useSaveOfficer, useArchiveOfficer } from "@/lib/data/campusLife";
 import { getErrorMessage } from "@/lib/errors";
 import { ConfirmButton } from "@/components/admin/ConfirmButton";
+import { officerNameSchema } from "@/lib/validation/campusLife";
 
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -23,6 +24,30 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
   const archiveOfficer = useArchiveOfficer();
   const [uploadingId, setUploadingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Keyed by officer id — this form has no single "Save" button (each field
+  // saves independently on blur), so there's no one place to gate a submit;
+  // instead each blur handler validates itself and blocks its own save.
+  const [nameErrors, setNameErrors] = useState<Record<string, string>>({});
+
+  function handleNameBlur(officer: CampusLifeOfficer, value: string) {
+    const result = officerNameSchema.safeParse(value);
+    if (!result.success) {
+      setNameErrors((prev) => ({ ...prev, [officer.id]: result.error.issues[0].message }));
+      return; // don't send an invalid name to the server
+    }
+    setNameErrors((prev) => {
+      const next = { ...prev };
+      delete next[officer.id];
+      return next;
+    });
+    saveOfficer.mutate({
+      id: officer.id,
+      sectionId,
+      name: result.data,
+      position: officer.position,
+      photoPath: officer.photo_path,
+    });
+  }
 
   async function handlePhotoUpload(officerId: string, file: File) {
     setError(null);
@@ -35,29 +60,55 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
       return;
     }
 
+    const officer = officers.find((o) => o.id === officerId);
+    if (!officer) return;
+
     setUploadingId(officerId);
     const ext = file.name.split(".").pop();
     const path = `officers/${officerId}.${ext}`;
+    const previousPath = officer.photo_path;
 
     const { error: uploadError } = await supabase.storage
       .from("staff-photos")
       .upload(path, file, { upsert: true });
 
-    setUploadingId(null);
     if (uploadError) {
+      setUploadingId(null);
       setError("Photo upload failed. Try again.");
       return;
     }
 
-    const officer = officers.find((o) => o.id === officerId);
-    if (officer) {
-      saveOfficer.mutate({
+    try {
+      await saveOfficer.mutateAsync({
         id: officer.id,
         sectionId,
         name: officer.name,
         position: officer.position,
         photoPath: path,
       });
+    } catch {
+      // saveOfficer.isError already surfaces this failure to the admin.
+      // The new file is uploaded but the officer row doesn't point at it
+      // yet — leave both the new file and the old (still-referenced,
+      // still-displayed) one alone rather than guessing which to remove.
+      setUploadingId(null);
+      return;
+    }
+
+    setUploadingId(null);
+
+    // Only remove the previous file once the officer row is confirmed to
+    // point at the new one — an extension change (e.g. .jpg -> .png)
+    // produces a different path, so `upsert` never overwrites it in place
+    // and it would otherwise sit in the bucket forever.
+    if (previousPath && previousPath !== path) {
+      const { error: removeError } = await supabase.storage.from("staff-photos").remove([previousPath]);
+      if (removeError) {
+        // Non-fatal — the new photo is live and saved regardless. Logged
+        // so a recurring cleanup failure is at least visible to a dev,
+        // instead of silently accumulating orphans again.
+        console.error("Failed to remove previous officer photo:", previousPath, removeError);
+      }
     }
   }
 
@@ -106,17 +157,17 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
           <div className="flex-1 space-y-1.5">
             <input
               defaultValue={officer.name}
-              onBlur={(e) =>
-                saveOfficer.mutate({
-                  id: officer.id,
-                  sectionId,
-                  name: e.target.value,
-                  position: officer.position,
-                  photoPath: officer.photo_path,
-                })
-              }
-              className="w-full rounded-md border border-border bg-white px-2.5 py-1.5 text-small font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              onBlur={(e) => handleNameBlur(officer, e.target.value)}
+              aria-invalid={Boolean(nameErrors[officer.id])}
+              className={`w-full rounded-md border bg-white px-2.5 py-1.5 text-small font-medium text-text-primary focus:outline-none focus:ring-2 ${
+                nameErrors[officer.id]
+                  ? "border-status-error focus:ring-status-error"
+                  : "border-border focus:ring-primary"
+              }`}
             />
+            {nameErrors[officer.id] && (
+              <p className="text-small text-status-error-text">{nameErrors[officer.id]}</p>
+            )}
             <input
               defaultValue={officer.position}
               onBlur={(e) =>
