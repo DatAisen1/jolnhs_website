@@ -4,7 +4,15 @@ import { ConfirmButton } from "@/components/admin/ConfirmButton";
 interface ListEditorProps<T extends { id: string }> {
   items: T[];
   onChange: (items: T[]) => void;
-  fields: Array<{ key: keyof T; placeholder: string; type?: "input" | "textarea" }>;
+  fields: Array<{
+    key: keyof T;
+    /** Accessible label text — always rendered as a visually-hidden
+     *  `<label>`, never left for `placeholder` to stand in for (P2.2:
+     *  placeholder is a hint, not a substitute for a real label). */
+    label: string;
+    placeholder: string;
+    type?: "input" | "textarea";
+  }>;
   /** No `id` required here — ListEditor mints one itself in `addItem`,
    *  so callers never have to invent a throwaway id just to satisfy T. */
   emptyItem: Omit<T, "id">;
@@ -56,13 +64,18 @@ export function ListEditor<T extends { id: string }>({
             {fields.map((field) => {
               const fieldError = errors?.[index]?.[field.key];
               const value = (item[field.key] as string | undefined) ?? "";
+              const inputId = `${item.id}-${String(field.key)}`;
               const inputClassName = `w-full rounded-md border bg-white px-3 py-1.5 text-small text-text-primary focus:outline-none focus:ring-2 ${
                 fieldError ? "border-status-error focus:ring-status-error" : "border-border focus:ring-primary"
               }`;
               return (
                 <div key={String(field.key)}>
+                  <label htmlFor={inputId} className="sr-only">
+                    {field.label}
+                  </label>
                   {field.type === "textarea" ? (
                     <textarea
+                      id={inputId}
                       value={value}
                       onChange={(e) => updateItem(index, field.key, e.target.value)}
                       placeholder={field.placeholder}
@@ -71,6 +84,7 @@ export function ListEditor<T extends { id: string }>({
                     />
                   ) : (
                     <input
+                      id={inputId}
                       value={value}
                       onChange={(e) => updateItem(index, field.key, e.target.value)}
                       placeholder={field.placeholder}

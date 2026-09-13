@@ -5,6 +5,7 @@ import type { CampusLifeOfficer } from "@/lib/data/campusLife";
 import { useSaveOfficer, useArchiveOfficer } from "@/lib/data/campusLife";
 import { getErrorMessage } from "@/lib/errors";
 import { ConfirmButton } from "@/components/admin/ConfirmButton";
+import { InlineNotice } from "@/components/ui/InlineNotice";
 import { officerNameSchema } from "@/lib/validation/campusLife";
 
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
@@ -118,17 +119,24 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
 
   return (
     <div className="space-y-3">
-      {error && <p className="text-small text-red-600">{error}</p>}
+      {error && <InlineNotice variant="error" message={error} />}
       {saveOfficer.isError && (
-        <p className="text-small text-red-600">{getErrorMessage(saveOfficer.error, "Couldn't save officer.")}</p>
+        <InlineNotice variant="error" message={getErrorMessage(saveOfficer.error, "Couldn't save officer.")} />
       )}
       {archiveOfficer.isError && (
-        <p className="text-small text-red-600">{getErrorMessage(archiveOfficer.error, "Couldn't archive officer.")}</p>
+        <InlineNotice
+          variant="error"
+          message={getErrorMessage(archiveOfficer.error, "Couldn't archive officer.")}
+        />
       )}
 
       {officers.map((officer) => (
         <div key={officer.id} className="flex items-center gap-3 rounded-lg border border-border bg-background p-3">
-          <label className="relative flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-border">
+          <label
+            htmlFor={`officer-${officer.id}-photo`}
+            className="relative flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-border"
+          >
+            <span className="sr-only">Photo for {officer.name}</span>
             {officer.photo_path ? (
               <img
                 src={supabase.storage.from("staff-photos").getPublicUrl(officer.photo_path).data.publicUrl}
@@ -139,6 +147,7 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
               <User size={22} className="text-text-secondary" aria-hidden="true" />
             )}
             <input
+              id={`officer-${officer.id}-photo`}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               className="sr-only"
@@ -155,9 +164,14 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
           </label>
 
           <div className="flex-1 space-y-1.5">
+            <label htmlFor={`officer-${officer.id}-name`} className="sr-only">
+              Officer name
+            </label>
             <input
+              id={`officer-${officer.id}-name`}
               defaultValue={officer.name}
               onBlur={(e) => handleNameBlur(officer, e.target.value)}
+              placeholder="Officer name"
               aria-invalid={Boolean(nameErrors[officer.id])}
               className={`w-full rounded-md border bg-white px-2.5 py-1.5 text-small font-medium text-text-primary focus:outline-none focus:ring-2 ${
                 nameErrors[officer.id]
@@ -168,8 +182,13 @@ export function OfficerManager({ sectionId, officers }: OfficerManagerProps) {
             {nameErrors[officer.id] && (
               <p className="text-small text-status-error-text">{nameErrors[officer.id]}</p>
             )}
+            <label htmlFor={`officer-${officer.id}-position`} className="sr-only">
+              Officer position
+            </label>
             <input
+              id={`officer-${officer.id}-position`}
               defaultValue={officer.position}
+              placeholder="Officer position"
               onBlur={(e) =>
                 saveOfficer.mutate({
                   id: officer.id,

@@ -1,8 +1,9 @@
 ﻿import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { getErrorMessage } from "@/lib/errors";/** IMPORTANT: supabase-js does NOT throw on a failed query â€” a bad
+import { getErrorMessage } from "@/lib/errors";
+import { InlineNotice } from "@/components/ui/InlineNotice";
+/** IMPORTANT: supabase-js does NOT throw on a failed query â€” a bad
  *  table name, an RLS rejection, a dropped connection, etc. all come
  *  back as `{ data: null, error }` from a resolved promise, not a
  *  rejected one. If we don't check `.error` here ourselves, React
@@ -56,25 +57,14 @@ export function DashboardPage() {
       )}
 
       {isError && (
-        <div
-          role="alert"
-          className="mb-6 flex items-start gap-3 rounded-lg border border-status-error bg-status-error-bg px-4 py-3"
-        >
-          <AlertTriangle size={18} className="mt-0.5 shrink-0 text-status-error-text" aria-hidden="true" />
-          <div className="flex-1">
-            <p className="text-small font-medium text-status-error-text">Couldn't load dashboard stats</p>
-            <p className="mt-0.5 text-small text-status-error-text/80">
-              {getErrorMessage(error, "Something went wrong talking to the database.")}
-            </p>
-          </div>
-          <button
-            onClick={() => void refetch()}
-            disabled={isFetching}
-            className="shrink-0 rounded-md border border-status-error px-3 py-1.5 text-small font-medium text-status-error-text hover:bg-status-error-bg/60 disabled:opacity-50"
-          >
-            {isFetching ? "Retryingâ€¦" : "Retry"}
-          </button>
-        </div>
+        <InlineNotice
+          variant="error"
+          title="Couldn't load dashboard stats"
+          message={getErrorMessage(error, "Something went wrong talking to the database.")}
+          onRetry={() => void refetch()}
+          retrying={isFetching}
+          className="mb-6"
+        />
       )}
 
       {!isLoading && !isError && data && (

@@ -232,13 +232,13 @@ Currently keys list items by array `index`, which can cause input-focus loss or 
 
 ## Tasks
 
-### [ ] P1.6 Real server-side login rate limiting
+### [x] P1.6 Real server-side login rate limiting
 Current lockout is `sessionStorage`-only — a fast UX nicety, but trivially bypassed (private window, clear storage). Needs either Supabase Auth's built-in rate limiting enabled, or a server-enforced attempt counter.
 
-### [ ] P1.7 `react-router-dom` v6 → v7 migration (CVE fix)
+### [x] P1.7 `react-router-dom` v6 → v7 migration (CVE fix)
 Open-redirect CVE in the currently-installed 6.26.2. Low real-world exposure today (no attacker-controlled path currently reaches `Link`/`navigate()`), but this is the app's core routing library — the migration must be its own PR with a full manual click-through of every route, public and admin, before merging. Do not bundle with unrelated changes.
 
-### [ ] P1.8 Vite 5 → 8 major bump (esbuild dev-server CVE fix)
+### [x] P1.8 Vite 5 → 8 major bump (esbuild dev-server CVE fix)
 Dev-server-only exposure (arbitrary site can hit the dev server while `npm run dev` is running) — low risk as long as the dev server stays localhost-only. Batch with a general dependency-maintenance pass; full build + dev server smoke-test required after.
 
 ### Acceptance Criteria

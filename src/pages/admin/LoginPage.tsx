@@ -1,7 +1,7 @@
-
 import {
   useEffect,
   useState,
+  type FocusEvent,
   type FormEvent,
   type KeyboardEvent,
 } from "react";
@@ -9,11 +9,11 @@ import { Navigate, useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
+import { checkLoginLock, recordLoginAttempt } from "@/lib/loginRateLimit";
 
-const MAX_ATTEMPTS = 5;
-const LOCKOUT_MS = 60_000;
-const ATTEMPTS_KEY = "admin_login_attempts";
-const LOCK_UNTIL_KEY = "admin_login_lock_until";
+// The attempt cap and lockout window are enforced server-side in
+// record_login_attempt() (see migration 0005) — this component
+// only ever displays whatever seconds_remaining the server reports.
 
 export function LoginPage() {
   const { session, signIn } = useAuth();
@@ -27,37 +27,18 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [lockRemaining, setLockRemaining] = useState(0);
 
+  // Counts down the value we last got from the server. It's just a
+  // display timer — if it drifts or the tab is backgrounded, the
+  // next submit re-checks with the server before doing anything.
   useEffect(() => {
-    const lockUntil = Number(
-      sessionStorage.getItem(LOCK_UNTIL_KEY) ?? 0,
-    );
-
-    if (lockUntil > Date.now()) {
-      setLockRemaining(
-        Math.ceil((lockUntil - Date.now()) / 1000),
-      );
-    }
+    if (lockRemaining <= 0) return;
 
     const interval = setInterval(() => {
-      const until = Number(
-        sessionStorage.getItem(LOCK_UNTIL_KEY) ?? 0,
-      );
-
-      const remaining = Math.max(
-        0,
-        Math.ceil((until - Date.now()) / 1000),
-      );
-
-      setLockRemaining(remaining);
-
-      if (remaining === 0) {
-        sessionStorage.removeItem(LOCK_UNTIL_KEY);
-        sessionStorage.removeItem(ATTEMPTS_KEY);
-      }
+      setLockRemaining((value) => Math.max(0, value - 1));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [lockRemaining > 0]);
 
   if (session) {
     return <Navigate to="/admin" replace />;
@@ -67,26 +48,16 @@ export function LoginPage() {
     setCapsLockOn(e.getModifierState("CapsLock"));
   }
 
-  function registerFailedAttempt() {
-    const attempts =
-      Number(sessionStorage.getItem(ATTEMPTS_KEY) ?? 0) + 1;
+  // Pre-emptively surfaces an existing lock (e.g. after a page
+  // reload, or a lock earned in another tab/device) as soon as the
+  // admin has typed an email, rather than only on submit.
+  async function handleEmailBlur(e: FocusEvent<HTMLInputElement>) {
+    const trimmed = e.target.value.trim();
+    if (!trimmed) return;
 
-    if (attempts >= MAX_ATTEMPTS) {
-      const until = Date.now() + LOCKOUT_MS;
-
-      sessionStorage.setItem(
-        LOCK_UNTIL_KEY,
-        String(until),
-      );
-
-      sessionStorage.setItem(ATTEMPTS_KEY, "0");
-
-      setLockRemaining(LOCKOUT_MS / 1000);
-    } else {
-      sessionStorage.setItem(
-        ATTEMPTS_KEY,
-        String(attempts),
-      );
+    const status = await checkLoginLock(trimmed);
+    if (status.isLocked) {
+      setLockRemaining(status.secondsRemaining);
     }
   }
 
@@ -94,27 +65,34 @@ export function LoginPage() {
     e.preventDefault();
     setError(null);
 
-    if (lockRemaining > 0) {
+    const trimmedEmail = email.trim();
+
+    // Always re-check with the server right before attempting —
+    // this is the enforcement, not the countdown above.
+    const preCheck = await checkLoginLock(trimmedEmail);
+    if (preCheck.isLocked) {
+      setLockRemaining(preCheck.secondsRemaining);
       return;
     }
 
     setSubmitting(true);
 
     const { error: signInError } = await signIn(
-      email.trim(),
+      trimmedEmail,
       password.trim(),
     );
+
+    const status = await recordLoginAttempt(trimmedEmail, !signInError);
 
     setSubmitting(false);
 
     if (signInError) {
-      registerFailedAttempt();
+      if (status.isLocked) {
+        setLockRemaining(status.secondsRemaining);
+      }
       setError(signInError);
       return;
     }
-
-    sessionStorage.removeItem(ATTEMPTS_KEY);
-    sessionStorage.removeItem(LOCK_UNTIL_KEY);
 
     navigate("/admin", { replace: true });
   }
@@ -376,6 +354,7 @@ export function LoginPage() {
                     onChange={(e) =>
                       setEmail(e.target.value)
                     }
+                    onBlur={handleEmailBlur}
                     placeholder="you@jolnhs.edu.ph"
                     className="
                       w-full

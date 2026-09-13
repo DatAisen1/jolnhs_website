@@ -4,6 +4,7 @@ import { getErrorMessage } from "@/lib/errors";
 import { ListEditor } from "@/components/admin/ListEditor";
 import { OfficerManager } from "@/components/admin/OfficerManager";
 import { Button } from "@/components/ui/Button";
+import { InlineNotice } from "@/components/ui/InlineNotice";
 import { statSchema, highlightSchema, rowErrors } from "@/lib/validation/campusLife";
 
 const TABS = [
@@ -44,6 +45,23 @@ function SectionEditor({
   const [highlights, setHighlights] = useState<Array<{ id: string; title: string; description: string }>>([]);
   const [initialized, setInitialized] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
+  // Separate from `saveSection.isSuccess`, which react-query keeps true
+  // indefinitely until the next mutation — that left "Saved." showing
+  // forever if the admin kept editing without triggering another save
+  // (P2.4). This clears itself a few seconds after a successful save,
+  // and immediately as soon as the admin edits again (see the effect
+  // below, keyed off `isDirty`).
+  const [justSaved, setJustSaved] = useState(false);
+
+  useEffect(() => {
+    if (!justSaved) return;
+    const timer = setTimeout(() => setJustSaved(false), 4000);
+    return () => clearTimeout(timer);
+  }, [justSaved]);
+
+  useEffect(() => {
+    if (isDirty) setJustSaved(false);
+  }, [isDirty]);
 
   // Propagate up on every change, and on mount (so a freshly-mounted tab
   // always reports clean, overwriting whatever the previous tab left behind).
@@ -81,19 +99,13 @@ function SectionEditor({
 
   if (isError || !data) {
     return (
-      <div role="alert" className="rounded-lg border border-status-error bg-status-error-bg px-4 py-3">
-        <p className="text-small font-medium text-status-error-text">Couldn't load this section</p>
-        <p className="mt-0.5 text-small text-status-error-text/80">
-          {getErrorMessage(error, "Something went wrong talking to the database.")}
-        </p>
-        <button
-          onClick={() => void refetch()}
-          disabled={isFetching}
-          className="mt-2 rounded-md border border-status-error px-3 py-1.5 text-small font-medium text-status-error-text hover:bg-status-error-bg/60 disabled:opacity-50"
-        >
-          {isFetching ? "Retrying…" : "Retry"}
-        </button>
-      </div>
+      <InlineNotice
+        variant="error"
+        title="Couldn't load this section"
+        message={getErrorMessage(error, "Something went wrong talking to the database.")}
+        onRetry={() => void refetch()}
+        retrying={isFetching}
+      />
     );
   }
 
@@ -158,8 +170,8 @@ function SectionEditor({
           }}
           errors={statErrors}
           fields={[
-            { key: "label", placeholder: "Label, e.g. Student Athletes" },
-            { key: "value", placeholder: "Value, e.g. 180+" },
+            { key: "label", label: "Label", placeholder: "Label, e.g. Student Athletes" },
+            { key: "value", label: "Value", placeholder: "Value, e.g. 180+" },
           ]}
           emptyItem={{ label: "", value: "" }}
           addLabel="Add stat"
@@ -176,8 +188,8 @@ function SectionEditor({
           }}
           errors={highlightErrors}
           fields={[
-            { key: "title", placeholder: "Highlight title" },
-            { key: "description", placeholder: "Description", type: "textarea" },
+            { key: "title", label: "Highlight title", placeholder: "Highlight title" },
+            { key: "description", label: "Description", placeholder: "Description", type: "textarea" },
           ]}
           emptyItem={{ title: "", description: "" }}
           addLabel="Add highlight"
@@ -205,16 +217,18 @@ function SectionEditor({
                 stats: stats.map(({ label, value }) => ({ label, value })),
                 highlights: highlights.map(({ title, description }) => ({ title, description })),
               },
-              { onSuccess: () => setIsDirty(false) }
+              { onSuccess: () => {
+                  setIsDirty(false);
+                  setJustSaved(true);
+                },
+              }
             )
           }
           disabled={saveSection.isPending || !isValid}
         >
           {saveSection.isPending ? "Saving…" : "Save changes"}
         </Button>
-        {saveSection.isSuccess && !saveSection.isError && (
-          <p className="text-small text-status-success-text">Saved.</p>
-        )}
+        {justSaved && !saveSection.isError && <InlineNotice variant="success" message="Saved." />}
       </div>
       {!isValid && (
         <p className="mt-2 text-small text-status-error-text">
@@ -222,9 +236,11 @@ function SectionEditor({
         </p>
       )}
       {saveSection.isError && (
-        <p className="mt-2 text-small text-status-error-text">
-          {getErrorMessage(saveSection.error, "Couldn't save this section.")}
-        </p>
+        <InlineNotice
+          variant="error"
+          message={getErrorMessage(saveSection.error, "Couldn't save this section.")}
+          className="mt-2"
+        />
       )}
     </div>
   );
