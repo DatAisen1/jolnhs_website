@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true, soon: false },
   { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false, soon: false },
   { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false, soon: false },
-  { to: "/admin/budget", label: "Budget", icon: Wallet, end: false, soon: true },
+  { to: "/admin/budget", label: "Budget", icon: Wallet, end: false, soon: false },
 ] as const;
 
 /** Longest-prefix match against NAV_ITEMS so the topbar's page title

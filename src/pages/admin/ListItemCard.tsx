@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pencil, Trash2, User } from "lucide-react";
+import { Pencil, Trash2, User, type LucideIcon } from "lucide-react";
 
 export type ListItemCardLeadingVisual =
   | {
@@ -16,6 +16,12 @@ export type ListItemCardLeadingVisual =
   | {
       kind: "swatch";
       color: string;
+      /** Optional icon rendered centered over the swatch (P1.14 — budget
+       *  categories swap the photo circle for a color swatch + icon). */
+      icon?: LucideIcon;
+      /** Accessible name for the icon, e.g. "ICT & Technology icon".
+       *  Omit when the icon is purely decorative next to a visible title. */
+      iconLabel?: string;
     };
 
 export interface ListItemCardField {
@@ -24,9 +30,24 @@ export interface ListItemCardField {
   /** Accessible label — always rendered as a visually-hidden `<label>` (P2.2). */
   label: string;
   placeholder?: string;
-  type?: "input" | "textarea";
+  type?: "input" | "textarea" | "select";
   initialValue: string;
+  /** Options for `type: "select"` fields. Ignored for input/textarea. */
+  options?: ReadonlyArray<{ value: string; label: string }>;
 }
+
+export interface ListItemCardBadge {
+  label: string;
+  /** Reuses the same `status.*` tokens as InlineNotice (P2.1) rather
+   *  than a one-off badge color scale. */
+  variant: "success" | "warning" | "info";
+}
+
+const BADGE_CLASSES: Record<ListItemCardBadge["variant"], string> = {
+  success: "bg-status-success-bg text-status-success-text",
+  warning: "bg-status-warning-bg text-status-warning-text",
+  info: "bg-status-info-bg text-status-info-text",
+};
 
 export interface ListItemCardSaveResult {
   /** Per-field validation messages, keyed by `ListItemCardField.key`,
@@ -37,6 +58,9 @@ export interface ListItemCardSaveResult {
 export interface ListItemCardProps {
   title: string;
   subtitle?: string;
+  /** Small colored status pill shown next to the title in the normal
+   *  view (P1.15 — accomplishment status: completed/in-progress/upcoming). */
+  badge?: ListItemCardBadge;
   leadingVisual: ListItemCardLeadingVisual;
   /** Field set for the edit form. Empty/omitted if this card is
    *  view-and-delete only (no editable text fields). */
@@ -56,18 +80,30 @@ export interface ListItemCardProps {
   /** Message shown in the confirming-delete state. Defaults to a generic warning. */
   deleteConfirmMessage?: string;
   deleteDisabled?: boolean;
+  /** Hides the edit (pencil) trigger entirely — used for the archived-
+   *  fiscal-year read-only state (P1.16), where editing isn't just
+   *  discouraged but genuinely blocked by RLS. */
+  editDisabled?: boolean;
 }
 
 type Mode = "normal" | "editing" | "confirming-delete";
 
 function LeadingVisual({ visual }: { visual: ListItemCardLeadingVisual }) {
   if (visual.kind === "swatch") {
+    const Icon = visual.icon;
     return (
       <span
-        className="h-14 w-14 shrink-0 rounded-full ring-1 ring-border"
+        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full ring-1 ring-border"
         style={{ backgroundColor: visual.color }}
-        aria-hidden="true"
-      />
+        aria-hidden={visual.iconLabel ? undefined : "true"}
+      >
+        {Icon && (
+          <>
+            {visual.iconLabel && <span className="sr-only">{visual.iconLabel}</span>}
+            <Icon size={20} className="text-white" aria-hidden="true" />
+          </>
+        )}
+      </span>
     );
   }
 
@@ -124,6 +160,7 @@ function LeadingVisual({ visual }: { visual: ListItemCardLeadingVisual }) {
 export function ListItemCard({
   title,
   subtitle,
+  badge,
   leadingVisual,
   fields = [],
   onSave,
@@ -132,6 +169,7 @@ export function ListItemCard({
   editLabel,
   deleteConfirmMessage,
   deleteDisabled,
+  editDisabled,
 }: ListItemCardProps) {
   const [mode, setMode] = useState<Mode>("normal");
   const [values, setValues] = useState<Record<string, string>>({});
@@ -222,6 +260,20 @@ className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-whit
                     rows={2}
                     className={inputClassName}
                   />
+                ) : field.type === "select" ? (
+                  <select
+                    id={inputId}
+                    value={value}
+                    onChange={(e) => setValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                    aria-invalid={Boolean(error)}
+                    className={inputClassName}
+                  >
+                    {(field.options ?? []).map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
                   <input
                     id={inputId}
@@ -263,11 +315,18 @@ className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-whit
     <div className="flex items-center gap-3 rounded-lg border border-border bg-background p-3">
       <LeadingVisual visual={leadingVisual} />
       <div className="min-w-0 flex-1">
-        <p className="truncate text-small font-medium text-text-primary">{title}</p>
+        <div className="flex items-center gap-2">
+          <p className="truncate text-small font-medium text-text-primary">{title}</p>
+          {badge && (
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${BADGE_CLASSES[badge.variant]}`}>
+              {badge.label}
+            </span>
+          )}
+        </div>
         {subtitle && <p className="truncate text-small text-text-secondary">{subtitle}</p>}
       </div>
       <div className="flex shrink-0 items-center gap-1 self-start">
-        {fields.length > 0 && (
+        {fields.length > 0 && !editDisabled && (
           <button type="button" onClick={openEdit} aria-label={editLabel ?? `Edit ${title}`} className={iconButtonClass}>
             <Pencil size={16} />
           </button>

@@ -368,16 +368,16 @@ Accomplishments nested per category (title, amount, status badge, period) — Li
 
 ## Tasks
 
-### [ ] P1.13 Build fiscal year selector + year-level fields form
+### [x] P1.13 Build fiscal year selector + year-level fields form
 Includes the `is_current` semantics (only one year may be current — already a DB constraint) and status badge display.
 
-### [ ] P1.14 Build category cards using `ListItemCard`
+### [x] P1.14 Build category cards using `ListItemCard`
 Swap the photo circle for a small color swatch (`color_class`) + icon (`icon_key`, validated against the same fixed enum the public `BudgetPage` uses).
 
-### [ ] P1.15 Build nested accomplishments list per category
+### [x] P1.15 Build nested accomplishments list per category
 Status shown as a colored badge reusing the existing `status.success`/`status.warning`/`status.info` tokens already in `tailwind.config.ts` (completed/in-progress/upcoming).
 
-### [ ] P1.16 Implement the archived-year read-only UI state
+### [x] P1.16 Implement the archived-year read-only UI state
 Disable all add/edit/delete controls when the selected year's `status = 'archived'`, with a visible explanatory note — not just a disabled button with no explanation.
 
 ### Acceptance Criteria
