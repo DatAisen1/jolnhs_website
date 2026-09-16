@@ -329,10 +329,10 @@ Category tabs (Administrators / JHS Faculty / SHS Faculty / Staff) → `ListItem
 
 ## Tasks
 
-### [ ] P1.11 Build `StaffManagePage` using `SectionTabs` + `ListItemCard`
+### [x] P1.11 Build `StaffManagePage` using `SectionTabs` + `ListItemCard`
 Four tabs, one per `staff_members.category` value. Add/edit/archive per the same interaction pattern as Officers.
 
-### [ ] P1.12 Reuse the atomic-save pattern from Campus Life
+### [x] P1.12 Reuse the atomic-save pattern from Campus Life
 Staff edits don't need the same multi-table transaction complexity as Campus Life sections (no child stats/highlights tables) — a direct `upsert` per staff member, same shape as `useSaveOfficer`, is sufficient. Archive uses `is_archived`, same as officers — no hard delete.
 
 ### Acceptance Criteria

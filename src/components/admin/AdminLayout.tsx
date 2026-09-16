@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true, soon: false },
-  { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false, soon: true },
+  { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false, soon: false },
   { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false, soon: false },
   { to: "/admin/budget", label: "Budget", icon: Wallet, end: false, soon: true },
 ] as const;
