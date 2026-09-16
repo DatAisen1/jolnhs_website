@@ -18,6 +18,9 @@ import { AdminStubPage } from "@/pages/admin/AdminStubPage";
 const LoginPage = lazy(() =>
   import("@/pages/admin/LoginPage").then((m) => ({ default: m.LoginPage }))
 );
+const ResetPasswordPage = lazy(() =>
+  import("@/pages/admin/ResetPasswordPage").then((m) => ({ default: m.ResetPasswordPage }))
+);
 const DashboardPage = lazy(() =>
   import("@/pages/admin/DashboardPage").then((m) => ({ default: m.DashboardPage }))
 );
@@ -88,6 +91,19 @@ export default function App() {
             element={
               <Suspense fallback={null}>
                 <LoginPage />
+              </Suspense>
+            }
+          />
+          {/* Landing page for Supabase's password-recovery email link.
+              Lives here (unauthenticated shell), not behind ProtectedRoute —
+              an admin arrives here via a one-time link, not an existing
+              session, even though Supabase does establish one once the
+              link's tokens are consumed (see ResetPasswordPage). */}
+          <Route
+            path="/admin/reset-password"
+            element={
+              <Suspense fallback={null}>
+                <ResetPasswordPage />
               </Suspense>
             }
           />

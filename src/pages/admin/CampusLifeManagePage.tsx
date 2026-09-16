@@ -3,6 +3,7 @@ import { useCampusLifeSection, useSaveCampusLifeSection } from "@/lib/data/campu
 import { getErrorMessage } from "@/lib/errors";
 import { ListEditor } from "@/components/admin/ListEditor";
 import { OfficerManager } from "@/components/admin/OfficerManager";
+import { SectionTabs } from "@/components/admin/SectionTabs";
 import { Button } from "@/components/ui/Button";
 import { InlineNotice } from "@/components/ui/InlineNotice";
 import { statSchema, highlightSchema, rowErrors } from "@/lib/validation/campusLife";
@@ -270,23 +271,7 @@ export function CampusLifeManagePage() {
     <div className="max-w-2xl">
       <h1 className="mb-4 font-heading text-subtitle text-text-primary">Campus Life</h1>
 
-      <div className="mb-6 flex gap-1 border-b border-border" role="tablist">
-        {TABS.map((tab) => (
-          <button
-            key={tab.slug}
-            role="tab"
-            aria-selected={activeTab === tab.slug}
-            onClick={() => handleTabClick(tab.slug)}
-            className={`px-4 py-2 text-small font-medium transition-colors ${
-              activeTab === tab.slug
-                ? "border-b-2 border-primary text-primary"
-                : "text-text-secondary hover:text-text-primary"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <SectionTabs tabs={TABS} activeTab={activeTab} onTabChange={handleTabClick} />
 
       {/* key={activeTab} remounts the editor per tab — simplest way to
           guarantee one tab's unsaved edits never bleed into another's

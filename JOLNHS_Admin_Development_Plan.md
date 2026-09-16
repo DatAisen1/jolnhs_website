@@ -259,16 +259,16 @@ Dev-server-only exposure (arbitrary site can hit the dev server while `npm run d
 
 ## Tasks
 
-### [ ] P2.1 Shared toast/notification component
+### [x] P2.1 Shared toast/notification component
 The error-banner pattern (icon + message + retry button) has now been hand-rolled independently in `DashboardPage`, `CampusLifeManagePage`, and `OfficerManager`. Extract one `<Toast>`/`<InlineError>` primitive; every current and future admin page/component uses it instead of a bespoke JSX block.
 
-### [ ] P2.2 Accessible form inputs
+### [x] P2.2 Accessible form inputs
 Every input in `ListEditor` and `OfficerManager` relies on `placeholder` text alone — no associated `<label>`. Add visually-hidden `<label htmlFor>` to each (placeholder stays as a hint, not the label).
 
-### [ ] P2.3 Global `ErrorBoundary`
+### [x] P2.3 Global `ErrorBoundary`
 An uncaught render error anywhere currently blanks the entire app. Wrap `<App />` (or at minimum the `/admin/*` subtree) in a simple boundary with a friendly fallback + reload action.
 
-### [ ] P2.4 "Saved." confirmation should clear itself
+### [x] P2.4 "Saved." confirmation should clear itself
 Currently `saveSection.isSuccess` persists indefinitely until the next mutation — stale positive feedback if the admin keeps editing after a save. Auto-clear after a few seconds, or clear on next keystroke.
 
 ### Acceptance Criteria
@@ -302,10 +302,10 @@ One reusable pattern — card with photo/swatch, name/title, inline expand-to-ed
 
 ## Tasks
 
-### [ ] P1.9 Extract `ListItemCard` as a shared component
+### [x] P1.9 Extract `ListItemCard` as a shared component
 Generalize `OfficerManager`'s current always-editable rows into a tri-state card (`normal` / `editing` / `confirming-delete`), parameterized on: leading visual (photo circle or color swatch), title, subtitle, and its field set for the edit form. This directly resolves P1.1 (destructive-action confirmation) and P2.2 (accessible labels) at the same time, once, for every module that uses it.
 
-### [ ] P1.10 Extract `SectionTabs` as a shared component
+### [x] P1.10 Extract `SectionTabs` as a shared component
 Generalize `CampusLifeManagePage`'s tab bar so Staff & Faculty's category tabs (Administrators / JHS Faculty / SHS Faculty / Staff) and any future tabbed section reuse the same component instead of a second hand-rolled tab bar.
 
 ### Acceptance Criteria
