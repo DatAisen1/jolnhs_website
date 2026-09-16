@@ -10,6 +10,7 @@ import {
   type FiscalYearStatus,
 } from "@/lib/data/budget";
 import { getErrorMessage } from "@/lib/errors";
+import { isFiscalYearReadOnly } from "@/lib/access/fiscalYear";
 import { amountSchema, yearLabelSchema } from "@/lib/validation/budget";
 import { BudgetCategoryManager } from "@/components/admin/BudgetCategoryManager";
 import { InlineNotice } from "@/components/ui/InlineNotice";
@@ -66,7 +67,7 @@ function FiscalYearEditor({
   const [justSaved, setJustSaved] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const isArchived = fiscalYear.status === "archived";
+  const isArchived = isFiscalYearReadOnly(fiscalYear.status);
 
   useEffect(() => {
     onDirtyChange(isDirty);
