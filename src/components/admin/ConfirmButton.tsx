@@ -35,8 +35,7 @@ export function ConfirmButton({ onConfirm, label, disabled }: ConfirmButtonProps
             setConfirming(false);
             onConfirm();
           }}
-          className="rounded-md bg-red-600 px-2 py-1 text-small font-medium text-white hover:bg-red-700"
-        >
+          className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-white hover:bg-status-error-text"        >
           Confirm
         </button>
         <button
@@ -56,8 +55,7 @@ export function ConfirmButton({ onConfirm, label, disabled }: ConfirmButtonProps
       onClick={() => setConfirming(true)}
       aria-label={label}
       disabled={disabled}
-      className="self-start text-text-secondary hover:text-red-600 disabled:opacity-50"
-    >
+      className="self-start text-text-secondary hover:text-status-error-text disabled:opacity-50"    >
       <Trash2 size={16} />
     </button>
   );

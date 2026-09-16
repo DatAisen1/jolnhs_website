@@ -181,8 +181,7 @@ export function ListItemCard({
           <button
             type="button"
             onClick={handleConfirmDelete}
-            className="rounded-md bg-red-600 px-2 py-1 text-small font-medium text-white hover:bg-red-700"
-          >
+className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-white hover:bg-status-error-text"          >
             Confirm
           </button>
           <button
