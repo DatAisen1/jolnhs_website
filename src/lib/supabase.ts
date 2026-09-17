@@ -17,3 +17,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // for a generated `Database` type in Phase 1 once the schema is final
 // and stable, so we're not regenerating types on every table tweak.
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+if (import.meta.env.DEV) {
+  (window as any).supabase = supabase;
+}

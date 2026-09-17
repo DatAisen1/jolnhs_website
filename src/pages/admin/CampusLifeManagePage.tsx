@@ -12,6 +12,7 @@ const TABS = [
   { slug: "athletes", label: "Athletes", hasOfficers: false },
   { slug: "pta", label: "PTA", hasOfficers: true },
   { slug: "journalists", label: "Journalists", hasOfficers: true },
+  { slug: "organizations", label: "Organizations", hasOfficers: true },
 ] as const;
 
 function timeAgo(iso: string) {

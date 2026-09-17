@@ -10,14 +10,29 @@
 -- kept a partial write. Only a query against the database, after a
 -- forced failure, can prove that.
 --
--- Run against a disposable database:
+-- Run against a disposable database, applying ALL migrations in order
+-- (not just 0003) — 0003's original function body has a real bug (see
+-- 0007's header comment: `with ordinality as item` binds `item` to the
+-- whole two-column row, not the jsonb value, so every non-empty
+-- p_stats/p_highlights raises `operator does not exist: record ->>
+-- unknown`). Stopping at 0003 alone will fail this test's happy-path
+-- assertions for that reason, not because atomicity is broken —
+-- exactly the confusion that cost real debugging time in production
+-- before 0007 was traced and applied there. Always run the full
+-- migration set:
 --   createdb jolnhs_pgtap_test
---   psql -d jolnhs_pgtap_test -v ON_ERROR_STOP=1 -f supabase/tests/_bootstrap.sql
---   psql -d jolnhs_pgtap_test -v ON_ERROR_STOP=1 -f supabase/migrations/0001_init.sql
---   psql -d jolnhs_pgtap_test -v ON_ERROR_STOP=1 -f supabase/migrations/0003_save_campus_life_section_rpc.sql
+--   psql -d jolnhs_pgtap_test -v ON_ERROR_STOP=1 -f supabase/migrations/tests/_bootstrap.sql
+--   for f in supabase/migrations/*.sql; do
+--     psql -d jolnhs_pgtap_test -v ON_ERROR_STOP=1 -f "$f"
+--   done
 --   psql -d jolnhs_pgtap_test -c "create extension if not exists pgtap;"
---   pg_prove -d jolnhs_pgtap_test supabase/tests/atomic_save_rollback.test.sql
--- (or: psql -d jolnhs_pgtap_test -f supabase/tests/atomic_save_rollback.test.sql)
+--   pg_prove -d jolnhs_pgtap_test supabase/migrations/tests/atomic_save_rollback.test.sql
+-- (or: psql -d jolnhs_pgtap_test -f supabase/migrations/tests/atomic_save_rollback.test.sql)
+--
+-- Note: this pgTAP suite requires a real local Postgres + pgtap
+-- extension and is NOT run by `npm test` (Vitest only runs .ts/.tsx
+-- specs). Nothing currently runs it in CI — it has to be invoked by
+-- hand via the commands above until that's wired up.
 --
 -- Wrapped in BEGIN/ROLLBACK so running it leaves the database exactly
 -- as it found it — repeatable against the same seeded DB, not just
