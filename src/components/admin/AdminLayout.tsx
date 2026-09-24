@@ -1,14 +1,46 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, Image, Megaphone, Download, ShieldCheck, ClipboardList } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
-const NAV_ITEMS = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true, soon: false },
-  { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false, soon: false },
-  { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false, soon: false },
-  { to: "/admin/budget", label: "Budget", icon: Wallet, end: false, soon: false },
+type NavItem = {
+  to?: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  end?: boolean;
+};
+
+const NAV_GROUPS: ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }> = [
+  {
+    label: "Overview",
+    items: [{ to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true }],
+  },
+  {
+    label: "Content",
+    items: [
+      { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false },
+      { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false },
+      { label: "Homepage", icon: LayoutDashboard },
+      { label: "Announcements", icon: Megaphone },
+      { label: "Gallery", icon: Image },
+      { label: "Downloads", icon: Download },
+    ],
+  },
+  {
+    label: "Transparency",
+    items: [{ to: "/admin/budget", label: "Budget", icon: Wallet, end: false }],
+  },
+  {
+    label: "System",
+    items: [
+      { label: "Admin Users", icon: ShieldCheck },
+      { label: "Activity Log", icon: ClipboardList },
+      { label: "Settings", icon: Settings },
+    ],
+  },
 ] as const;
+
+const NAV_ITEMS = NAV_GROUPS.flatMap((group) => group.items).filter((item): item is NavItem & { to: string } => Boolean(item.to));
 
 /** Longest-prefix match against NAV_ITEMS so the topbar's page title
  *  stays correct on nested routes (e.g. a future `/admin/staff/:id`
@@ -39,8 +71,31 @@ export function AdminLayout() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
   const currentNavItem = useCurrentNavItem();
   const email = session?.user.email;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateInertState = () => {
+      sidebarRef.current?.toggleAttribute("inert", mediaQuery.matches && !mobileOpen);
+    };
+
+    updateInertState();
+    mediaQuery.addEventListener("change", updateInertState);
+    return () => mediaQuery.removeEventListener("change", updateInertState);
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setMobileOpen(false);
+    }
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [mobileOpen]);
 
   async function handleSignOut() {
     await signOut();
@@ -58,11 +113,12 @@ export function AdminLayout() {
       )}
 
       <aside
+        ref={sidebarRef}
         className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-white shadow-sm transition-transform md:static md:transition-none ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         } ${sidebarOpen ? "md:translate-x-0 md:flex" : "md:hidden"}`}
       >
-        <div className="flex items-center justify-between gap-2 px-4 py-4">
+        <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-4">
           <div className="flex items-center gap-2.5 overflow-hidden">
             <span
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-small font-bold text-white"
@@ -87,29 +143,45 @@ export function AdminLayout() {
           </button>
         </div>
 
-        <nav className="flex-1 space-y-1 px-3" aria-label="Admin navigation">
-          {NAV_ITEMS.map(({ to, label, icon: Icon, end, soon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              onClick={() => setMobileOpen(false)}
-              className={({ isActive }) =>
-                `relative flex items-center gap-2.5 rounded-lg py-2 pl-3 pr-3 text-small font-medium transition-colors ${
-                  isActive
-                    ? "border-l-2 border-primary bg-primary/8 text-primary"
-                    : "border-l-2 border-transparent text-text-secondary hover:bg-background hover:text-text-primary"
-                }`
-              }
-            >
-              <Icon size={17} aria-hidden="true" />
-              <span className="flex-1">{label}</span>
-              {soon && (
-                <span className="rounded-full bg-background px-2 py-0.5 text-[11px] font-medium text-text-secondary">
-                  Soon
-                </span>
-              )}
-            </NavLink>
+        <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-5" aria-label="Admin navigation">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label}>
+              <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-text-secondary">
+                {group.label}
+              </p>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  if (!item.to) {
+                    return (
+                      <div key={item.label} className="flex items-center gap-2.5 rounded-md px-3 py-2 text-small text-text-secondary/60" aria-disabled="true">
+                        <Icon size={17} aria-hidden="true" />
+                        <span className="flex-1">{item.label}</span>
+                        <span className="text-[10px] font-medium uppercase tracking-wide">Soon</span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      end={item.end}
+                      onClick={() => setMobileOpen(false)}
+                      className={({ isActive }) =>
+                        `relative flex items-center gap-2.5 rounded-md border-l-2 py-2 pl-3 pr-3 text-small font-medium transition-colors ${
+                          isActive
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-transparent text-text-secondary hover:bg-background hover:text-text-primary"
+                        }`
+                      }
+                    >
+                      <Icon size={17} aria-hidden="true" />
+                      <span className="flex-1">{item.label}</span>
+                    </NavLink>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </nav>
 
@@ -136,14 +208,14 @@ export function AdminLayout() {
         </div>
       </aside>
 
-      <div className="flex flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center gap-3 border-b border-border bg-white px-4 py-3 shadow-sm">
           <button
             onClick={() => {
-              setSidebarOpen((v) => !v);
-              setMobileOpen((v) => !v);
+              if (window.innerWidth < 768) setMobileOpen((v) => !v);
+              else setSidebarOpen((v) => !v);
             }}
-            aria-label="Toggle sidebar"
+            aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
             className="rounded-md p-1 text-text-secondary hover:bg-background hover:text-text-primary"
           >
             <Menu size={20} />

@@ -13,21 +13,24 @@ export interface StaffMember {
   photo_path: string | null;
   sort_order: number;
   is_archived: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 /** Fetches the active (non-archived) members of ONE category, ordered for
  *  display. Scoped per category — like `useCampusLifeSection` scoping to
  *  one section — so switching the Staff & Faculty tab only loads the rows
  *  that tab needs, instead of every staff member up front. */
-export function useStaffMembers(category: StaffCategory) {
+export function useStaffMembers(category: StaffCategory, archived = false) {
   return useQuery({
-    queryKey: ["staff-members", category],
+    queryKey: ["staff-members", category, archived],
     queryFn: async (): Promise<StaffMember[]> => {
       const { data, error } = await supabase
         .from("staff_members")
         .select("*")
         .eq("category", category)
-        .eq("is_archived", false)
+        .eq("is_archived", archived)
+        .order("created_at", { ascending: false })
         .order("sort_order")
         .order("name");
       if (error) throw error;

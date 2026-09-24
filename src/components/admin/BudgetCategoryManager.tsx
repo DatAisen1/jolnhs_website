@@ -23,7 +23,9 @@ import {
   categoryNameSchema,
 } from "@/lib/validation/budget";
 import { InlineNotice } from "@/components/ui/InlineNotice";
-import { Button } from "@/components/ui/Button";
+import { AdminButton } from "@/components/admin/AdminButton";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
+import { AdminListSkeleton } from "@/components/admin/AdminStates";
 
 const STATUS_OPTIONS: ReadonlyArray<{ value: BudgetItemStatus; label: string }> = [
   { value: "completed", label: "Completed" },
@@ -56,7 +58,7 @@ function AccomplishmentList({
   const [newTitleError, setNewTitleError] = useState("");
   const [newAmountError, setNewAmountError] = useState("");
 
-  if (isLoading) return <p className="text-small text-text-secondary">Loading accomplishments…</p>;
+  if (isLoading) return <AdminListSkeleton rows={2} />;
 
   if (isError || !data) {
     return (
@@ -142,7 +144,7 @@ function AccomplishmentList({
   return (
     <div className="space-y-3">
       {data.length === 0 && (
-        <p className="text-small text-text-secondary">No accomplishments logged for this category yet.</p>
+        <AdminEmptyState title="No accomplishments yet" description="Add an accomplishment to document this category's progress." />
       )}
 
       <div className="space-y-2">
@@ -252,14 +254,14 @@ function AccomplishmentList({
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <Button
+              <AdminButton
                 type="button"
                 onClick={handleAddAccomplishment}
                 disabled={saveAccomplishment.isPending}
                 className="px-3 py-1.5 text-small"
               >
                 {saveAccomplishment.isPending ? "Saving…" : "Add accomplishment"}
-              </Button>
+              </AdminButton>
               {saveAccomplishment.isError && (
                 <InlineNotice
                   variant="error"
@@ -300,7 +302,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
   const [newNameError, setNewNameError] = useState("");
   const [newAmountError, setNewAmountError] = useState("");
 
-  if (isLoading) return <p className="text-small text-text-secondary">Loading categories…</p>;
+  if (isLoading) return <AdminListSkeleton rows={3} />;
 
   if (isError || !data) {
     return (
@@ -380,7 +382,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
   return (
     <div className="space-y-4">
       {data.length === 0 && (
-        <p className="text-small text-text-secondary">No budget categories yet — add the first one below.</p>
+        <AdminEmptyState title="No budget categories yet" description="Add a category to begin building this fiscal year's public budget." />
       )}
 
       <div className="space-y-4">
@@ -527,14 +529,14 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <Button
+              <AdminButton
                 type="button"
                 onClick={handleAddCategory}
                 disabled={saveCategory.isPending}
                 className="px-4 py-2 text-small"
               >
                 {saveCategory.isPending ? "Saving…" : "Add category"}
-              </Button>
+              </AdminButton>
               {saveCategory.isError && (
                 <InlineNotice
                   variant="error"

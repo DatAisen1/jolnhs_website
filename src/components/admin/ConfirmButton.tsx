@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
+import { AdminButton } from "@/components/admin/AdminButton";
 
 interface ConfirmButtonProps {
   /** Runs only after the second (confirm) click — never on the first. */
@@ -7,6 +8,7 @@ interface ConfirmButtonProps {
   /** aria-label for the initial trigger icon, e.g. "Archive Jane Doe" or "Remove item". */
   label: string;
   disabled?: boolean;
+  confirmMessage?: string;
 }
 
 /**
@@ -23,28 +25,32 @@ interface ConfirmButtonProps {
  * Phase 4 will extract later; this is the minimal P1.1 slice: just the
  * confirm step, reusable by any icon-trigger delete/archive action today.
  */
-export function ConfirmButton({ onConfirm, label, disabled }: ConfirmButtonProps) {
+export function ConfirmButton({ onConfirm, label, disabled, confirmMessage = "Remove this item? This action cannot be undone." }: ConfirmButtonProps) {
   const [confirming, setConfirming] = useState(false);
 
   if (confirming) {
     return (
       <div className="flex shrink-0 items-center gap-1.5 self-start">
-        <button
+        <div className="min-w-0 flex-1 text-small text-status-error-text">{confirmMessage}</div>
+        <AdminButton
           type="button"
+          variant="danger"
           onClick={() => {
             setConfirming(false);
             onConfirm();
           }}
-          className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-white hover:bg-status-error-text"        >
+          className="min-h-8 px-2 py-1"
+        >
           Confirm
-        </button>
-        <button
+        </AdminButton>
+        <AdminButton
           type="button"
+          variant="secondary"
           onClick={() => setConfirming(false)}
-          className="rounded-md border border-border px-2 py-1 text-small text-text-secondary hover:bg-background"
+          className="min-h-8 px-2 py-1"
         >
           Cancel
-        </button>
+        </AdminButton>
       </div>
     );
   }
@@ -55,7 +61,9 @@ export function ConfirmButton({ onConfirm, label, disabled }: ConfirmButtonProps
       onClick={() => setConfirming(true)}
       aria-label={label}
       disabled={disabled}
-      className="self-start text-text-secondary hover:text-status-error-text disabled:opacity-50"    >
+      className="self-start rounded-md p-1 text-text-secondary hover:bg-background hover:text-status-error-text disabled:opacity-50"
+      title={label}
+    >
       <Trash2 size={16} />
     </button>
   );

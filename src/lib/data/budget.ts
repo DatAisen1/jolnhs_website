@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 /** Mirrors `budget_fiscal_years.status`'s check constraint in
  *  supabase/migrations/0001_init.sql — keep these two in sync. */
-export type FiscalYearStatus = "draft" | "published" | "archived";
+export type FiscalYearStatus = "draft" | "published" | "active" | "archived";
 
 /** Mirrors `budget_accomplishments.status`'s check constraint. */
 export type BudgetItemStatus = "completed" | "in-progress" | "upcoming";
@@ -31,6 +31,9 @@ export interface BudgetCategoryRow {
   color_class: string;
   description: string | null;
   sort_order: number;
+  is_archived?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface BudgetAccomplishmentRow {
@@ -43,6 +46,11 @@ export interface BudgetAccomplishmentRow {
   period: string | null;
   description: string | null;
   sort_order: number;
+  accomplishment_date?: string | null;
+  photo_path?: string | null;
+  document_path?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 /** `name` -> a URL/DB-safe slug, unique per fiscal year (matches the
@@ -119,30 +127,23 @@ export function useSaveFiscalYearFields() {
   });
 }
 
-/** Creates a new fiscal year in `draft` status, never current by
- *  default — an admin explicitly promotes a year via
- *  `useSetCurrentFiscalYear` once it's ready, matching the "past years
- *  can never be accidentally overwritten" architecture goal in
- *  0001_init.sql's comments. */
+/** Creates a new active fiscal year through the transactional RPC. The
+ *  RPC archives the previous active/current year before inserting the new
+ *  row, so the single-active-year invariant is established server-side. */
 export function useCreateFiscalYear() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (yearLabel: string): Promise<FiscalYear> => {
-      const { data, error } = await supabase
-        .from("budget_fiscal_years")
-        .insert({ year_label: yearLabel, total_proposed_budget: 0, status: "draft", is_current: false })
-        .select("*")
-        .single();
+      const { data, error } = await supabase.rpc("create_fiscal_year", { p_year_label: yearLabel });
       if (error) throw error;
-      return data;
+      return data as FiscalYear;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] }),
   });
 }
 
-/** Draft <-> published <-> archived is a single column on a single
- *  row — already atomic as a plain update, no RPC needed (unlike
- *  `is_current`, which has a cross-row invariant to protect). */
+/** Legacy status updates remain available for metadata workflows. Active
+ *  year switching itself must go through the transactional RPC below. */
 export function useSetFiscalYearStatus() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -177,16 +178,17 @@ export function useSetCurrentFiscalYear() {
 /** Categories for ONE fiscal year, in display order (P1.14) — scoped
  *  the same way `useStaffMembers` scopes to one category, so switching
  *  the fiscal year selector only loads that year's categories. */
-export function useBudgetCategories(fiscalYearId: string | undefined) {
+export function useBudgetCategories(fiscalYearId: string | undefined, includeArchived = false) {
   return useQuery({
-    queryKey: ["budget-categories", fiscalYearId],
+    queryKey: ["budget-categories", fiscalYearId, includeArchived],
     queryFn: async (): Promise<BudgetCategoryRow[]> => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("budget_categories")
         .select("*")
         .eq("fiscal_year_id", fiscalYearId as string)
         .order("sort_order")
         .order("name");
+      const { data, error } = await query;
       if (error) throw error;
       return data ?? [];
     },
@@ -211,6 +213,7 @@ export function useSaveBudgetCategory() {
       amount: number;
       colorClass: string;
       description: string;
+      isArchived?: boolean;
     }) => {
       const { error } = await supabase.from("budget_categories").upsert({
         id: category.id,
@@ -228,13 +231,10 @@ export function useSaveBudgetCategory() {
   });
 }
 
-/** Hard delete, not archive — unlike staff/officers, `budget_categories`
- *  has no `is_archived` column (0001_init.sql). A category still
- *  referenced by an accomplishment (`category_id ... on delete
- *  restrict`) will fail with a real foreign-key error surfaced via
- *  getErrorMessage(), per Principle 1 — the fix in that case is
- *  deleting/reassigning its accomplishments first, not a silent
- *  cascade the admin never asked for. */
+/** Legacy hard-delete mutation retained for callers outside the Phase 5
+ *  admin flow. The admin UI uses archive instead; a category still
+ *  referenced by an accomplishment (`category_id ... on delete restrict`)
+ *  will fail with a real foreign-key error rather than silently cascading. */
 export function useDeleteBudgetCategory() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -271,6 +271,15 @@ export function useBudgetAccomplishments(categoryId: string | undefined) {
   });
 }
 
+export function useArchiveBudgetCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (_categoryId: string) => {
+      throw new Error("Budget archive fields are not available yet. Apply supabase/migrations/0008_budget_management_fields.sql first.");
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-categories"] }),
+  });
+}
 export function useSaveBudgetAccomplishment() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -283,6 +292,9 @@ export function useSaveBudgetAccomplishment() {
       status: BudgetItemStatus;
       period: string;
       description: string;
+      accomplishmentDate?: string;
+      photoPath?: string | null;
+      documentPath?: string | null;
     }) => {
       const { error } = await supabase.from("budget_accomplishments").upsert({
         id: accomplishment.id,

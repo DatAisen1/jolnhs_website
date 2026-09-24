@@ -84,6 +84,7 @@ export interface ListItemCardProps {
    *  fiscal-year read-only state (P1.16), where editing isn't just
    *  discouraged but genuinely blocked by RLS. */
   editDisabled?: boolean;
+  showDelete?: boolean;
 }
 
 type Mode = "normal" | "editing" | "confirming-delete";
@@ -170,6 +171,7 @@ export function ListItemCard({
   deleteConfirmMessage,
   deleteDisabled,
   editDisabled,
+  showDelete = true,
 }: ListItemCardProps) {
   const [mode, setMode] = useState<Mode>("normal");
   const [values, setValues] = useState<Record<string, string>>({});
@@ -331,15 +333,17 @@ className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-whit
             <Pencil size={16} />
           </button>
         )}
-        <button
-          type="button"
-          onClick={() => setMode("confirming-delete")}
-          aria-label={deleteLabel}
-          disabled={deleteDisabled}
-          className={iconButtonClass}
-        >
-          <Trash2 size={16} />
-        </button>
+        {showDelete && (
+          <button
+            type="button"
+            onClick={() => setMode("confirming-delete")}
+            aria-label={deleteLabel}
+            disabled={deleteDisabled}
+            className={iconButtonClass}
+          >
+            <Trash2 size={16} />
+          </button>
+        )}
       </div>
     </div>
   );

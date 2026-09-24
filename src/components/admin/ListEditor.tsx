@@ -96,7 +96,11 @@ export function ListEditor<T extends { id: string }>({
               );
             })}
           </div>
-          <ConfirmButton label="Remove item" onConfirm={() => removeItem(index)} />
+          <ConfirmButton
+            label="Remove item"
+            confirmMessage="Remove this item? It will be removed when you save the section."
+            onConfirm={() => removeItem(index)}
+          />
         </div>
       ))}
 

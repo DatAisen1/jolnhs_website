@@ -18,6 +18,13 @@ export const highlightSchema = z.object({
   description: z.string(),
 });
 
+export const sectionInfoSchema = z.object({
+  eyebrow: z.string().trim().max(80, "Eyebrow must be 80 characters or fewer"),
+  name: z.string().trim().min(1, "Section title is required").max(120, "Section title must be 120 characters or fewer"),
+  tagline: z.string().trim().max(180, "Tagline must be 180 characters or fewer"),
+  description: z.string().trim().max(2000, "Description must be 2,000 characters or fewer"),
+});
+
 export const officerNameSchema = z.string().trim().min(1, "Name is required");
 
 /** Runs a per-row Zod object schema across a list and returns an

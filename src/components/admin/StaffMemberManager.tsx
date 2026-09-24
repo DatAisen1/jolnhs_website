@@ -6,7 +6,9 @@ import { supabase } from "@/lib/supabase";
 import { getErrorMessage } from "@/lib/errors";
 import { staffNameSchema, staffPositionSchema } from "@/lib/validation/staff";
 import { InlineNotice } from "@/components/ui/InlineNotice";
-import { Button } from "@/components/ui/Button";
+import { AdminButton } from "@/components/admin/AdminButton";
+import { AdminCard } from "@/components/admin/AdminCard";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 
 interface StaffMemberManagerProps {
   /** Which tab this instance belongs to — every add/edit here is pinned
@@ -99,7 +101,7 @@ export function StaffMemberManager({ category, members }: StaffMemberManagerProp
   return (
     <div className="space-y-4">
       {members.length === 0 && (
-        <p className="text-small text-text-secondary">No staff members yet — add the first one below.</p>
+        <AdminEmptyState title="No staff members yet" description="Add a staff member to begin managing this category." />
       )}
 
       <div className="space-y-3">
@@ -129,7 +131,7 @@ export function StaffMemberManager({ category, members }: StaffMemberManagerProp
         ))}
       </div>
 
-      <div className="rounded-lg border border-border bg-background p-3">
+      <AdminCard className="bg-background">
         <div className="mb-3 flex items-center gap-2">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Plus size={16} />
@@ -173,14 +175,14 @@ export function StaffMemberManager({ category, members }: StaffMemberManagerProp
             {newPositionError && <p className="mt-1 text-small text-status-error-text">{newPositionError}</p>}
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <Button
+            <AdminButton
               type="button"
               onClick={() => void handleAddMember()}
               disabled={saveMember.isPending}
               className="px-4 py-2 text-small"
             >
               {saveMember.isPending ? "Saving…" : "Add staff member"}
-            </Button>
+            </AdminButton>
             {saveMember.isError && (
               <InlineNotice
                 variant="error"
@@ -195,7 +197,7 @@ export function StaffMemberManager({ category, members }: StaffMemberManagerProp
             )}
           </div>
         </div>
-      </div>
+      </AdminCard>
     </div>
   );
 }
