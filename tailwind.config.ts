@@ -59,9 +59,13 @@ export default {
         heading: ["Playfair Display", "Georgia", "serif"], // h1–h4 only, see index.css base layer
       },
       fontSize: {
-        hero: ["60px", { lineHeight: "1.05", fontWeight: "800" }],
-        heading: ["40px", { lineHeight: "1.15", fontWeight: "700" }],
-        section: ["32px", { lineHeight: "1.2", fontWeight: "700" }],
+        // "hero" raised from 60->84px and given negative tracking — Apple's
+        // display type gets TIGHTER as it gets bigger, never looser. Used
+        // only at the lg breakpoint in HeroBanner; smaller breakpoints use
+        // arbitrary values there so the headline still fits on mobile.
+        hero: ["84px", { lineHeight: "0.98", fontWeight: "700", letterSpacing: "-0.02em" }],
+        heading: ["40px", { lineHeight: "1.12", fontWeight: "700", letterSpacing: "-0.01em" }],
+        section: ["32px", { lineHeight: "1.15", fontWeight: "700", letterSpacing: "-0.01em" }],
         subtitle: ["24px", { lineHeight: "1.3", fontWeight: "600" }],
         body: ["18px", { lineHeight: "1.6", fontWeight: "400" }],
         small: ["14px", { lineHeight: "1.5", fontWeight: "400" }],
@@ -85,7 +89,21 @@ export default {
         },
       },
       animation: {
-        "fade-up": "fade-up 0.6s ease-out forwards",
+        // Now rides the same "apple" easing curve as every Framer Motion
+        // reveal (src/lib/motion.ts) — one signature curve site-wide
+        // instead of a CSS-side easeOut and a JS-side easeOut that only
+        // coincidentally look similar.
+        "fade-up": "fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+      },
+      // A single shared easing curve (expo-out) used for every hover
+      // transition and CSS-driven animation. This is the calm,
+      // decelerating curve Apple's marketing site rides for everything
+      // from button hovers to section reveals — no bounce, no overshoot.
+      // Framer Motion variants (src/lib/motion.ts) use the identical
+      // [0.16, 1, 0.3, 1] curve so JS- and CSS-driven motion never feel
+      // like two different products.
+      transitionTimingFunction: {
+        apple: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },

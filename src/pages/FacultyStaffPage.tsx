@@ -106,7 +106,7 @@ export function FacultyStaffPage() {
         />
         <div className="pointer-events-none absolute inset-0 bg-primary/75" />
         <Container className="relative">
-          <p className="mb-3 text-small font-semibold uppercase tracking-widest text-secondary-light">
+          <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light">
             About JOLNHS
           </p>
           <h1 className="text-heading text-white">Faculty &amp; Staff</h1>

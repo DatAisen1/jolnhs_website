@@ -43,7 +43,7 @@ function ProgramHero({ program }: { program: AcademicProgram }) {
       )}
 
       <div className="relative px-6 text-center text-white">
-        <p className="mb-3 text-small font-semibold uppercase tracking-widest text-secondary-light">
+        <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light">
           {program.eyebrow}
         </p>
         <h1 className="text-heading sm:text-hero">{program.name}</h1>
@@ -97,7 +97,7 @@ export function ProgramDetailPage() {
       <section className="bg-white py-section-sm md:py-section">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)]">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
               Program Overview
             </p>
             <h2 className="text-section text-text-primary">About {program.name}</h2>
@@ -111,7 +111,7 @@ export function ProgramDetailPage() {
             viewport={viewportOnce}
             className="h-fit self-start rounded-card border border-border bg-background p-6 lg:sticky lg:top-28"
           >
-            <p className="text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="text-small font-semibold uppercase tracking-[0.18em] text-primary">
               Quick Facts
             </p>
             <dl className="mt-4 flex flex-col gap-4">

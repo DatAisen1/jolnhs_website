@@ -62,7 +62,7 @@ export function BudgetPage() {
       <section className="bg-white py-section-sm md:py-section">
         <Container className="mx-auto max-w-3xl text-center">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
               {budgetOverview.introEyebrow}
             </p>
             <h2 className="text-section text-text-primary">{budgetOverview.introHeading}</h2>
@@ -97,7 +97,7 @@ export function BudgetPage() {
       <section id="proposed-budget" className="scroll-mt-36 bg-background py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
               {budgetOverview.fiscalYear}
             </p>
             <h2 className="text-section text-text-primary">Proposed Budget</h2>
@@ -119,7 +119,7 @@ export function BudgetPage() {
       <section id="budget-allocation" className="scroll-mt-36 bg-white py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">AT A GLANCE</p>
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">AT A GLANCE</p>
             <h2 className="text-section text-text-primary">Budget Allocation</h2>
             <p className="mt-4 max-w-2xl text-body text-text-secondary">
               The same categories above, visualized by relative share — so it's immediately clear where the
@@ -137,7 +137,7 @@ export function BudgetPage() {
       <section id="accomplishments" className="scroll-mt-36 bg-background py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">RESULTS</p>
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">RESULTS</p>
             <h2 className="text-section text-text-primary">Accomplishments</h2>
             <p className="mt-4 max-w-2xl text-body text-text-secondary">
               Specific projects and programs the budget has funded, in progress, or is planning to fund next.

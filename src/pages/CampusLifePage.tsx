@@ -60,7 +60,7 @@ export function CampusLifePage() {
       <section className="bg-white py-section-sm md:py-section">
         <Container className="mx-auto max-w-3xl text-center">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
               {campusLifeOverview.introEyebrow}
             </p>
             <h2 className="text-section text-text-primary">{campusLifeOverview.introHeading}</h2>

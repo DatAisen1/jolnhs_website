@@ -36,7 +36,7 @@ function FacilityRow({ facility }: { facility: Facility }) {
         />
       </div>
       <div
-        className={`flex flex-col justify-center px-8 py-12 sm:px-14 ${
+        className={`flex flex-col justify-center px-8 py-16 sm:px-14 lg:py-20 ${
           imageFirst ? "lg:order-2" : "lg:order-1"
         }`}
       >

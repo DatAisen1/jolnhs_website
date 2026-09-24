@@ -33,7 +33,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-body font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2";
+    "inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-body font-semibold transition-colors duration-300 ease-apple focus-visible:outline-2 focus-visible:outline-offset-2";
   const classes = `${base} ${variantStyles[variant]} ${className}`;
 
   if (href) {

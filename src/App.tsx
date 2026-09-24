@@ -75,6 +75,7 @@ export default function App() {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutOverviewPage />} />
           <Route path="/about/overview" element={<AboutOverviewPage />} />
           <Route path="/about/faculty-staff" element={<FacultyStaffPage />} />
           <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />

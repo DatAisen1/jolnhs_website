@@ -4,19 +4,25 @@ import { navigation } from "@/data/navigation";
 import { NavDropdown } from "./NavDropdown";
 
 /**
- * NavBar — Floating Segmented Navigation ("pill nav")
+ * NavBar — Flat Segmented Navigation
  *
- * WHAT: Desktop-only nav (hidden below `lg`, MobileNav takes over there)
- *       rendered as a rounded "track" of segments, with a single white
- *       pill that slides between segments to show which one is
- *       highlighted — hovering a segment moves the pill there; moving
- *       the mouse off the whole track lets it settle back on whichever
- *       segment matches the current page.
- * WHY:  This is the pattern used by Vercel, Arc, and macOS's own System
- *       Settings sidebar — a segmented control communicates both
- *       "these are the top-level choices" and "here's exactly which one
- *       is live" in one visual, more legibly than a flat row of text
- *       links with an underline.
+ * WHAT: Desktop-only nav (hidden below `lg`, MobileNav takes over there):
+ *       links sit directly on the header's glass bar (no enclosing
+ *       track/background of their own — Apple's own nav is flat links on
+ *       the bar, not a grouped control floating inside it), with a soft
+ *       neutral highlight that slides between them on hover, settling
+ *       back onto the current page when the pointer leaves.
+ * WHY:  Communicates "here's exactly which section is live" the way a
+ *       segmented control does, without the extra visual weight of a
+ *       second background layer stacked on top of the header's own glass
+ *       — one translucent surface (the header), not two nested ones.
+ *
+ * Previously wrapped in its own rounded track (`bg-primary-900/[0.04]`)
+ * with a shadowed white pill underneath the highlighted item — closer to
+ * a macOS System Settings sidebar control than a website nav bar. Kept
+ * the sliding-highlight MECHANIC (still the clearest way to show which
+ * section is current); removed the second background layer and the
+ * pill's shadow so it reads as one quiet surface, not a card-on-a-card.
  *
  * The hover/active state lives HERE, not inside each NavDropdown,
  * because only one pill can exist at a time — it has to be coordinated
@@ -43,7 +49,7 @@ export function NavBar() {
     <nav
       aria-label="Primary navigation"
       onMouseLeave={() => setHoveredLabel(null)}
-      className="hidden items-center gap-0.5 rounded-full bg-primary-900/[0.04] p-1.5 lg:flex"
+      className="hidden items-center gap-0.5 lg:flex"
     >
       {navigation.map((item) => (
         <NavDropdown

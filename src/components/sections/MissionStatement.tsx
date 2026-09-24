@@ -30,7 +30,7 @@ export function MissionStatement() {
           viewport={viewportOnce}
           className="mx-auto max-w-2xl"
         >
-          <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+          <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
             {mission.eyebrow}
           </p>
           <h2 id="mission-heading" className="text-section text-text-primary">

@@ -71,7 +71,7 @@ export function AboutOverviewPage() {
       <section className="bg-white py-section-sm md:py-section">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)]">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
-            <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
               {aboutOverview.introEyebrow}
             </p>
             <h2 className="text-section text-text-primary">{aboutOverview.introHeading}</h2>
@@ -100,7 +100,7 @@ export function AboutOverviewPage() {
             viewport={viewportOnce}
             className="sticky top-28 h-fit self-start rounded-card border border-border bg-background p-6"
           >
-            <p className="text-small font-semibold uppercase tracking-widest text-primary">
+            <p className="text-small font-semibold uppercase tracking-[0.18em] text-primary">
               Quick Facts
             </p>
             <dl className="mt-4 flex flex-col gap-4">

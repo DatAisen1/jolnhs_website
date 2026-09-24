@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { welcome } from "@/data/welcome";
-import { fadeUp, viewportOnce } from "@/lib/motion";
+import { fadeUp, scaleIn, viewportOnce } from "@/lib/motion";
 
 /**
  * White, image-paired block — deliberately NOT another flat navy section.
@@ -24,7 +24,7 @@ export function WelcomeBanner() {
           whileInView="show"
           viewport={viewportOnce}
         >
-          <p className="mb-3 text-small font-semibold uppercase tracking-widest text-primary">
+          <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
             Community
           </p>
           <h2 id="welcome-heading" className="text-heading text-text-primary">
@@ -38,14 +38,21 @@ export function WelcomeBanner() {
           </Button>
         </motion.div>
 
-        <div className="overflow-hidden rounded-3xl bg-slate-100">
+        <motion.div
+          variants={scaleIn}
+          initial={shouldReduceMotion ? "show" : "hidden"}
+          whileInView="show"
+          viewport={viewportOnce}
+          transition={{ delay: shouldReduceMotion ? 0 : 0.15 }}
+          className="overflow-hidden rounded-3xl bg-slate-100"
+        >
           <img
             src="/facilities/welcomehome.png"
             alt="Students and faculty at a JOLNHS school event"
             className="h-full w-full object-cover"
             loading="lazy"
           />
-        </div>
+        </motion.div>
       </Container>
     </section>
   );

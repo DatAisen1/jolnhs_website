@@ -33,6 +33,13 @@
     font-family: theme("fontFamily.heading");
     font-weight: 700;
     letter-spacing: 0;
+    /* Balances line-breaks across multi-line headings (e.g. a 2-line
+       hero headline) so the last line never orphans a single short
+       word — the kind of finish Apple's marketing pages never skip.
+       Supported in every evergreen browser; unsupported browsers just
+       fall back to normal wrapping, so this is a safe progressive
+       enhancement with no fallback needed. */
+    text-wrap: balance;
   }
 }
 

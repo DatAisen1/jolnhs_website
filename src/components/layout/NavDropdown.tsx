@@ -81,7 +81,7 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
           <motion.span
             layoutId="nav-pill"
             transition={pillTransition}
-            className="absolute inset-0 rounded-full bg-white shadow-[0_2px_10px_rgba(15,33,72,0.12)]"
+            className="absolute inset-0 rounded-full bg-primary-900/[0.06]"
           />
         )}
         <span className={`relative z-10 text-body font-semibold transition-colors ${textColor}`}>
@@ -107,7 +107,7 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
         <motion.span
           layoutId="nav-pill"
           transition={pillTransition}
-          className="absolute inset-0 rounded-full bg-white shadow-[0_2px_10px_rgba(15,33,72,0.12)]"
+          className="absolute inset-0 rounded-full bg-primary-900/[0.06]"
         />
       )}
 
