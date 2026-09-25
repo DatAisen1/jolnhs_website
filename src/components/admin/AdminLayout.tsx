@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, Image, Megaphone, Download, ShieldCheck, ClipboardList } from "lucide-react";
+import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, ShieldCheck, ClipboardList } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 type NavItem = {
@@ -20,10 +20,6 @@ const NAV_GROUPS: ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }
     items: [
       { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false },
       { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false },
-      { label: "Homepage", icon: LayoutDashboard },
-      { label: "Announcements", icon: Megaphone },
-      { label: "Gallery", icon: Image },
-      { label: "Downloads", icon: Download },
     ],
   },
   {
@@ -35,7 +31,7 @@ const NAV_GROUPS: ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }
     items: [
       { label: "Admin Users", icon: ShieldCheck },
       { label: "Activity Log", icon: ClipboardList },
-      { label: "Settings", icon: Settings },
+      { to: "/admin/settings", label: "Settings", icon: Settings, end: false },
     ],
   },
 ] as const;

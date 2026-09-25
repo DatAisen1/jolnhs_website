@@ -21,13 +21,8 @@ export interface DashboardSummary {
     categoryCount: number;
     updatedAt: string | null;
   };
-  announcements: {
-    available: false;
-    publishedCount: null;
-    draftCount: null;
-  };
   content: Array<{
-    key: "staff" | "campus-life" | "budget" | "homepage" | "announcements";
+    key: "staff" | "campus-life" | "budget";
     label: string;
     updatedAt: string | null;
     available: boolean;
@@ -78,7 +73,6 @@ export function useDashboardSummary() {
         ...fiscalYears.map((year) => ({ updatedAt: year.last_updated })),
       ]);
 
-      // TODO: Add announcements and homepage content sources when their tables/services exist.
       return {
         staff: {
           activeCount: activeStaffResult.count ?? 0,
@@ -94,17 +88,10 @@ export function useDashboardSummary() {
           categoryCount: categoryResult.data?.length ?? 0,
           updatedAt: budgetUpdatedAt,
         },
-        announcements: {
-          available: false,
-          publishedCount: null,
-          draftCount: null,
-        },
         content: [
           { key: "staff", label: "Staff & Faculty", updatedAt: staffUpdatedAt, available: true },
           { key: "campus-life", label: "Campus Life", updatedAt: campusLifeUpdatedAt, available: true },
           { key: "budget", label: "Budget", updatedAt: budgetUpdatedAt, available: true },
-          { key: "homepage", label: "Homepage", updatedAt: null, available: false },
-          { key: "announcements", label: "Announcements", updatedAt: null, available: false },
         ],
       };
     },

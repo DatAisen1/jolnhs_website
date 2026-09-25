@@ -71,10 +71,10 @@ The project must not move to UI/UX polish until the full flow above is verified 
 | Security — RLS Model | 9/10 | 🟢 GOOD |
 | Security — Rate Limiting | 3/10 | 🔴 CRITICAL *(client-side `sessionStorage` only, trivially bypassed)* |
 | Security — Dependencies | 5/10 | 🟡 AMBER *(2 known CVEs, consciously deferred — see §7)* |
-| Feature Completeness | 3/10 | 🔴 CRITICAL *(Staff & Faculty, Budget are stubs only)* |
+| Feature Completeness | 4/10 | � AMBER *(Staff & Faculty, Budget partially built; P2 features dropped)* |
 | Testing | 0/10 | 🔴 CRITICAL *(zero automated tests anywhere in the repo)* |
 | Documentation | 8/10 | 🟢 GOOD *(Supabase/admin setup now documented in README)* |
-| **Overall** | **5.1 / 10** | 🟡 **STABILIZING** |
+| **Overall** | **5.5 / 10** | 🟡 **STABILIZING** |
 
 The audit identified the central systemic problem as **an unverified deployment surface**: code that looked complete in review (correct RLS, correct RPC, correct component logic) had never actually been exercised end-to-end against a real database, and the app's own error handling was not trustworthy enough to reveal that gap on its own.
 
@@ -127,7 +127,7 @@ Verified — one admin user exists and can authenticate.
 Verified — `athletes`, `pta`, `journalists`, and `organizations` all exist in `campus_life_sections` (note: `organizations` has no admin UI tab yet — tracked as P3.3).
 
 ### [x] P0.5 Every sidebar nav item resolves to a real page
-`/admin/staff` and `/admin/budget` previously had no matching route (blank "no match" screen on click). Both now route to a shared `AdminStubPage` with a "Soon" badge in the sidebar, so the nav never promises something that doesn't exist.
+`/admin/staff` and `/admin/budget` previously had no matching route (blank "no match" screen on click). Both now route to functional admin pages. P2 features (Homepage, Announcements, Gallery, Downloads) have been removed from the admin panel entirely (September 2026), so no "Soon" stubs remain in the navigation.
 
 ### Acceptance Criteria
 
@@ -136,7 +136,7 @@ Verified — `athletes`, `pta`, `journalists`, and `organizations` all exist in 
 [x] All 4 migrations confirmed present via live SQL query
 [x] At least one admin_users row exists
 [x] Login succeeds against /admin/login
-[x] Every sidebar link resolves to a real page, built or stubbed
+[x] Every sidebar link resolves to a real page (P2 features removed)
 [x] Seed data exists for every Campus Life tab currently in the admin UI
 ```
 
@@ -255,7 +255,7 @@ Dev-server-only exposure (arbitrary site can hit the dev server while `npm run d
 # 8. P2 — Consistency & Shared Components
 
 **Priority:** P2 — MEDIUM
-**Status:** 🔴 Not started
+**Status:** 🔴 DROPPED — Out of scope
 
 ## Tasks
 
@@ -271,6 +271,25 @@ An uncaught render error anywhere currently blanks the entire app. Wrap `<App />
 ### [x] P2.4 "Saved." confirmation should clear itself
 Currently `saveSection.isSuccess` persists indefinitely until the next mutation — stale positive feedback if the admin keeps editing after a save. Auto-clear after a few seconds, or clear on next keystroke.
 
+### DROPPED FEATURES — Removed from Admin Panel (September 2026)
+
+The following P2 scope items have been **permanently dropped** from the admin panel, not deferred:
+
+- **Homepage CMS**: Homepage content management (Hero, Welcome, Mission, Milestones, Programs, Facilities sections)
+- **Announcements**: Announcements management system (title, content, cover image, publish status, dates)
+- **Gallery**: Admin gallery management (separate from public Campus Gallery functionality)
+- **Downloads**: File download management system
+
+**Rationale**: These features were identified as P2 scope and have been removed to focus on completing and stabilizing the core P1 functionality (Staff & Faculty, Campus Life, Budget). The public site's existing Campus Gallery remains functional and is not affected by this removal.
+
+**Removals made**:
+- Removed Homepage, Announcements, Gallery, Downloads from AdminLayout sidebar navigation
+- Removed Announcements stat card and quick actions from DashboardPage
+- Removed homepage/announcements data structures from useDashboardSummary hook
+- Cleaned up unused icon imports (Image, Megaphone, Download)
+
+**Public site preservation**: The public-facing Campus Gallery (`/campus-life/gallery`) and related components (GalleryGrid, campusLife.ts data) remain unchanged and functional.
+
 ### Acceptance Criteria
 
 ```text
@@ -278,6 +297,7 @@ Currently `saveSection.isSuccess` persists indefinitely until the next mutation 
 [ ] Every admin form input has an associated label
 [ ] A thrown render error shows a fallback UI, not a blank page
 [ ] Save confirmations don't linger indefinitely
+[ ] Dropped features removed from admin panel navigation and dashboard
 ```
 
 ---
@@ -478,6 +498,10 @@ UI/UX Visual Polish Pass (colors, spacing, motion — once every module's functi
         ↓
 PHASE 10
 FINAL ACCEPTANCE
+
+PHASE 2 (DROPPED)
+Consistency & Shared Components (Homepage CMS, Announcements, Gallery, Downloads)
+        ↓  🔴 DROPPED — Out of scope (September 2026)
 ```
 
 ---
@@ -489,7 +513,7 @@ The admin panel is considered **Feature-Complete and Verified Stable** only when
 ```text
 [x] Migrations 0001–0004 confirmed applied via live query
 [x] Admin login works end to end
-[x] Every sidebar link resolves to a real, built page — no "Soon" stubs remain
+[x] Every sidebar link resolves to a real, built page — no "Soon" stubs remain (dropped P2 features removed)
 [x] Dashboard shows real errors on query failure
 [x] Campus Life section load shows real errors on failure
 [ ] Campus Life section save shows real errors on failure
@@ -503,6 +527,7 @@ The admin panel is considered **Feature-Complete and Verified Stable** only when
 [ ] Budget: full CRUD across fiscal years, categories, and accomplishments
 [ ] Archived fiscal years are visibly read-only in the UI, matching the DB-level RLS rule
 [ ] Organizations tab reachable in Campus Life admin
+[x] Dropped P2 features (Homepage CMS, Announcements, Gallery, Downloads) removed from admin panel
 ```
 
 Only then:
@@ -517,7 +542,7 @@ UI/UX VISUAL POLISH PASS = UNBLOCKED
 
 ```text
 CURRENT
-5.1 / 10 — STABILIZING
+5.5 / 10 — STABILIZING (P2 features dropped September 2026)
     ↓
 Silent Failures Eliminated
 6.0 / 10
@@ -586,6 +611,8 @@ is true for every single button in `/admin/*`, before any redesign work begins.
         ↓
 
 🟢 UI/UX VISUAL POLISH PASS
+
+PHASE 2 (DROPPED): Homepage CMS, Announcements, Gallery, Downloads — removed September 2026
 ```
 
 **The immediate objective is not to make the admin panel prettier, and it is not to leave modules as "Soon" stubs.**

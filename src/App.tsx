@@ -31,6 +31,9 @@ const StaffManagePage = lazy(() =>
 const BudgetManagePage = lazy(() =>
   import("@/pages/admin/BudgetManagePage").then((m) => ({ default: m.BudgetManagePage }))
 );
+const SettingsPage = lazy(() =>
+  import("@/pages/admin/SettingsPage").then((m) => ({ default: m.SettingsPage }))
+);
 
 function StubPage({ title }: { title: string }) {
   return (
@@ -154,6 +157,14 @@ export default function App() {
             element={
               <Suspense fallback={null}>
                 <BudgetManagePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <Suspense fallback={null}>
+                <SettingsPage />
               </Suspense>
             }
           />

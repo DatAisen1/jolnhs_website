@@ -91,3 +91,18 @@ export function useArchiveStaffMember() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["staff-members"] }),
   });
 }
+
+/** Restore — reverses archive by setting is_archived back to false. */
+export function useRestoreStaffMember() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (memberId: string) => {
+      const { error } = await supabase
+        .from("staff_members")
+        .update({ is_archived: false })
+        .eq("id", memberId);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["staff-members"] }),
+  });
+}

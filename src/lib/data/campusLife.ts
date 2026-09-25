@@ -162,3 +162,18 @@ export function useArchiveOfficer() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["campus-life-section"] }),
   });
 }
+
+/** Restore — reverses archive by setting is_archived back to false. */
+export function useRestoreOfficer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (officerId: string) => {
+      const { error } = await supabase
+        .from("campus_life_officers")
+        .update({ is_archived: false })
+        .eq("id", officerId);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["campus-life-section"] }),
+  });
+}

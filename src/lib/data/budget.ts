@@ -274,8 +274,27 @@ export function useBudgetAccomplishments(categoryId: string | undefined) {
 export function useArchiveBudgetCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (_categoryId: string) => {
-      throw new Error("Budget archive fields are not available yet. Apply supabase/migrations/0008_budget_management_fields.sql first.");
+    mutationFn: async (categoryId: string) => {
+      const { error } = await supabase
+        .from("budget_categories")
+        .update({ is_archived: true })
+        .eq("id", categoryId);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-categories"] }),
+  });
+}
+
+/** Restore — reverses archive by setting is_archived back to false. */
+export function useRestoreBudgetCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (categoryId: string) => {
+      const { error } = await supabase
+        .from("budget_categories")
+        .update({ is_archived: false })
+        .eq("id", categoryId);
+      if (error) throw error;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-categories"] }),
   });

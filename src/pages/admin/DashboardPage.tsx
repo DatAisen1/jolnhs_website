@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   Circle,
   FileText,
-  Megaphone,
   Plus,
   Users,
   Wallet,
@@ -110,7 +109,7 @@ export function DashboardPage() {
             <h2 id="overview-heading" className="mb-3 text-small font-semibold uppercase tracking-wide text-text-secondary">
               Overview
             </h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               <StatCard
                 icon={Users}
                 label="Staff & Faculty"
@@ -132,13 +131,6 @@ export function DashboardPage() {
                 context={data.budget.currentYear ? `${data.budget.categoryCount} categories · ${data.budget.currentYear.status}` : "Create a fiscal year to begin"}
                 to="/admin/budget"
               />
-              <StatCard
-                icon={Megaphone}
-                label="Announcements"
-                value="Not available"
-                context="Announcements content source is not implemented"
-                to="/admin"
-              />
             </div>
           </section>
 
@@ -151,8 +143,6 @@ export function DashboardPage() {
               <QuickAction label="Add staff" to="/admin/staff" />
               <QuickAction label="Manage officers" to="/admin/campus-life" />
               <QuickAction label="Update budget" to="/admin/budget" />
-              <QuickAction label="Add announcement" disabled />
-              <QuickAction label="Upload photo" disabled />
             </div>
           </AdminCard>
 

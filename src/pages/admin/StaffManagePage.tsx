@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Pencil, Search, UserPlus } from "lucide-react";
+import { Download, Pencil, Search, UserPlus, RotateCcw } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { AdminErrorState } from "@/components/admin/AdminStates";
@@ -7,7 +7,7 @@ import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ListItemCard } from "@/pages/admin/ListItemCard";
 import { SectionTabs } from "@/components/admin/SectionTabs";
 import { StaffFormDrawer } from "@/components/admin/StaffFormDrawer";
-import { useArchiveStaffMember, useStaffMembers, type StaffCategory, type StaffMember } from "@/lib/data/staff";
+import { useArchiveStaffMember, useRestoreStaffMember, useStaffMembers, type StaffCategory, type StaffMember } from "@/lib/data/staff";
 import { getErrorMessage } from "@/lib/errors";
 import { AdminListSkeleton } from "@/components/admin/AdminStates";
 
@@ -53,6 +53,7 @@ function StaffList({
   onEdit: (member: StaffMember) => void;
 }) {
   const archiveMember = useArchiveStaffMember();
+  const restoreMember = useRestoreStaffMember();
 
   return (
     <div className="space-y-3">
@@ -76,9 +77,22 @@ function StaffList({
               <span className="hidden sm:inline">Edit</span>
             </AdminButton>
           )}
+          {archived && (
+            <AdminButton 
+              type="button" 
+              variant="secondary" 
+              onClick={() => restoreMember.mutate(member.id)} 
+              aria-label={`Restore ${member.name}`} 
+              className="shrink-0 px-3"
+            >
+              <RotateCcw size={15} aria-hidden="true" />
+              <span className="hidden sm:inline">Restore</span>
+            </AdminButton>
+          )}
         </div>
       ))}
       {archiveMember.isError && <p className="text-small text-status-error-text">{getErrorMessage(archiveMember.error, "Couldn't archive this staff member.")}</p>}
+      {restoreMember.isError && <p className="text-small text-status-error-text">{getErrorMessage(restoreMember.error, "Couldn't restore this staff member.")}</p>}
     </div>
   );
 }
@@ -104,12 +118,45 @@ export function StaffManagePage() {
     setDrawerOpen(true);
   }
 
+  function exportToCSV() {
+    const headers = ["Name", "Position", "Category", "Archived"];
+    const rows = filteredMembers.map((member) => [
+      member.name,
+      member.position,
+      member.category,
+      member.is_archived ? "Yes" : "No",
+    ]);
+    
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")),
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `staff-${activeTab}-${new Date().toISOString().split("T")[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <div className="mx-auto max-w-4xl">
       <AdminPageHeader
         title="Staff & Faculty"
         description="Manage school personnel and faculty information."
-        action={<AdminButton type="button" onClick={openAdd}><UserPlus size={16} aria-hidden="true" />Add Staff</AdminButton>}
+        actions={
+          <>
+            <AdminButton type="button" variant="secondary" onClick={exportToCSV} aria-label="Export to CSV">
+              <Download size={16} aria-hidden="true" />
+              <span className="hidden sm:inline">Export</span>
+            </AdminButton>
+            <AdminButton type="button" onClick={openAdd}><UserPlus size={16} aria-hidden="true" />Add Staff</AdminButton>
+          </>
+        }
       />
 
       <SectionTabs tabs={TABS} activeTab={activeTab} onTabChange={setActiveTab} />

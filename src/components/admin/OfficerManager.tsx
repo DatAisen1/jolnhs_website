@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus, X, RotateCcw, Download } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { InlineNotice } from "@/components/ui/InlineNotice";
 import { ListItemCard } from "@/pages/admin/ListItemCard";
 import { useOfficerForm } from "@/hooks/useOfficerForm";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
-import { useArchiveOfficer, useSaveOfficer, type CampusLifeOfficer } from "@/lib/data/campusLife";
+import { useArchiveOfficer, useRestoreOfficer, useSaveOfficer, type CampusLifeOfficer } from "@/lib/data/campusLife";
 import { supabase } from "@/lib/supabase";
 import { officerSchema } from "@/lib/validation/officerSchema";
 import { getErrorMessage } from "@/lib/errors";
@@ -89,7 +89,32 @@ function OfficerFormModal({ sectionId, onClose }: { sectionId: string; onClose: 
 export function OfficerManager({ sectionId, officers }: { sectionId: string; officers: CampusLifeOfficer[] }) {
   const saveOfficer = useSaveOfficer();
   const archiveOfficer = useArchiveOfficer();
+  const restoreOfficer = useRestoreOfficer();
   const [modalOpen, setModalOpen] = useState(false);
+
+  function exportToCSV() {
+    const headers = ["Name", "Position", "Archived"];
+    const rows = officers.map((officer) => [
+      officer.name,
+      officer.position,
+      officer.is_archived ? "Yes" : "No",
+    ]);
+    
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")),
+    ].join("\n");
+    
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `officers-${sectionId}-${new Date().toISOString().split("T")[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   async function handleSaveOfficer(values: Record<string, string>) {
     const result = officerSchema.safeParse({ name: values.name?.trim() ?? "", position: values.position?.trim() ?? "" });
@@ -107,36 +132,61 @@ export function OfficerManager({ sectionId, officers }: { sectionId: string; off
 
   return (
     <div className="space-y-4">
-      {officers.length === 0 && (
-        <AdminEmptyState
-          title="No officers yet"
-          description="Add an officer to begin managing this section."
-          action={<AdminButton type="button" onClick={() => setModalOpen(true)}><Plus size={15} aria-hidden="true" />Add Officer</AdminButton>}
-        />
-      )}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        {officers.length === 0 && (
+          <AdminEmptyState
+            title="No officers yet"
+            description="Add an officer to begin managing this section."
+            action={<AdminButton type="button" onClick={() => setModalOpen(true)}><Plus size={15} aria-hidden="true" />Add Officer</AdminButton>}
+          />
+        )}
+        {officers.length > 0 && (
+          <AdminButton type="button" variant="secondary" onClick={exportToCSV} aria-label="Export to CSV">
+            <Download size={16} aria-hidden="true" />
+            <span className="hidden sm:inline">Export</span>
+          </AdminButton>
+        )}
+        {officers.length > 0 && <AdminButton type="button" variant="secondary" onClick={() => setModalOpen(true)}><Plus size={15} aria-hidden="true" />Add Officer</AdminButton>}
+      </div>
       <div className="space-y-3">
         {officers.map((officer) => (
-          <ListItemCard
-            key={officer.id}
-            title={officer.name}
-            subtitle={officer.position}
-            leadingVisual={{ kind: "photo", photoUrl: buildPublicPhotoUrl(officer.photo_path), alt: `Photo for ${officer.name}` }}
-            fields={[
-              { key: "id", label: "Officer ID", placeholder: "", initialValue: officer.id },
-              { key: "name", label: "Name", placeholder: "Jane Doe", initialValue: officer.name },
-              { key: "position", label: "Position", placeholder: "President", initialValue: officer.position },
-            ]}
-            onSave={handleSaveOfficer}
-            onDelete={() => archiveOfficer.mutate(officer.id)}
-            deleteLabel={`Archive ${officer.name}`}
-            deleteConfirmMessage={`Archive ${officer.name}? This will remove this officer from the public website. Their record will be preserved.`}
-            editLabel={`Edit ${officer.name}`}
-          />
+          <div key={officer.id} className="flex min-w-0 items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <ListItemCard
+                title={officer.name}
+                subtitle={officer.position}
+                leadingVisual={{ kind: "photo", photoUrl: buildPublicPhotoUrl(officer.photo_path), alt: `Photo for ${officer.name}` }}
+                fields={[
+                  { key: "id", label: "Officer ID", placeholder: "", initialValue: officer.id },
+                  { key: "name", label: "Name", placeholder: "Jane Doe", initialValue: officer.name },
+                  { key: "position", label: "Position", placeholder: "President", initialValue: officer.position },
+                ]}
+                onSave={handleSaveOfficer}
+                onDelete={() => archiveOfficer.mutate(officer.id)}
+                deleteLabel={`Archive ${officer.name}`}
+                deleteConfirmMessage={`Archive ${officer.name}? This will remove this officer from the public website. Their record will be preserved.`}
+                showDelete={!officer.is_archived}
+                editLabel={`Edit ${officer.name}`}
+              />
+            </div>
+            {officer.is_archived && (
+              <AdminButton 
+                type="button" 
+                variant="secondary" 
+                onClick={() => restoreOfficer.mutate(officer.id)} 
+                aria-label={`Restore ${officer.name}`} 
+                className="shrink-0 px-3"
+              >
+                <RotateCcw size={15} aria-hidden="true" />
+                <span className="hidden sm:inline">Restore</span>
+              </AdminButton>
+            )}
+          </div>
         ))}
       </div>
-      {officers.length > 0 && <AdminButton type="button" variant="secondary" onClick={() => setModalOpen(true)}><Plus size={15} aria-hidden="true" />Add Officer</AdminButton>}
       {saveOfficer.isError && <InlineNotice variant="error" message={getErrorMessage(saveOfficer.error, "Couldn't save this officer.")} />}
       {archiveOfficer.isError && <InlineNotice variant="error" message={getErrorMessage(archiveOfficer.error, "Couldn't archive this officer.")} />}
+      {restoreOfficer.isError && <InlineNotice variant="error" message={getErrorMessage(restoreOfficer.error, "Couldn't restore this officer.")} />}
       {modalOpen && <OfficerFormModal sectionId={sectionId} onClose={() => setModalOpen(false)} />}
     </div>
   );
