@@ -14,7 +14,7 @@
 
 ## PHASE 0 — Baseline
 
-### [ ] Verify baseline environment
+### [x] Verify baseline environment
 **What needs doing:** Confirm dependency install, lint, tests, production build, TypeScript errors all pass.
 
 **Area:** Project setup
@@ -23,7 +23,7 @@
 
 ---
 
-### [ ] Verify Supabase connection
+### [x] Verify Supabase connection
 **What needs doing:** Confirm `.env` points to a real Supabase project and connection works.
 
 **Area:** Infrastructure
@@ -32,7 +32,7 @@
 
 ---
 
-### [ ] Verify all public routes work
+### [x] Verify all public routes work
 **What needs doing:** Confirm every public route in App.tsx renders correctly, including invalid URL check.
 
 **Area:** Public site routing
@@ -53,7 +53,7 @@
 
 ---
 
-### [ ] Verify all admin routes work
+### [x] Verify all admin routes work
 **What needs doing:** Confirm every admin route in App.tsx renders correctly.
 
 **Area:** Admin routing
@@ -69,7 +69,7 @@
 
 ---
 
-### [ ] Classify outstanding issues
+### [x] Classify outstanding issues
 **What needs doing:** Review Must Fix / Should Fix / Can Wait list from PROJECT_PLAN.md and confirm classification based on inspection.
 
 **Area:** Issue prioritization
@@ -80,7 +80,7 @@
 
 ## PHASE 1 — Data Architecture
 
-### [ ] Faculty & Staff: Connect to Supabase
+### [x] Faculty & Staff: Connect to Supabase
 **What needs doing:** Replace static `src/data/facultyStaff.ts` imports in FacultyStaffPage with Supabase-backed hook/query. Use existing `staff_members` table and `useStaffMembers` hook.
 
 **Area:** `src/pages/FacultyStaffPage.tsx`, `src/lib/data/staff.ts`
@@ -89,7 +89,7 @@
 
 ---
 
-### [ ] Campus Life: Connect to Supabase
+### [x] Campus Life: Connect to Supabase
 **What needs doing:** Replace static `src/data/campusLife.ts` imports in CampusLifePage/CampusLifeSectionPage with Supabase-backed hook/query. Use existing `campus_life_*` tables and hooks.
 
 **Area:** `src/pages/CampusLifePage.tsx`, `src/pages/CampusLifeSectionPage.tsx`, `src/lib/data/campusLife.ts`
@@ -100,7 +100,7 @@
 
 ---
 
-### [ ] Site Settings: Connect to public site
+### [x] Site Settings: Connect to public site
 **What needs doing:** Wire public site (header/footer/contact areas) to read from `site_settings` table instead of static files (`schoolContact.ts`, `officeHours.ts`). Settings table exists (0010_site_settings.sql).
 
 **Area:** Public site components that display contact/office-hours info
@@ -109,7 +109,7 @@
 
 ---
 
-### [ ] Budget: Connect to Supabase (data pipe only)
+### [x] Budget: Connect to Supabase (data pipe only)
 **What needs doing:** Replace static `src/data/budget.ts` imports in BudgetPage with Supabase-backed hook/query. Use existing `budget_*` tables and hooks.
 
 **Area:** `src/pages/BudgetPage.tsx`, `src/lib/data/budget.ts`
@@ -140,7 +140,7 @@
 
 ## PHASE 2 — Security & Authentication
 
-### [ ] Fix login rate-limiter bypass
+### [~] Fix login rate-limiter bypass
 **What needs doing:** Fix `record_login_attempt` RPC in 0005_login_rate_limiting.sql to verify caller's authenticated identity matches `p_email` before allowing lockout clear on `p_success=true`.
 
 **Current vulnerability:** Anonymous caller can invoke with arbitrary `p_email` and `p_success=true`, successfully clearing that email's lockout state with zero verification of caller identity.
@@ -154,7 +154,7 @@
 
 ---
 
-### [ ] Remove hardcoded admin UUID
+### [~] Remove hardcoded admin UUID
 **What needs doing:** Remove hardcoded admin UUID insert from 0001_init.sql. Desired end state: fresh Supabase project, run migrations, provision admin separately.
 
 **Area:** `supabase/migrations/0001_init.sql`
@@ -163,7 +163,12 @@
 
 ---
 
-### [ ] Add admin_users check to ProtectedRoute
+### [x] Align admin_users RLS with migrations
+**Verification:** a fresh project built from migrations has RLS on admin_users, a self-row SELECT policy, and no write privileges for anon/authenticated.
+
+---
+
+### [~] Add admin_users check to ProtectedRoute
 **What needs doing:** Update `ProtectedRoute` to check `admin_users` membership, not just session presence. RLS already prevents unauthorized writes, so this is UX/exposure issue, not data-integrity.
 
 **Area:** `src/components/admin/ProtectedRoute.tsx`

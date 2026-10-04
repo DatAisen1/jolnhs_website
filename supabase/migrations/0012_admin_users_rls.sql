@@ -18,4 +18,6 @@ for select to authenticated
 using (user_id = auth.uid());
 
 revoke all on public.admin_users from anon;
+grant select on public.admin_users to authenticated;
+
 revoke insert, update, delete, truncate, references, trigger on public.admin_users from authenticated;
