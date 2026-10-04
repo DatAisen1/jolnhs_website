@@ -195,6 +195,6 @@ insert into campus_life_sections (slug, name) values
   ('journalists', 'Campus Journalists');
 
 -- ============================================================
--- Register the one admin — REPLACE the UID below before running
+-- Provision the admin user separately in the live project.
+-- See README.md, section "Create your admin user".
 -- ============================================================
-insert into admin_users (user_id) values ('b15c1609-85b1-43da-9277-f51756ac85d8');

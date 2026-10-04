@@ -25,6 +25,12 @@ as $$
   select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
 $$;
 
+create or replace function auth.jwt() returns jsonb
+language sql stable
+as $$
+  select nullif(current_setting('request.jwt.claims', true), '')::jsonb
+$$;
+
 do $$
 begin
   if not exists (select 1 from pg_roles where rolname = 'authenticated') then
@@ -56,9 +62,7 @@ alter default privileges in schema public
 alter default privileges in schema public
   grant select on tables to anon;
 
--- One admin user, matching the fixed UID the real 0001_init.sql
--- seeds into admin_users — must exist before that insert runs
--- (admin_users.user_id has a FK to auth.users.id).
+-- Test fixture, not a real account.
 insert into auth.users (id, email) values
   ('b15c1609-85b1-43da-9277-f51756ac85d8', 'admin@test.local')
 on conflict (id) do nothing;

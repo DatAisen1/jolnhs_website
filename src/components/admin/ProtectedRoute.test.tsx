@@ -3,21 +3,19 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
+import { useAdminAccess } from "@/lib/data/adminAccess";
 
-// ProtectedRoute's only real dependency is useAuth(); mocking it (rather
-// than standing up a real AuthProvider + Supabase client) is what keeps
-// this a unit test of the redirect *logic*, not an integration test of
-// auth itself — that's the AuthContext/Supabase's job to have its own
-// tests for.
 vi.mock("@/context/AuthContext", () => ({
   useAuth: vi.fn(),
 }));
 
-const mockUseAuth = vi.mocked(useAuth);
+vi.mock("@/lib/data/adminAccess", () => ({
+  useAdminAccess: vi.fn(),
+}));
 
-/** Mounts ProtectedRoute inside real routes so a <Navigate> redirect
- *  is observed by what actually ends up on screen (the login page),
- *  the same way a browser would, rather than by inspecting props. */
+const mockUseAuth = vi.mocked(useAuth);
+const mockUseAdminAccess = vi.mocked(useAdminAccess);
+
 function renderAtAdminRoute() {
   render(
     <MemoryRouter initialEntries={["/admin/officers"]}>
@@ -39,6 +37,7 @@ function renderAtAdminRoute() {
 describe("ProtectedRoute — redirect logic (P3.6)", () => {
   beforeEach(() => {
     mockUseAuth.mockReset();
+    mockUseAdminAccess.mockReset();
   });
 
   it("shows a loading state and renders neither children nor the login page while session is resolving", () => {
@@ -48,6 +47,13 @@ describe("ProtectedRoute — redirect logic (P3.6)", () => {
       signIn: vi.fn(),
       signOut: vi.fn(),
     });
+    mockUseAdminAccess.mockReturnValue({
+      data: false,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    } as never);
 
     renderAtAdminRoute();
 
@@ -63,6 +69,13 @@ describe("ProtectedRoute — redirect logic (P3.6)", () => {
       signIn: vi.fn(),
       signOut: vi.fn(),
     });
+    mockUseAdminAccess.mockReturnValue({
+      data: false,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    } as never);
 
     renderAtAdminRoute();
 
@@ -70,20 +83,69 @@ describe("ProtectedRoute — redirect logic (P3.6)", () => {
     expect(screen.queryByText("Officers admin content")).not.toBeInTheDocument();
   });
 
-  it("does NOT redirect authenticated access — renders the protected children", () => {
+  it("denies access to authenticated non-admin users", () => {
     mockUseAuth.mockReturnValue({
-      // Only `session`'s truthiness matters to ProtectedRoute; a
-      // minimal stand-in avoids depending on @supabase/supabase-js's
-      // full Session shape for a component that never reads its fields.
-      session: { access_token: "token" } as unknown as import("@supabase/supabase-js").Session,
+      session: { user: { id: "user-123" }, access_token: "token" } as never,
       loading: false,
       signIn: vi.fn(),
       signOut: vi.fn(),
     });
+    mockUseAdminAccess.mockReturnValue({
+      data: false,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    } as never);
+
+    renderAtAdminRoute();
+
+    expect(screen.getByText("Access denied")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
+    expect(screen.queryByText("Officers admin content")).not.toBeInTheDocument();
+    expect(screen.queryByText("Login page")).not.toBeInTheDocument();
+  });
+
+  it("renders children for authenticated admins", () => {
+    mockUseAuth.mockReturnValue({
+      session: { user: { id: "admin-123" }, access_token: "token" } as never,
+      loading: false,
+      signIn: vi.fn(),
+      signOut: vi.fn(),
+    });
+    mockUseAdminAccess.mockReturnValue({
+      data: true,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    } as never);
 
     renderAtAdminRoute();
 
     expect(screen.getByText("Officers admin content")).toBeInTheDocument();
     expect(screen.queryByText("Login page")).not.toBeInTheDocument();
+  });
+
+  it("shows an error state with retry when the admin check fails", () => {
+    mockUseAuth.mockReturnValue({
+      session: { user: { id: "admin-123" }, access_token: "token" } as never,
+      loading: false,
+      signIn: vi.fn(),
+      signOut: vi.fn(),
+    });
+    mockUseAdminAccess.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      error: new Error("boom"),
+      refetch: vi.fn(),
+    } as never);
+
+    renderAtAdminRoute();
+
+    expect(screen.getByText("Something went wrong")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+    expect(screen.queryByText("Officers admin content")).not.toBeInTheDocument();
   });
 });

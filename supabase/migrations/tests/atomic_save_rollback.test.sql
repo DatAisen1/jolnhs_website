@@ -49,6 +49,11 @@ select plan(9);
 set local role authenticated;
 set local "request.jwt.claim.sub" = 'b15c1609-85b1-43da-9277-f51756ac85d8';
 
+-- Test fixture, not a real account.
+insert into admin_users (user_id)
+values ('b15c1609-85b1-43da-9277-f51756ac85d8')
+on conflict (user_id) do nothing;
+
 -- ------------------------------------------------------------
 -- Fixture: known baseline state for the 'athletes' section.
 -- ------------------------------------------------------------
