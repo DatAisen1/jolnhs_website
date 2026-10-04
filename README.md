@@ -97,6 +97,8 @@ supabase/migrations/0007_fix_save_campus_life_section_ordinality.sql
 supabase/migrations/0008_budget_management_fields.sql      # budget admin fields
 supabase/migrations/0009_active_fiscal_year_rls.sql       # fiscal year RLS
 supabase/migrations/0010_site_settings.sql                # site settings
+supabase/migrations/0011_login_rate_limit_identity_check.sql # login rate-limit identity check
+supabase/migrations/0012_admin_users_rls.sql             # admin_users RLS alignment
 ```
 
 Migrations are append-only: never edit a file once it's been run against any environment — add a new `000N_*.sql` file instead.
