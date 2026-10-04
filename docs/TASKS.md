@@ -140,7 +140,7 @@
 
 ## PHASE 2 — Security & Authentication
 
-### [~] Fix login rate-limiter bypass
+### [x] Fix login rate-limiter bypass
 **What needs doing:** Fix `record_login_attempt` RPC in 0005_login_rate_limiting.sql to verify caller's authenticated identity matches `p_email` before allowing lockout clear on `p_success=true`.
 
 **Current vulnerability:** Anonymous caller can invoke with arbitrary `p_email` and `p_success=true`, successfully clearing that email's lockout state with zero verification of caller identity.
@@ -154,7 +154,7 @@
 
 ---
 
-### [~] Remove hardcoded admin UUID
+### [x] Remove hardcoded admin UUID
 **What needs doing:** Remove hardcoded admin UUID insert from 0001_init.sql. Desired end state: fresh Supabase project, run migrations, provision admin separately.
 
 **Area:** `supabase/migrations/0001_init.sql`
@@ -168,7 +168,7 @@
 
 ---
 
-### [~] Add admin_users check to ProtectedRoute
+### [x] Add admin_users check to ProtectedRoute
 **What needs doing:** Update `ProtectedRoute` to check `admin_users` membership, not just session presence. RLS already prevents unauthorized writes, so this is UX/exposure issue, not data-integrity.
 
 **Area:** `src/components/admin/ProtectedRoute.tsx`
