@@ -197,7 +197,7 @@
 
 ---
 
-### [ ] Add global 404 route
+### [x] Add global 404 route
 **What needs doing:** Add catch-all route to App.tsx for invalid URLs with clear message, link home, link to major sections.
 
 **Area:** `src/App.tsx`

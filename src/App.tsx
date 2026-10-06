@@ -10,6 +10,7 @@ import { ProgramDetailPage } from "@/pages/ProgramDetailPage";
 import { CampusLifePage } from "@/pages/CampusLifePage";
 import { CampusLifeSectionPage } from "@/pages/CampusLifeSectionPage";
 import { BudgetPage } from "@/pages/BudgetPage";
+import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 
@@ -90,6 +91,7 @@ export default function App() {
           <Route path="/budget/*" element={<BudgetPage />} />
           <Route path="/enroll" element={<StubPage title="Enrollment" />} />
           <Route path="/contact" element={<StubPage title="Contact Us" />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
 
         {/* Unauthenticated admin: just the login form, no sidebar */}
