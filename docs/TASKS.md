@@ -179,7 +179,7 @@
 
 ## PHASE 3 — Visitor-Facing Pages
 
-### [ ] Implement Contact page
+### [~] Implement Contact page
 **What needs doing:** Replace `/contact` stub with functional contact page using verified school information.
 
 **Area:** `src/pages/ContactPage.tsx` (needs to be created)

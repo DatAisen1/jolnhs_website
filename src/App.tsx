@@ -11,6 +11,7 @@ import { CampusLifePage } from "@/pages/CampusLifePage";
 import { CampusLifeSectionPage } from "@/pages/CampusLifeSectionPage";
 import { BudgetPage } from "@/pages/BudgetPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import { ContactPage } from "@/pages/ContactPage";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 
@@ -88,7 +89,7 @@ export function AppRoutes() {
         <Route path="/campus-life/:slug" element={<CampusLifeSectionPage />} />
         <Route path="/budget" element={<BudgetPage />} />
         <Route path="/budget/*" element={<BudgetPage />} />
-        <Route path="/contact" element={<StubPage title="Contact Us" />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
 
