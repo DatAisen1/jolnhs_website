@@ -188,12 +188,14 @@
 
 ---
 
-### [ ] Implement Enrollment page
+### [x] Implement Enrollment page
 **What needs doing:** Replace `/enroll` stub with functional enrollment page if it's in primary navigation.
 
 **Area:** `src/pages/EnrollmentPage.tsx` (needs to be created)
 
 **Verification:** Enrollment page displays enrollment requirements and process (mark unknowns as "requires school-provided information").
+
+**Status note:** Enrollment page is not applicable by owner decision C: "The school has NO enrollment function, so remove the /enroll stub route and let /enroll fall through to the global 404 page added in P3.3." The route fallthrough is covered by the P3.2 route test.
 
 ---
 

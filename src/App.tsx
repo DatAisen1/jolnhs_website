@@ -73,105 +73,110 @@ function AdminAuthLayout() {
   );
 }
 
-export default function App() {
+export function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutOverviewPage />} />
-          <Route path="/about/overview" element={<AboutOverviewPage />} />
-          <Route path="/about/faculty-staff" element={<FacultyStaffPage />} />
-          <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />
-          <Route path="/academics" element={<AcademicsPage />} />
-          <Route path="/academics/:slug" element={<ProgramDetailPage />} />
-          <Route path="/campus-life" element={<CampusLifePage />} />
-          <Route path="/campus-life/:slug" element={<CampusLifeSectionPage />} />
-          <Route path="/budget" element={<BudgetPage />} />
-          <Route path="/budget/*" element={<BudgetPage />} />
-          <Route path="/enroll" element={<StubPage title="Enrollment" />} />
-          <Route path="/contact" element={<StubPage title="Contact Us" />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutOverviewPage />} />
+        <Route path="/about/overview" element={<AboutOverviewPage />} />
+        <Route path="/about/faculty-staff" element={<FacultyStaffPage />} />
+        <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />
+        <Route path="/academics" element={<AcademicsPage />} />
+        <Route path="/academics/:slug" element={<ProgramDetailPage />} />
+        <Route path="/campus-life" element={<CampusLifePage />} />
+        <Route path="/campus-life/:slug" element={<CampusLifeSectionPage />} />
+        <Route path="/budget" element={<BudgetPage />} />
+        <Route path="/budget/*" element={<BudgetPage />} />
+        <Route path="/contact" element={<StubPage title="Contact Us" />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
 
-        {/* Unauthenticated admin: just the login form, no sidebar */}
-        <Route element={<AdminAuthLayout />}>
-          <Route
-            path="/admin/login"
-            element={
-              <Suspense fallback={null}>
-                <LoginPage />
-              </Suspense>
-            }
-          />
-          {/* Landing page for Supabase's password-recovery email link.
+      {/* Unauthenticated admin: just the login form, no sidebar */}
+      <Route element={<AdminAuthLayout />}>
+        <Route
+          path="/admin/login"
+          element={
+            <Suspense fallback={null}>
+              <LoginPage />
+            </Suspense>
+          }
+        />
+        {/* Landing page for Supabase's password-recovery email link.
               Lives here (unauthenticated shell), not behind ProtectedRoute —
               an admin arrives here via a one-time link, not an existing
               session, even though Supabase does establish one once the
               link's tokens are consumed (see ResetPasswordPage). */}
-          <Route
-            path="/admin/reset-password"
-            element={
-              <Suspense fallback={null}>
-                <ResetPasswordPage />
-              </Suspense>
-            }
-          />
-        </Route>
+        <Route
+          path="/admin/reset-password"
+          element={
+            <Suspense fallback={null}>
+              <ResetPasswordPage />
+            </Suspense>
+          }
+        />
+      </Route>
 
-        {/* Authenticated admin: sidebar shell wraps every page below it.
+      {/* Authenticated admin: sidebar shell wraps every page below it.
             One ProtectedRoute guards the whole subtree — individual
             pages (DashboardPage, CampusLifeManagePage, etc.) no longer
             need their own guard. */}
+      <Route
+        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route
+          path="/admin"
           element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
+            <Suspense fallback={null}>
+              <DashboardPage />
+            </Suspense>
           }
-        >
-          <Route
-            path="/admin"
-            element={
-              <Suspense fallback={null}>
-                <DashboardPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/admin/campus-life"
-            element={
-              <Suspense fallback={null}>
-                <CampusLifeManagePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/admin/staff"
-            element={
-              <Suspense fallback={null}>
-                <StaffManagePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/admin/budget"
-            element={
-              <Suspense fallback={null}>
-                <BudgetManagePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/admin/settings"
-            element={
-              <Suspense fallback={null}>
-                <SettingsPage />
-              </Suspense>
-            }
-          />
-        </Route>
-      </Routes>
+        />
+        <Route
+          path="/admin/campus-life"
+          element={
+            <Suspense fallback={null}>
+              <CampusLifeManagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/staff"
+          element={
+            <Suspense fallback={null}>
+              <StaffManagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/budget"
+          element={
+            <Suspense fallback={null}>
+              <BudgetManagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <Suspense fallback={null}>
+              <SettingsPage />
+            </Suspense>
+          }
+        />
+      </Route>
+    </Routes>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
