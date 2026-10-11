@@ -182,7 +182,7 @@ export function useBudgetCategories(fiscalYearId: string | undefined, includeArc
   return useQuery({
     queryKey: ["budget-categories", fiscalYearId, includeArchived],
     queryFn: async (): Promise<BudgetCategoryRow[]> => {
-      let query = supabase
+      const query = supabase
         .from("budget_categories")
         .select("*")
         .eq("fiscal_year_id", fiscalYearId as string)

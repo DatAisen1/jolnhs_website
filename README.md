@@ -26,11 +26,11 @@ The JOLNHS website serves as the public-facing information portal for Julia Orti
 
 ## Current Status
 
-**Admin Panel:** Functional with full CRUD for Staff & Faculty, Campus Life, Budget, and Settings. Archive/restore and CSV export features implemented. Server-side login rate limiting and RLS for fiscal-year immutability in place.
+**Admin Panel:** Functional with full CRUD for Staff & Faculty, Campus Life, Budget, and Settings. Archive/restore and CSV export features implemented. Server-side login rate limiting (with caller-identity check) and RLS for fiscal-year immutability in place.
 
-**Public Site:** Currently using static data files for content (Staff, Campus Life, Budget). Admin panel writes to Supabase, but public pages read from static files — this data-source inconsistency is the highest-priority issue to resolve.
+**Public Site:** All major content domains read from Supabase — Faculty & Staff, Campus Life, Budget, and site settings. Admin changes propagate to the public site automatically via React Query invalidation.
 
-**Architecture:** The target architecture is Admin Panel → Supabase → Public Website. This is partially implemented (admin works with Supabase), but public pages need to be connected to Supabase data.
+**Architecture:** Admin Panel → Supabase → Public Website. Implemented for all content domains. The only exception is the Campus Gallery (`/campus-life/gallery`), which intentionally remains static (no gallery table in the approved schema).
 
 For detailed development status, tasks, and deployment plan, see [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md) and [docs/TASKS.md](docs/TASKS.md).
 
@@ -79,6 +79,13 @@ cp .env.example .env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-public-key
 ```
+
+**Required for the public site:**
+- `VITE_SUPABASE_URL` — Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — Supabase anonymous/public API key
+
+**Optional for server-side scripts (not required for the site itself):**
+- `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key. **Never commit this or expose it in client code.** Only needed if you add server-side scripts or migrations that require elevated privileges. Keep it in `.env` which is gitignored.
 
 The anon key is safe to expose in the client bundle — it has no special privileges. All write access is enforced server-side by Postgres Row Level Security (RLS).
 
@@ -147,8 +154,8 @@ npm run test:db     # Run database tests
 - `/campus-life` — CampusLifePage
 - `/campus-life/:slug` — CampusLifeSectionPage (includes `/campus-life/gallery`)
 - `/budget` — BudgetPage
-- `/enroll` — Enrollment (stub — coming soon)
-- `/contact` — Contact (stub — coming soon)
+- `/contact` — ContactPage
+- `*` — NotFoundPage (global 404; `/enroll` intentionally falls through to 404 — the school has no enrollment function)
 
 ## Admin Routes
 
@@ -201,21 +208,30 @@ Run tests with `npm run test`. For watch mode, use `npm run test:watch`. For the
 
 ## Important Notes
 
-### Data Source Inconsistency
+### Node Version
 
-The admin panel writes to Supabase, but public pages currently read from static files in `src/data/`. This is the highest-priority issue to resolve. See docs/PROJECT_PLAN.md Phase 1 for the plan to connect public pages to Supabase.
+Requires Node.js >= 22.18.0 and npm >= 10.0.0 (see `engines` in `package.json`). Test-only dependencies use jsdom 26, which supports Node >= 18.
+
+### Data Architecture
+
+The admin panel writes to Supabase and all public content pages read from Supabase. Static files in `src/data/` now only carry UI metadata (icons, themes, gallery images) that is not stored in the database.
 
 ### Budget Data
 
-The Budget page currently displays placeholder/illustrative figures marked with a disclaimer. Real figures should not be displayed until the school verifies them and provides sign-off.
+The Budget page reads from Supabase but real figures are still pending school verification. Do not display real-looking figures until the school provides sign-off.
 
 ### Campus Gallery
 
-The Campus Gallery (`/campus-life/gallery`) is a working section with real data from `src/data/campusLife.ts`. This is NOT broken and should be preserved during the data architecture migration.
+The Campus Gallery (`/campus-life/gallery`) intentionally uses static data from `src/data/campusLife.ts` — there is no gallery table in the approved schema. Preserve this during any future migration.
 
 ### Security
 
 - Row Level Security (RLS) enforces write access at the database level
-- Server-side login rate limiting is implemented via `record_login_attempt` RPC
-- Admin access requires membership in `admin_users` table
-- Known issue: `record_login_attempt` allows anonymous caller to clear lockout for arbitrary email (see docs/PROJECT_PLAN.md Phase 2.1)
+- Server-side login rate limiting via `record_login_attempt` RPC with caller-identity check (migration 0011)
+- `admin_users` table protected by RLS with self-row read policy (migration 0012)
+- Admin access requires membership in `admin_users` table, enforced in ProtectedRoute
+- Residual risk (documented, not fixed): an anonymous caller can submit *failed* attempts for another email to trigger a 60s lockout — a server/edge layer or CAPTCHA would be needed to close this
+
+### Dependency Audit Status
+
+`npm audit` reports 9 remaining vulnerabilities (2 moderate, 7 high), all in **build-time devDependencies** (tailwindcss v3 chain: braces, chokidar, micromatch, fast-glob, postcss-selector-parser; gh-pages chain: globby). None ship in the production bundle. The only fix offered is `npm audit fix --force`, which upgrades to Tailwind CSS v4 — a breaking change requiring a config and utility-class migration. Deferred until a dedicated Tailwind v4 upgrade task.

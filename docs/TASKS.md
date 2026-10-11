@@ -179,7 +179,7 @@
 
 ## PHASE 3 — Visitor-Facing Pages
 
-### [~] Implement Contact page
+### [x] Implement Contact page
 **What needs doing:** Replace `/contact` stub with functional contact page using verified school information.
 
 **Area:** `src/pages/ContactPage.tsx` (needs to be created)
@@ -257,7 +257,7 @@
 
 ## PHASE 5 — Production Hardening
 
-### [ ] Pin Node version
+### [x] Pin Node version
 **What needs doing:** Add `engines` field to package.json pinning Node version. Only pin what can be verified as actually compatible.
 
 **Area:** `package.json`
@@ -266,7 +266,7 @@
 
 ---
 
-### [ ] Document environment variables
+### [x] Document environment variables
 **What needs doing:** Ensure README.md documents all required environment variable names and purposes (not values).
 
 **Area:** `README.md`
@@ -275,7 +275,7 @@
 
 ---
 
-### [ ] Supabase production config checklist
+### [x] Supabase production config checklist
 **What needs doing:** Complete Supabase production configuration checklist.
 
 **Area:** Supabase project settings

@@ -6,3 +6,5 @@ public/videos/*.mp4
 public/videos/*.mov
 .env
 .env.e2e
+test-results/
+playwright-report/
