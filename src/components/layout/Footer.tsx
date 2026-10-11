@@ -2,10 +2,9 @@ import { MapPin, Mail, FacebookIcon, Clock } from "lucide-react";
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { SchoolBadge } from "@/components/ui/SchoolBadge";
-import { officeHours } from "@/data/officeHours";
 import { navigation } from "@/data/navigation";
 import { tagline } from "@/data/tagline";
-import { schoolContact } from "@/data/schoolContact";
+import { useSiteSettings, getSettingValue, parseOfficeHours } from "@/lib/data/siteSettings";
 
 // Reuses the header's nav data (same labels/hrefs the top nav uses) plus
 // the Contact route, which exists (see App.tsx) but isn't in the main
@@ -52,6 +51,25 @@ function IconBadge({ children }: { children: ReactNode }) {
  * point and enough contrast to read as premium rather than incidental.
  */
 export function Footer() {
+  const { data: siteSettings = [] } = useSiteSettings();
+  
+  // Extract commonly used settings (use the same keys as admin)
+  const address = getSettingValue(siteSettings, "address");
+  const email = getSettingValue(siteSettings, "email");
+  const facebookHandle = getSettingValue(siteSettings, "facebook_handle");
+  const facebookUrl = getSettingValue(siteSettings, "facebook_url");
+  const mapsUrl = getSettingValue(siteSettings, "maps_url");
+  const officeHoursString = getSettingValue(siteSettings, "office_hours");
+  const siteTagline = getSettingValue(siteSettings, "site_tagline") || tagline.heading;
+  
+  // Parse office hours into array format
+  const officeHours = officeHoursString ? parseOfficeHours(officeHoursString) : [
+    { day: "Monday–Friday", hours: "Closed" },
+    { day: "Saturday", hours: "Closed" },
+    { day: "Sunday", hours: "Closed" },
+    { day: "Holidays", hours: "Closed" },
+  ];
+
   return (
     <footer className="bg-primary-700 text-secondary-100">
       {/* Brand edge: a slim gradient strip using the SAME primary tonal
@@ -86,7 +104,7 @@ export function Footer() {
               National High School
             </p>
             <p className="max-w-[220px] text-small italic text-secondary-100">
-              {tagline.heading}
+              {siteTagline}
             </p>
           </div>
 
@@ -120,12 +138,12 @@ export function Footer() {
                   <MapPin className="h-4 w-4 text-secondary-300" aria-hidden="true" />
                 </IconBadge>
                 <a
-                  href={schoolContact.mapsDirectionsUrl}
+                  href={mapsUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`pt-1 text-secondary-100 transition-colors hover:text-white ${focusRing}`}
                 >
-                  {schoolContact.address}
+                  {address || "Address not configured"}
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -133,13 +151,13 @@ export function Footer() {
                   <FacebookIcon className="h-4 w-4 text-secondary-300" aria-hidden="true" />
                 </IconBadge>
                 <a
-                  href={schoolContact.facebookUrl}
+                  href={facebookUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="JOLNHS on Facebook"
                   className={`text-secondary-100 transition-colors hover:text-white ${focusRing}`}
                 >
-                  {schoolContact.facebookHandle}
+                  {facebookHandle || "Facebook"}
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -147,10 +165,10 @@ export function Footer() {
                   <Mail className="h-4 w-4 text-secondary-300" aria-hidden="true" />
                 </IconBadge>
                 <a
-                  href={`mailto:${schoolContact.email}`}
+                  href={email ? `mailto:${email}` : "#"}
                   className={`text-secondary-100 transition-colors hover:text-white ${focusRing}`}
                 >
-                  {schoolContact.email}
+                  {email || "Email not configured"}
                 </a>
               </li>
             </ul>
@@ -195,7 +213,7 @@ export function Footer() {
           <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-primary-800 px-4 py-3 text-small">
             <span className="text-secondary-100">View on Google Maps</span>
             <a
-              href={schoolContact.mapsDirectionsUrl}
+              href={mapsUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
               className={`whitespace-nowrap font-semibold text-secondary-300 hover:text-white hover:underline ${focusRing}`}

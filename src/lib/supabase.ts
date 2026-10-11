@@ -19,5 +19,5 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 if (import.meta.env.DEV) {
-  (window as any).supabase = supabase;
+  (window as unknown as { supabase: typeof supabase }).supabase = supabase;
 }

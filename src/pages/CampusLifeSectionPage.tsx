@@ -6,9 +6,52 @@ import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
-import { campusLifeSections } from "@/data/campusLife";
+import { campusLifeSections as staticCampusLifeSections } from "@/data/campusLife";
+import { useCampusLifeSectionDetail, type CampusLifeSectionDetail } from "@/lib/data/publicCampusLife";
 import { fadeUp, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
 import type { CampusLifeSection } from "@/types";
+import { Users } from "lucide-react";
+
+/**
+ * Maps Supabase section detail with static UI properties (icon, theme, gallery, CTA).
+ * This is needed because Supabase only stores basic text fields.
+ */
+function mapSectionDetailWithUIProperties(detail: CampusLifeSectionDetail): CampusLifeSection {
+  const staticSection = staticCampusLifeSections.find((s) => s.slug === detail.slug);
+  if (!staticSection) {
+    // Fallback for sections not in static data (shouldn't happen with current schema)
+    return {
+      id: detail.id,
+      slug: detail.slug,
+      icon: Users,
+      eyebrow: detail.eyebrow || "",
+      name: detail.name,
+      tagline: detail.tagline || "",
+      description: detail.description || "",
+      theme: "light",
+      stats: detail.stats.map((s) => ({ label: s.label, value: s.value })),
+      highlights: detail.highlights.map((h) => ({ title: h.title, description: h.description })),
+      gallery: [],
+      ctaLabel: "Learn More",
+      ctaHref: "/contact",
+    };
+  }
+  return {
+    id: detail.id,
+    slug: detail.slug,
+    icon: staticSection.icon,
+    eyebrow: detail.eyebrow || staticSection.eyebrow,
+    name: detail.name,
+    tagline: detail.tagline || staticSection.tagline,
+    description: detail.description || staticSection.description,
+    theme: staticSection.theme,
+    stats: detail.stats.map((s) => ({ label: s.label, value: s.value })),
+    highlights: detail.highlights.map((h) => ({ title: h.title, description: h.description })),
+    gallery: staticSection.gallery,
+    ctaLabel: staticSection.ctaLabel,
+    ctaHref: staticSection.ctaHref,
+  };
+}
 
 /**
  * SectionHero
@@ -43,16 +86,16 @@ function SectionHero({ section }: { section: CampusLifeSection }) {
 
 export function CampusLifeSectionPage() {
   const { slug } = useParams<{ slug: string }>();
-  const section = campusLifeSections.find((s) => s.slug === slug);
-  usePageTitle(section ? section.name : "Section Not Found", section?.tagline);
+  const { data: sectionDetail, isLoading, error } = useCampusLifeSectionDetail(slug || "");
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
-  // Guards a slug that isn't in campusLifeSections (typo'd URL, old
-  // bookmark, etc.) with a real in-brand empty state instead of a router
-  // 404 or a blank page — same pattern ProgramDetailPage uses for an
-  // unknown academic program slug.
-  if (!section) {
+  // Use static data for page title (always available and follows React Hooks rule)
+  const staticSection = slug ? staticCampusLifeSections.find((s) => s.slug === slug) : null;
+  usePageTitle(staticSection?.name || "Section Not Found", staticSection?.tagline);
+
+  // Guard against missing slug
+  if (!slug) {
     return (
       <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-4 py-section-sm text-center">
         <h1 className="text-section text-text-primary">Section Not Found</h1>
@@ -66,6 +109,34 @@ export function CampusLifeSectionPage() {
       </Container>
     );
   }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Container className="flex min-h-[50vh] items-center justify-center py-section-sm">
+        <p className="text-body text-text-secondary">Loading section...</p>
+      </Container>
+    );
+  }
+
+  // Error or no data state
+  if (error || !sectionDetail) {
+    return (
+      <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-4 py-section-sm text-center">
+        <h1 className="text-section text-text-primary">Section Not Found</h1>
+        <p className="max-w-md text-body text-text-secondary">
+          We couldn't find a Campus Life section at this address. It may have moved — try the
+          Campus Life overview instead.
+        </p>
+        <Button variant="primary" href="/campus-life" className="mt-2">
+          Back to Campus Life
+        </Button>
+      </Container>
+    );
+  }
+
+  // Map Supabase data with UI properties from static data
+  const section = mapSectionDetailWithUIProperties(sectionDetail);
 
   return (
     <>

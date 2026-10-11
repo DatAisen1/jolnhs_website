@@ -2,7 +2,7 @@ import { staffCategories } from "@/data/facultyStaff";
 
 interface FacultyFilterTabsProps {
   active: string;
-  onChange: (categoryId: string) => void;
+  onChange: (_categoryId: string) => void;
 }
 
 /**

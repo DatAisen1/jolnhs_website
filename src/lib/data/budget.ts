@@ -123,7 +123,10 @@ export function useSaveFiscalYearFields() {
         .eq("id", year.id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -138,7 +141,10 @@ export function useCreateFiscalYear() {
       if (error) throw error;
       return data as FiscalYear;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -151,7 +157,10 @@ export function useSetFiscalYearStatus() {
       const { error } = await supabase.from("budget_fiscal_years").update({ status }).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -167,7 +176,10 @@ export function useSetCurrentFiscalYear() {
       const { error } = await supabase.rpc("set_current_fiscal_year", { p_fiscal_year_id: fiscalYearId });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -227,7 +239,10 @@ export function useSaveBudgetCategory() {
       });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-categories"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -245,6 +260,7 @@ export function useDeleteBudgetCategory() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
       queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
     },
   });
 }
@@ -281,7 +297,10 @@ export function useArchiveBudgetCategory() {
         .eq("id", categoryId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-categories"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -296,7 +315,10 @@ export function useRestoreBudgetCategory() {
         .eq("id", categoryId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-categories"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 export function useSaveBudgetAccomplishment() {
@@ -327,7 +349,10 @@ export function useSaveBudgetAccomplishment() {
       });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }
 
@@ -340,6 +365,9 @@ export function useDeleteBudgetAccomplishment() {
       const { error } = await supabase.from("budget_accomplishments").delete().eq("id", accomplishmentId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] });
+      queryClient.invalidateQueries({ queryKey: ["public-budget"] });
+    },
   });
 }

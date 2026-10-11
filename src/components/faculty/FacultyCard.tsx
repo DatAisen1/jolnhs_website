@@ -1,5 +1,5 @@
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import type { StaffMember } from "@/data/facultyStaff";
+import type { StaffMember } from "@/lib/data/publicStaff";
 
 /**
  * FacultyCard
@@ -17,9 +17,9 @@ export function FacultyCard({ member }: { member: StaffMember }) {
   return (
     <article className="group overflow-hidden rounded-card border border-border bg-white transition-shadow duration-200 hover:shadow-md">
       <div className="aspect-[4/5] w-full overflow-hidden">
-        {member.photo ? (
+        {member.photo_path ? (
           <img
-            src={member.photo}
+            src={member.photo_path}
             alt={member.name}
             loading="lazy"
             decoding="async"

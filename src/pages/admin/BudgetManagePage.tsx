@@ -45,7 +45,7 @@ function FiscalYearEditor({
   onDirtyChange,
 }: {
   fiscalYear: FiscalYear;
-  onDirtyChange: (dirty: boolean) => void;
+  onDirtyChange: (_dirty: boolean) => void;
 }) {
   const saveFields = useSaveFiscalYearFields();
   const setStatus = useSetFiscalYearStatus();

@@ -1,4 +1,4 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, BookOpen, Wrench, Laptop, Users, Zap, Trophy, HeartPulse, Briefcase, Wallet, LayoutGrid } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
@@ -10,8 +10,48 @@ import { BudgetStatsBand } from "@/components/budget/BudgetStatsBand";
 import { ProposedBudgetTable } from "@/components/budget/ProposedBudgetTable";
 import { BudgetAllocationChart } from "@/components/budget/BudgetAllocationChart";
 import { AccomplishmentsGrid } from "@/components/budget/AccomplishmentsGrid";
-import { budgetOverview, budgetCategories, budgetAccomplishments, getBudgetStats } from "@/data/budget";
+import { budgetOverview, getBudgetStats } from "@/data/budget";
+import { usePublicBudget, type BudgetCategory as DBCategory, type BudgetAccomplishment as DBAccomplishment } from "@/lib/data/publicBudget";
+import type { BudgetCategory, BudgetAccomplishment } from "@/types";
 import { fadeUp, viewportOnce } from "@/lib/motion";
+import type { LucideIcon } from "lucide-react";
+
+/**
+ * Helper to assign icons to budget categories based on name patterns.
+ * This is a simple heuristic since icons are presentation-only and not stored in the database.
+ */
+function getIconForCategory(name: string): LucideIcon {
+  const lowerName = name.toLowerCase();
+  
+  if (lowerName.includes("instructional") || lowerName.includes("material") || lowerName.includes("book")) {
+    return BookOpen;
+  }
+  if (lowerName.includes("facility") || lowerName.includes("maintenance") || lowerName.includes("repair")) {
+    return Wrench;
+  }
+  if (lowerName.includes("ict") || lowerName.includes("tech") || lowerName.includes("computer")) {
+    return Laptop;
+  }
+  if (lowerName.includes("personnel") || lowerName.includes("staff") || lowerName.includes("teacher")) {
+    return Users;
+  }
+  if (lowerName.includes("electric") || lowerName.includes("power") || lowerName.includes("energy")) {
+    return Zap;
+  }
+  if (lowerName.includes("sports") || lowerName.includes("award") || lowerName.includes("trophy")) {
+    return Trophy;
+  }
+  if (lowerName.includes("health") || lowerName.includes("medical") || lowerName.includes("clinic")) {
+    return HeartPulse;
+  }
+  if (lowerName.includes("office") || lowerName.includes("admin")) {
+    return Briefcase;
+  }
+  if (lowerName.includes("fund") || lowerName.includes("money") || lowerName.includes("budget")) {
+    return Wallet;
+  }
+  return LayoutGrid; // Default icon
+}
 
 /**
  * BudgetPage (/budget)
@@ -28,15 +68,75 @@ import { fadeUp, viewportOnce } from "@/lib/motion";
  * Structure mirrors CampusLifePage/AcademicsPage's own rhythm (hero ->
  * breadcrumbs -> sub-nav -> content -> closing CTA) so this page reads
  * as part of the same site, not a bolted-on template.
+ *
+ * Data is now fetched from Supabase. UI properties (icons, color classes)
+ * are mapped from static data since these are presentation-only values.
  */
 export function BudgetPage() {
   usePageTitle(
     "Budget Transparency",
     "See JOLNHS's proposed annual budget, how it's allocated across categories, and the projects it has funded."
   );
+  const { data: budgetData, isLoading, error } = usePublicBudget();
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
-  const stats = getBudgetStats(budgetOverview, budgetCategories, budgetAccomplishments);
+
+  // Map database categories to UI format with icons from static data
+  const uiCategories: BudgetCategory[] = budgetData?.categories.map((cat: DBCategory) => ({
+    id: cat.id,
+    name: cat.name,
+    icon: getIconForCategory(cat.name),
+    amount: cat.amount,
+    percentage: cat.percentage,
+    colorClass: cat.color_class || "bg-primary",
+    description: cat.description,
+  })) || [];
+
+  // Map database accomplishments to UI format
+  const uiAccomplishments: BudgetAccomplishment[] = budgetData?.accomplishments.map((acc: DBAccomplishment) => ({
+    id: acc.id,
+    title: acc.title,
+    categoryId: acc.category_id,
+    amount: acc.amount,
+    status: acc.status,
+    period: acc.period,
+    description: acc.description,
+  })) || [];
+
+  const stats = getBudgetStats(budgetOverview, uiCategories, uiAccomplishments);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Container className="flex min-h-[50vh] items-center justify-center py-section-sm">
+        <p className="text-body text-text-secondary">Loading budget data...</p>
+      </Container>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-4 py-section-sm text-center">
+        <h1 className="text-section text-text-primary">Budget Data Unavailable</h1>
+        <p className="max-w-md text-body text-text-secondary">
+          We couldn't load the budget information. Please try again later.
+        </p>
+      </Container>
+    );
+  }
+
+  // No data state
+  if (!budgetData) {
+    return (
+      <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-4 py-section-sm text-center">
+        <h1 className="text-section text-text-primary">No Budget Data Available</h1>
+        <p className="max-w-md text-body text-text-secondary">
+          Budget information has not been configured yet.
+        </p>
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -108,7 +208,7 @@ export function BudgetPage() {
           </motion.div>
 
           <div className="mt-10">
-            <ProposedBudgetTable categories={budgetCategories} total={budgetOverview.totalProposedBudget} />
+            <ProposedBudgetTable categories={uiCategories} total={budgetOverview.totalProposedBudget} />
           </div>
 
           <p className="mt-4 text-small text-text-secondary">Last updated: {budgetOverview.lastUpdated}</p>
@@ -128,7 +228,7 @@ export function BudgetPage() {
           </motion.div>
 
           <div className="mt-10 max-w-3xl">
-            <BudgetAllocationChart categories={budgetCategories} />
+            <BudgetAllocationChart categories={uiCategories} />
           </div>
         </Container>
       </section>
@@ -145,7 +245,7 @@ export function BudgetPage() {
           </motion.div>
 
           <div className="mt-10">
-            <AccomplishmentsGrid accomplishments={budgetAccomplishments} categories={budgetCategories} />
+            <AccomplishmentsGrid accomplishments={uiAccomplishments} categories={uiCategories} />
           </div>
         </Container>
       </section>

@@ -1,0 +1,11 @@
+[
+  {
+    "route": "/admin/login",
+    "httpStatus": 200,
+    "finalUrl": "http://localhost:5174/admin/login",
+    "pageTitle": "Julia Ortiz Luis National High School",
+    "h1": "Admin sign in",
+    "consoleErrors": [],
+    "status": "VERIFIED BY BROWSER"
+  }
+]

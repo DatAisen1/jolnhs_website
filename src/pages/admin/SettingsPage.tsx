@@ -1,9 +1,10 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { Save, CheckCircle2, AlertCircle } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { AdminCard } from "@/components/admin/AdminCard";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { getErrorMessage } from "@/lib/errors";
 import { settingsSchema, type SettingsFormValues } from "@/lib/validation/settingsSchema";
@@ -26,7 +27,7 @@ const SETTINGS_KEYS = {
 
 function SettingsForm({ initialValues, onSave, isSaving, saveError, showSuccess }: {
   initialValues: SettingsFormValues;
-  onSave: (values: SettingsFormValues) => void;
+  onSave: (_values: SettingsFormValues) => void;
   isSaving: boolean;
   saveError: string | null;
   showSuccess: boolean;
@@ -46,7 +47,7 @@ function SettingsForm({ initialValues, onSave, isSaving, saveError, showSuccess 
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     
     // Validate all settings
@@ -154,6 +155,7 @@ function SettingsForm({ initialValues, onSave, isSaving, saveError, showSuccess 
 }
 
 export function SettingsPage() {
+  const queryClient = useQueryClient();
   const { data: settings, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
@@ -175,6 +177,8 @@ export function SettingsPage() {
       if (error) throw error;
     },
     onSuccess: () => {
+      // Invalidate the site-settings query so the public site updates
+      queryClient.invalidateQueries({ queryKey: ["site-settings"] });
       refetch();
     },
   });

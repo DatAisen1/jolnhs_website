@@ -118,7 +118,9 @@ export function useSaveCampusLifeSection() {
       if (error) throw error;
     },
     onSuccess: (_data, variables) => {
+      // Invalidate both the section detail query and the landing page list query
       queryClient.invalidateQueries({ queryKey: ["campus-life-section", variables.slug] });
+      queryClient.invalidateQueries({ queryKey: ["campus-life-sections-list"] });
     },
   });
 }

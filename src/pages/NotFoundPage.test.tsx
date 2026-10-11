@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppRoutes } from "@/App";
 import { navigation } from "@/data/navigation";
 import { NotFoundPage } from "./NotFoundPage";
@@ -25,9 +26,11 @@ describe("NotFoundPage", () => {
 
   it("routes /enroll to the public 404 page", () => {
     render(
-      <MemoryRouter initialEntries={["/enroll"]}>
-        <AppRoutes />
-      </MemoryRouter>
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter initialEntries={["/enroll"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
     expect(

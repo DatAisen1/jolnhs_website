@@ -9,7 +9,8 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
 import { FacultyFilterTabs } from "@/components/faculty/FacultyFilterTabs";
-import { staffMembers, staffCategories } from "@/data/facultyStaff";
+import { staffCategories } from "@/data/facultyStaff";
+import { useAllStaffMembers } from "@/lib/data/publicStaff";
 import { scaleIn, staggerContainer } from "@/lib/motion";
 
 const VALID_CATEGORY_IDS = new Set(staffCategories.map((c) => c.id));
@@ -33,16 +34,18 @@ function getResultsGridColsClass(count: number): string {
  * instead of four near-duplicate ones — see the nav dropdown, where each
  * of those four links here with a different `?category=` value. The page
  * reads that value on load to pre-select the matching filter tab, then
- * search/filtering happens entirely client-side (no backend — this is a
- * static site).
+ * search/filtering happens entirely client-side.
  *
  * Category and search query are also written back to the URL (`category`,
  * `q`) as the person interacts, so a filtered/searched view can be
  * bookmarked, shared, or restored with the browser back button.
+ *
+ * Data is now fetched from Supabase via useAllStaffMembers() hook.
  */
 export function FacultyStaffPage() {
   usePageTitle("Faculty & Staff");
 
+  const { data: staffMembers = [], isLoading, error } = useAllStaffMembers();
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedCategory = searchParams.get("category");
   const initialCategory =
@@ -128,63 +131,73 @@ export function FacultyStaffPage() {
 
       <section className="bg-white py-section-sm md:py-section">
         <Container>
-          <div className="mx-auto mb-8 max-w-md">
-            <label className="relative block">
-              <span className="sr-only">Search faculty and staff</span>
-              <Search
-                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
-                aria-hidden="true"
-              />
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => handleQueryChange(e.target.value)}
-                placeholder="Search by name or position..."
-                className="w-full rounded-full border border-border bg-background py-3 pl-11 pr-10 text-body text-text-primary placeholder:text-text-secondary outline-none focus-visible:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              />
-              {query.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => handleQueryChange("")}
-                  aria-label="Clear search"
-                  className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-border/60 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  <X className="h-4 w-4" aria-hidden="true" />
-                </button>
-              )}
-            </label>
-          </div>
-
-          <FacultyFilterTabs active={activeCategory} onChange={handleCategoryChange} />
-
-          {/* Screen-reader-only status message: sighted users see the grid
-              update instantly, but that visual change is otherwise silent
-              for anyone using a screen reader (WCAG 4.1.3 Status Messages). */}
-          <p aria-live="polite" className="sr-only">
-            {filteredMembers.length} staff member
-            {filteredMembers.length === 1 ? "" : "s"} found
-          </p>
-
-          {filteredMembers.length > 0 ? (
-            <motion.div
-              key={activeCategory}
-              variants={staggerContainer}
-              initial={shouldReduceMotion ? "show" : "hidden"}
-              animate="show"
-              className={`mt-10 grid gap-6 ${getResultsGridColsClass(filteredMembers.length)}`}
-            >
-              {filteredMembers.map((member) => (
-                <motion.div key={member.id} variants={scaleIn}>
-                  <FacultyCard member={member} />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <p className="mt-16 text-center text-body text-text-secondary">
-              {query.trim().length > 0
-                ? `No staff members match "${query}". Try a different search or category.`
-                : "No staff members in this category yet."}
+          {isLoading ? (
+            <p className="mt-16 text-center text-body text-text-secondary">Loading faculty & staff...</p>
+          ) : error ? (
+            <p className="mt-16 text-center text-body text-error">
+              Failed to load faculty & staff. Please try again later.
             </p>
+          ) : (
+            <>
+              <div className="mx-auto mb-8 max-w-md">
+                <label className="relative block">
+                  <span className="sr-only">Search faculty and staff</span>
+                  <Search
+                    className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(e) => handleQueryChange(e.target.value)}
+                    placeholder="Search by name or position..."
+                    className="w-full rounded-full border border-border bg-background py-3 pl-11 pr-10 text-body text-text-primary placeholder:text-text-secondary outline-none focus-visible:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  />
+                  {query.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => handleQueryChange("")}
+                      aria-label="Clear search"
+                      className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-border/60 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    >
+                      <X className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  )}
+                </label>
+              </div>
+
+              <FacultyFilterTabs active={activeCategory} onChange={handleCategoryChange} />
+
+              {/* Screen-reader-only status message: sighted users see the grid
+                  update instantly, but that visual change is otherwise silent
+                  for anyone using a screen reader (WCAG 4.1.3 Status Messages). */}
+              <p aria-live="polite" className="sr-only">
+                {filteredMembers.length} staff member
+                {filteredMembers.length === 1 ? "" : "s"} found
+              </p>
+
+              {filteredMembers.length > 0 ? (
+                <motion.div
+                  key={activeCategory}
+                  variants={staggerContainer}
+                  initial={shouldReduceMotion ? "show" : "hidden"}
+                  animate="show"
+                  className={`mt-10 grid gap-6 ${getResultsGridColsClass(filteredMembers.length)}`}
+                >
+                  {filteredMembers.map((member) => (
+                    <motion.div key={member.id} variants={scaleIn}>
+                      <FacultyCard member={member} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <p className="mt-16 text-center text-body text-text-secondary">
+                  {query.trim().length > 0
+                    ? `No staff members match "${query}". Try a different search or category.`
+                    : "No staff members in this category yet."}
+                </p>
+              )}
+            </>
           )}
         </Container>
       </section>

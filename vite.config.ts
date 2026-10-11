@@ -23,6 +23,6 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     globals: false, // explicit `import { describe, it, expect }` — matches the rest of the codebase's no-implicit-globals style
     css: false, // Tailwind's utility classes don't need real CSS to assert on; skip parsing for speed
-    exclude: [...configDefaults.exclude, "e2e/**"],
+    exclude: [...configDefaults.exclude, "e2e/**", "**/scripts/phase0/**"],
   },
 });

@@ -2,11 +2,11 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { scaleIn } from "@/lib/motion";
-import type { CampusLifeSection } from "@/types";
+import type { PublicCampusLifeSection } from "@/lib/data/publicCampusLife";
 
 const MotionLink = motion(Link);
 
-export function CampusLifeCard({ section }: { section: CampusLifeSection }) {
+export function CampusLifeCard({ section }: { section: PublicCampusLifeSection }) {
   const Icon = section.icon;
   const isDark = section.theme === "dark";
 

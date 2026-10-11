@@ -18,7 +18,7 @@ function timeAgo(iso: string) {
   return `${months} month${months === 1 ? "" : "s"} ago`;
 }
 
-export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; onDirtyChange: (dirty: boolean) => void }) {
+export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; onDirtyChange: (_dirty: boolean) => void }) {
   const { data, isLoading, isError, error, refetch, isFetching } = useCampusLifeSection(slug);
   const saveSection = useSaveCampusLifeSection();
   const [name, setName] = useState("");

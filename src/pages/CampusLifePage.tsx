@@ -9,8 +9,8 @@ import { CampusLifeCard } from "@/components/campusLife/CampusLifeCard";
 import { CommunityStats } from "@/components/campusLife/CommunityStats";
 import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
 import { QuoteCard } from "@/components/campusLife/QuoteCard";
-import { campusLifeSections } from "@/data/campusLife";
 import { campusLifeOverview } from "@/data/campusLifeOverview";
+import { useAllCampusLifeSections } from "@/lib/data/publicCampusLife";
 import { fadeUp, fadeIn, staggerContainer, viewportOnce } from "@/lib/motion";
 
 /**
@@ -23,12 +23,16 @@ import { fadeUp, fadeIn, staggerContainer, viewportOnce } from "@/lib/motion";
  * templates glued together — while the content itself (stats band,
  * quotes, photo teaser) is unique to what Campus Life needs to
  * communicate: scale and atmosphere, not curriculum facts.
+ *
+ * Data is now fetched from Supabase via useAllCampusLifeSections() hook.
+ * UI properties (icon, theme, gallery, CTA) are combined from static data.
  */
 export function CampusLifePage() {
   usePageTitle(
     "Campus Life",
     "Explore student organizations, athletics, the PTA, and campus journalism at Julia Ortiz Luis National High School."
   );
+  const { data: campusLifeSections = [], isLoading, error } = useAllCampusLifeSections();
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
@@ -81,27 +85,37 @@ export function CampusLifePage() {
           routes to its own /campus-life/:slug detail page. */}
       <section className="bg-background py-section-sm md:py-section">
         <Container>
-          <motion.h2
-            variants={fadeUp}
-            initial={initial}
-            whileInView="show"
-            viewport={viewportOnce}
-            className="text-section text-text-primary"
-          >
-            Explore Campus Life
-          </motion.h2>
+          {isLoading ? (
+            <p className="text-center text-body text-text-secondary">Loading campus life sections...</p>
+          ) : error ? (
+            <p className="text-center text-body text-error">
+              Failed to load campus life sections. Please try again later.
+            </p>
+          ) : (
+            <>
+              <motion.h2
+                variants={fadeUp}
+                initial={initial}
+                whileInView="show"
+                viewport={viewportOnce}
+                className="text-section text-text-primary"
+              >
+                Explore Campus Life
+              </motion.h2>
 
-          <motion.div
-            variants={staggerContainer}
-            initial={initial}
-            whileInView="show"
-            viewport={viewportOnce}
-            className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {campusLifeSections.map((section) => (
-              <CampusLifeCard key={section.id} section={section} />
-            ))}
-          </motion.div>
+              <motion.div
+                variants={staggerContainer}
+                initial={initial}
+                whileInView="show"
+                viewport={viewportOnce}
+                className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              >
+                {campusLifeSections.map((section) => (
+                  <CampusLifeCard key={section.id} section={section} />
+                ))}
+              </motion.div>
+            </>
+          )}
         </Container>
       </section>
 

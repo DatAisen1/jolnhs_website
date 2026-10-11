@@ -6,7 +6,7 @@ export interface SectionTab<TSlug extends string = string> {
 export interface SectionTabsProps<TSlug extends string> {
 	tabs: ReadonlyArray<SectionTab<TSlug>>;
 	activeTab: TSlug;
-	onTabChange: (slug: TSlug) => void;
+	onTabChange: (_slug: TSlug) => void;
 }
 
 export function SectionTabs<TSlug extends string>({ tabs, activeTab, onTabChange }: SectionTabsProps<TSlug>) {

@@ -10,10 +10,25 @@ import { staffMembers } from "@/data/facultyStaff";
 import { aboutOverview } from "@/data/aboutOverview";
 import { quickFacts } from "@/data/quickFacts";
 import { fadeUp, fadeIn, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
+import type { StaffMember } from "@/lib/data/publicStaff";
 
 // Preview 3 administrators here rather than duplicating staff content —
 // the full roster (and every other category) lives on FacultyStaffPage.
-const teamPreview = staffMembers.filter((m) => m.category === "administrators").slice(0, 3);
+// Map static data to match Supabase StaffMember type for FacultyCard compatibility.
+const teamPreview: StaffMember[] = staffMembers
+  .filter((m) => m.category === "administrators")
+  .slice(0, 3)
+  .map((m) => ({
+    id: m.id,
+    name: m.name,
+    position: m.position,
+    category: m.category as StaffMember["category"],
+    photo_path: m.photo || null,
+    sort_order: 0,
+    is_archived: false,
+    created_at: "",
+    updated_at: "",
+  }));
 
 // Grid columns follow how many preview cards actually exist, so a
 // partially-filled roster (e.g. 2 admins entered so far) doesn't leave a

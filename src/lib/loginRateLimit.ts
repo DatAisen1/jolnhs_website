@@ -30,15 +30,21 @@ function toLockStatus(row: unknown): LoginLockStatus {
 
 /** Pre-flight check, before spending a real sign-in attempt. */
 export async function checkLoginLock(email: string): Promise<LoginLockStatus> {
-  const { data, error } = await supabase
-    .rpc("check_login_lock", { p_email: email })
-    .single();
+  try {
+    const { data, error } = await supabase
+      .rpc("check_login_lock", { p_email: email })
+      .single();
 
-  if (error) {
+    if (error) {
+      console.error("checkLoginLock RPC error:", error);
+      return { isLocked: false, secondsRemaining: 0 };
+    }
+
+    return toLockStatus(data);
+  } catch (error) {
+    console.error("checkLoginLock unexpected error:", error);
     return { isLocked: false, secondsRemaining: 0 };
   }
-
-  return toLockStatus(data);
 }
 
 /** Call after every sign-in attempt to update the server-side counter. */
@@ -46,13 +52,19 @@ export async function recordLoginAttempt(
   email: string,
   success: boolean,
 ): Promise<LoginLockStatus> {
-  const { data, error } = await supabase
-    .rpc("record_login_attempt", { p_email: email, p_success: success })
-    .single();
+  try {
+    const { data, error } = await supabase
+      .rpc("record_login_attempt", { p_email: email, p_success: success })
+      .single();
 
-  if (error) {
+    if (error) {
+      console.error("recordLoginAttempt RPC error:", error);
+      return { isLocked: false, secondsRemaining: 0 };
+    }
+
+    return toLockStatus(data);
+  } catch (error) {
+    console.error("recordLoginAttempt unexpected error:", error);
     return { isLocked: false, secondsRemaining: 0 };
   }
-
-  return toLockStatus(data);
 }

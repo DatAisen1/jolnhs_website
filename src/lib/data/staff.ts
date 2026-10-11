@@ -72,7 +72,11 @@ export function useSaveStaffMember() {
     // Broad ["staff-members"] key invalidates every category's query, not
     // just the one just edited — cheap (four small queries) and avoids
     // subtle bugs if a future edit ever moves a member between categories.
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["staff-members"] }),
+    // Also invalidate the public-facing query so the public site updates immediately.
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["staff-members"] });
+      queryClient.invalidateQueries({ queryKey: ["all-staff-members"] });
+    },
   });
 }
 
@@ -88,7 +92,10 @@ export function useArchiveStaffMember() {
         .eq("id", memberId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["staff-members"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["staff-members"] });
+      queryClient.invalidateQueries({ queryKey: ["all-staff-members"] });
+    },
   });
 }
 
@@ -103,6 +110,9 @@ export function useRestoreStaffMember() {
         .eq("id", memberId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["staff-members"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["staff-members"] });
+      queryClient.invalidateQueries({ queryKey: ["all-staff-members"] });
+    },
   });
 }
