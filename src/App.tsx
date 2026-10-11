@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HomePage } from "@/pages/HomePage";
@@ -36,6 +36,19 @@ const BudgetManagePage = lazy(() =>
 const SettingsPage = lazy(() =>
   import("@/pages/admin/SettingsPage").then((m) => ({ default: m.SettingsPage }))
 );
+
+/** Scrolls to the top on every route change. React Router keeps scroll
+ *  position by default, which would land visitors mid-page when they
+ *  follow a nav link. Skips the reset when the new URL carries a hash —
+ *  in-page anchors (e.g. the Budget section nav) need the browser's own
+ *  jump-to-anchor to win. */
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) window.scrollTo(0, 0);
+  }, [pathname, hash]);
+  return null;
+}
 
 /** Public site chrome: header, footer, skip link. */
 function PublicLayout() {
@@ -169,6 +182,7 @@ export function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AppRoutes />
     </BrowserRouter>
   );

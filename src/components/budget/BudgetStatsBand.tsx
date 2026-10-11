@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Container } from "@/components/ui/Container";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 import type { BudgetStat } from "@/types";
@@ -33,7 +34,9 @@ export function BudgetStatsBand({ stats }: { stats: BudgetStat[] }) {
             return (
               <motion.div key={stat.label} variants={fadeUp} className="flex flex-col items-center gap-2 sm:px-4">
                 <Icon className="h-6 w-6 text-secondary-300" aria-hidden="true" strokeWidth={1.75} />
-                <dd className="text-heading text-white">{stat.value}</dd>
+                <dd className="text-heading text-white">
+                  <AnimatedNumber value={stat.value} />
+                </dd>
                 <dt className="text-small font-medium uppercase tracking-widest text-secondary-light">
                   {stat.label}
                 </dt>

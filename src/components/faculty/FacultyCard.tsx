@@ -15,7 +15,7 @@ import type { StaffMember } from "@/lib/data/publicStaff";
  */
 export function FacultyCard({ member }: { member: StaffMember }) {
   return (
-    <article className="group overflow-hidden rounded-card border border-border bg-white transition-shadow duration-200 hover:shadow-md">
+    <article className="group overflow-hidden rounded-card border border-border bg-white transition-[transform,box-shadow] duration-300 ease-apple hover:-translate-y-1 hover:shadow-md">
       <div className="aspect-[4/5] w-full overflow-hidden">
         {member.photo_path ? (
           <img

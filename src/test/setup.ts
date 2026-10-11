@@ -15,3 +15,21 @@ import { cleanup } from "@testing-library/react";
 afterEach(() => {
   cleanup();
 });
+
+// jsdom has no IntersectionObserver, but framer-motion's whileInView /
+// useInView need one to exist (Footer reveal, AnimatedNumber count-up).
+// A no-op stub is enough: these components never fire their callbacks
+// in tests, which is also the desired behavior — animations stay in
+// their "show" state assertions rather than depending on timing.
+if (typeof IntersectionObserver === "undefined") {
+  class IntersectionObserverStub {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  }
+  (globalThis as Record<string, unknown>).IntersectionObserver =
+    IntersectionObserverStub;
+}

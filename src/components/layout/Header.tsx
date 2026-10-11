@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavBar } from "./NavBar";
 import { MobileNav } from "./MobileNav";
 import { Container } from "@/components/ui/Container";
@@ -20,8 +21,24 @@ import { SchoolBadge } from "@/components/ui/SchoolBadge";
  * hover-grow -> removed (Apple's bar doesn't react to hover at all).
  */
 export function Header() {
+  // Deepen the frosted glass once the page has scrolled — the bar gains
+  // a touch more presence over moving content without a drop shadow
+  // (a shadow would read as a floating card; see the design note above).
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-[1000] border-b border-black/[0.06] bg-white/70 backdrop-blur-xl backdrop-saturate-[180%]">
+    <header
+      className={`sticky top-0 z-[1000] border-b backdrop-blur-xl backdrop-saturate-[180%] transition-[background-color,border-color] duration-300 ease-apple ${
+        scrolled ? "border-black/10 bg-white/90" : "border-black/[0.06] bg-white/70"
+      }`}
+    >
       <Container className="flex h-16 items-center justify-between md:h-[68px]">
         {/* LEFT: school identity */}
         <a href="/" className="flex items-center gap-2.5">

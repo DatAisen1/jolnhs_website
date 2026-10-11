@@ -1,5 +1,7 @@
 import type { LucideIcon } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { heroChild, heroReveal } from "@/lib/motion";
 
 interface PageHeroPhoto {
   /** Alt text the eventual real photo will use. */
@@ -54,6 +56,8 @@ export function PageHero({
   watermarkIcon: WatermarkIcon,
   overlayVariant = "flat",
 }: PageHeroProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-primary-700 py-16 sm:min-h-[400px]">
       {photo ? (
@@ -71,24 +75,48 @@ export function PageHero({
           )}
         </>
       ) : WatermarkIcon ? (
-        <WatermarkIcon
-          className="pointer-events-none absolute -right-8 -top-8 h-64 w-64 text-white/10 sm:h-80 sm:w-80"
-          aria-hidden="true"
-          strokeWidth={1}
-        />
+        /* Slow ambient drift on the watermark — enough to feel alive
+           next to the entrance stagger, quiet enough not to compete
+           with the headline. Frozen under prefers-reduced-motion. */
+        <motion.div
+          className="pointer-events-none absolute -right-8 -top-8"
+          animate={shouldReduceMotion ? undefined : { y: [0, -10, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <WatermarkIcon
+            className="h-64 w-64 text-white/10 sm:h-80 sm:w-80"
+            aria-hidden="true"
+            strokeWidth={1}
+          />
+        </motion.div>
       ) : null}
 
-      <div className="relative px-6 text-center text-white">
+      {/* Same eyebrow→title→description stagger as the homepage hero —
+          interior pages compose the same way instead of appearing as one
+          static block. */}
+      <motion.div
+        variants={heroReveal}
+        initial={shouldReduceMotion ? "show" : "hidden"}
+        animate="show"
+        className="relative px-6 text-center text-white"
+      >
         {eyebrow ? (
-          <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light">
+          <motion.p
+            variants={heroChild}
+            className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light"
+          >
             {eyebrow}
-          </p>
+          </motion.p>
         ) : null}
-        <h1 className="text-heading sm:text-hero">{title}</h1>
+        <motion.h1 variants={heroChild} className="text-heading sm:text-hero">
+          {title}
+        </motion.h1>
         {description ? (
-          <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">{description}</p>
+          <motion.p variants={heroChild} className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">
+            {description}
+          </motion.p>
         ) : null}
-      </div>
+      </motion.div>
     </section>
   );
 }

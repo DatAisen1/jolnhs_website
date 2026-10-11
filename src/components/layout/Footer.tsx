@@ -1,7 +1,9 @@
 import { MapPin, Mail, FacebookIcon, Clock } from "lucide-react";
 import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SchoolBadge } from "@/components/ui/SchoolBadge";
+import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 import { navigation } from "@/data/navigation";
 import { tagline } from "@/data/tagline";
 import { useSiteSettings, getSettingValue, parseOfficeHours } from "@/lib/data/siteSettings";
@@ -52,6 +54,7 @@ function IconBadge({ children }: { children: ReactNode }) {
  */
 export function Footer() {
   const { data: siteSettings = [] } = useSiteSettings();
+  const shouldReduceMotion = useReducedMotion();
   
   // Extract commonly used settings (use the same keys as admin)
   const address = getSettingValue(siteSettings, "address");
@@ -79,9 +82,18 @@ export function Footer() {
       <div aria-hidden="true" className="h-[3px] w-full bg-gradient-to-r from-primary-400 via-secondary-300 to-primary-400" />
 
       <Container className="py-14">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[auto_1fr_1fr_1fr]">
+        {/* Columns stagger in on first scroll-into-view — the footer is
+            the last thing a visitor sees, so the quiet reveal gives the
+            page a finished "closing credits" feel instead of a hard cut. */}
+        <motion.div
+          variants={staggerContainer}
+          initial={shouldReduceMotion ? "show" : "hidden"}
+          whileInView="show"
+          viewport={viewportOnce}
+          className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[auto_1fr_1fr_1fr]"
+        >
           {/* Identity: badges, school name, tagline */}
-          <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left lg:pr-8 lg:border-r lg:border-white/10">
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left lg:pr-8 lg:border-r lg:border-white/10">
             <div className="flex gap-3">
               <SchoolBadge
                 label="JO"
@@ -106,10 +118,10 @@ export function Footer() {
             <p className="max-w-[220px] text-small italic text-secondary-100">
               {siteTagline}
             </p>
-          </div>
+          </motion.div>
 
           {/* Quick Links */}
-          <nav aria-label="Footer">
+          <motion.nav variants={fadeUp} aria-label="Footer">
             <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
               Quick Links
             </p>
@@ -125,10 +137,10 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </nav>
+          </motion.nav>
 
           {/* Address + social + email */}
-          <div>
+          <motion.div variants={fadeUp}>
             <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
               Address
             </p>
@@ -172,10 +184,10 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Office Hours */}
-          <div>
+          <motion.div variants={fadeUp}>
             <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
               Office Hours
             </p>
@@ -192,8 +204,8 @@ export function Footer() {
                 </div>
               ))}
             </dl>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Map — full width so a 300px-tall embed isn't squeezed into a
             narrow grid column. The "Get Directions" link gives

@@ -36,7 +36,7 @@ export function ImagePlaceholder({
       aria-label={alt}
       className={`flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-card border-2 border-dashed border-border bg-background text-center ${className}`}
     >
-      <ImageIcon className="h-10 w-10 text-text-secondary/60" aria-hidden="true" />
+      <ImageIcon className="h-10 w-10 text-text-secondary/60 motion-safe:animate-pulse" aria-hidden="true" />
       <p className="text-small font-medium text-text-secondary">{label}</p>
       <p className="text-small text-text-secondary/60">
         Recommended size: {recommendedSize}
