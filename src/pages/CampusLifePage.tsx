@@ -3,6 +3,8 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { PageHero } from "@/components/ui/PageHero";
+import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { CampusLifeCard } from "@/components/campusLife/CampusLifeCard";
@@ -38,21 +40,15 @@ export function CampusLifePage() {
 
   return (
     <>
-      <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-primary-700 py-16 sm:min-h-[420px]">
-        <ImagePlaceholder
-          alt="JOLNHS students at a campus event"
-          label="Insert Campus Life Hero Photo Here"
-          recommendedSize="1920 x 900"
-          className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-primary/60" />
-        <div className="relative px-6 text-center text-white">
-          <h1 className="text-heading sm:text-hero">{campusLifeOverview.heroHeading}</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">
-            {campusLifeOverview.heroDescription}
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title={campusLifeOverview.heroHeading}
+        description={campusLifeOverview.heroDescription}
+        photo={{
+          alt: "JOLNHS students at a campus event",
+          label: "Insert Campus Life Hero Photo Here",
+          recommendedSize: "1920 x 900",
+        }}
+      />
 
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Campus Life" }]} />
       <CampusLifeSubNav current="/campus-life" />
@@ -86,11 +82,9 @@ export function CampusLifePage() {
       <section className="bg-background py-section-sm md:py-section">
         <Container>
           {isLoading ? (
-            <p className="text-center text-body text-text-secondary">Loading campus life sections...</p>
+            <PageStatus variant="loading" message="Loading campus life sections..." />
           ) : error ? (
-            <p className="text-center text-body text-error">
-              Failed to load campus life sections. Please try again later.
-            </p>
+            <PageStatus variant="error" message="Failed to load campus life sections. Please try again later." />
           ) : (
             <>
               <motion.h2

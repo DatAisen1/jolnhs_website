@@ -34,11 +34,11 @@ export function ImagePlaceholder({
     <div
       role="img"
       aria-label={alt}
-      className={`flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-card border-2 border-dashed border-slate-300 bg-slate-100 text-center ${className}`}
+      className={`flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-card border-2 border-dashed border-border bg-background text-center ${className}`}
     >
-      <ImageIcon className="h-10 w-10 text-slate-400" aria-hidden="true" />
-      <p className="text-small font-medium text-slate-500">{label}</p>
-      <p className="text-small text-slate-400">
+      <ImageIcon className="h-10 w-10 text-text-secondary/60" aria-hidden="true" />
+      <p className="text-small font-medium text-text-secondary">{label}</p>
+      <p className="text-small text-text-secondary/60">
         Recommended size: {recommendedSize}
       </p>
     </div>

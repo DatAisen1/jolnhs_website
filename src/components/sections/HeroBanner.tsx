@@ -54,6 +54,15 @@ export function HeroBanner() {
 
   return (
     <section className="relative h-[560px] w-full overflow-hidden bg-primary-700 md:h-[680px] lg:h-[760px]">
+      {/* Brand-depth wash behind the video/poster — only visible when
+          neither asset exists yet (hero.mp4 is still pending from the
+          school), so the interim state reads as a designed gradient
+          hero rather than a flat navy block. An opaque <video>/<img>
+          covers it completely once real media is in place. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-br from-primary-600/45 via-primary-700 to-primary-900"
+      />
       {prefersReducedMotion ? (
         <img
           src="/images/hero-poster.jpg"

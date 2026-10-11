@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
+import { PageHero } from "@/components/ui/PageHero";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { getSettingValue, parseOfficeHours, useSiteSettings } from "@/lib/data/siteSettings";
 
@@ -33,6 +34,11 @@ export function ContactPage() {
 
   return (
     <>
+      <PageHero
+        eyebrow="Get in touch"
+        title="Contact Us"
+        description="Reach Julia Ortiz Luis National High School for inquiries, concerns, or visits."
+      />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
@@ -41,8 +47,6 @@ export function ContactPage() {
       />
       <section className="bg-white py-section-sm md:py-section">
         <Container>
-          <h1 className="text-heading font-bold text-text-primary">Contact Us</h1>
-
           {isLoading ? (
             <p role="status" className="mt-8 text-body text-text-secondary">
               Loading contact information...

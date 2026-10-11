@@ -4,7 +4,8 @@ import { Search, X } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { PageHero } from "@/components/ui/PageHero";
+import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
@@ -100,25 +101,16 @@ export function FacultyStaffPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-primary py-16 text-center sm:py-20">
-        <ImagePlaceholder
-          alt="JOLNHS faculty in a staff meeting"
-          label="Insert Faculty & Staff Header Photo Here"
-          recommendedSize="1920 x 600"
-          className="absolute inset-0 h-full rounded-none border-none bg-primary text-secondary-100"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-primary/75" />
-        <Container className="relative">
-          <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light">
-            About JOLNHS
-          </p>
-          <h1 className="text-heading text-white">Faculty &amp; Staff</h1>
-          <p className="mx-auto mt-4 max-w-xl text-body text-secondary-50">
-            Meet the administrators, teachers, and staff members who make
-            JOLNHS run.
-          </p>
-        </Container>
-      </section>
+      <PageHero
+        eyebrow="About JOLNHS"
+        title="Faculty & Staff"
+        description="Meet the administrators, teachers, and staff members who make JOLNHS run."
+        photo={{
+          alt: "JOLNHS faculty in a staff meeting",
+          label: "Insert Faculty & Staff Header Photo Here",
+          recommendedSize: "1920 x 600",
+        }}
+      />
 
       <Breadcrumbs
         items={[
@@ -132,11 +124,9 @@ export function FacultyStaffPage() {
       <section className="bg-white py-section-sm md:py-section">
         <Container>
           {isLoading ? (
-            <p className="mt-16 text-center text-body text-text-secondary">Loading faculty & staff...</p>
+            <PageStatus variant="loading" message="Loading faculty & staff..." />
           ) : error ? (
-            <p className="mt-16 text-center text-body text-error">
-              Failed to load faculty & staff. Please try again later.
-            </p>
+            <PageStatus variant="error" message="Failed to load faculty & staff. Please try again later." />
           ) : (
             <>
               <div className="mx-auto mb-8 max-w-md">

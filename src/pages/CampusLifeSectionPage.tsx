@@ -3,6 +3,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { PageHero } from "@/components/ui/PageHero";
+import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
@@ -65,22 +67,13 @@ function mapSectionDetailWithUIProperties(detail: CampusLifeSectionDetail): Camp
  * photos belong.
  */
 function SectionHero({ section }: { section: CampusLifeSection }) {
-  const Icon = section.icon;
   return (
-    <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-primary-700 py-16 sm:min-h-[400px]">
-      <Icon
-        className="pointer-events-none absolute -right-8 -top-8 h-64 w-64 text-white/10 sm:h-80 sm:w-80"
-        aria-hidden="true"
-        strokeWidth={1}
-      />
-      <div className="relative px-6 text-center text-white">
-        <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light">
-          {section.eyebrow}
-        </p>
-        <h1 className="text-heading sm:text-hero">{section.name}</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">{section.tagline}</p>
-      </div>
-    </section>
+    <PageHero
+      eyebrow={section.eyebrow}
+      title={section.name}
+      description={section.tagline}
+      watermarkIcon={section.icon}
+    />
   );
 }
 
@@ -114,7 +107,7 @@ export function CampusLifeSectionPage() {
   if (isLoading) {
     return (
       <Container className="flex min-h-[50vh] items-center justify-center py-section-sm">
-        <p className="text-body text-text-secondary">Loading section...</p>
+        <PageStatus variant="loading" message="Loading section..." />
       </Container>
     );
   }

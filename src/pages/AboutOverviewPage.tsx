@@ -3,46 +3,34 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { PageHero } from "@/components/ui/PageHero";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
-import { staffMembers } from "@/data/facultyStaff";
 import { aboutOverview } from "@/data/aboutOverview";
 import { quickFacts } from "@/data/quickFacts";
+import { useAllStaffMembers } from "@/lib/data/publicStaff";
 import { fadeUp, fadeIn, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
-import type { StaffMember } from "@/lib/data/publicStaff";
-
-// Preview 3 administrators here rather than duplicating staff content —
-// the full roster (and every other category) lives on FacultyStaffPage.
-// Map static data to match Supabase StaffMember type for FacultyCard compatibility.
-const teamPreview: StaffMember[] = staffMembers
-  .filter((m) => m.category === "administrators")
-  .slice(0, 3)
-  .map((m) => ({
-    id: m.id,
-    name: m.name,
-    position: m.position,
-    category: m.category as StaffMember["category"],
-    photo_path: m.photo || null,
-    sort_order: 0,
-    is_archived: false,
-    created_at: "",
-    updated_at: "",
-  }));
 
 // Grid columns follow how many preview cards actually exist, so a
 // partially-filled roster (e.g. 2 admins entered so far) doesn't leave a
 // visibly empty column next to real cards — it just shows 2 balanced
 // columns until a 3rd admin is added to the data.
-const teamGridColsClass =
-  teamPreview.length >= 3
-    ? "grid-cols-2 sm:grid-cols-3"
-    : teamPreview.length === 2
-      ? "grid-cols-2"
-      : "grid-cols-1";
+function teamGridColsClass(count: number): string {
+  if (count >= 3) return "grid-cols-2 sm:grid-cols-3";
+  if (count === 2) return "grid-cols-2";
+  return "grid-cols-1";
+}
 
 export function AboutOverviewPage() {
   usePageTitle("About JOLNHS");
+
+  // Preview up to 3 administrators from the live Supabase roster — the
+  // full roster (and every other category) lives on FacultyStaffPage.
+  const { data: staffMembers = [] } = useAllStaffMembers();
+  const teamPreview = staffMembers
+    .filter((m) => m.category === "administrators")
+    .slice(0, 3);
 
   // Drives every scroll-in animation below. When the user has OS-level
   // "reduce motion" on, every motion element starts in its "show" state
@@ -52,26 +40,15 @@ export function AboutOverviewPage() {
 
   return (
     <>
-      {/* Photo hero band.
-          min-h- (not a fixed h-) on purpose: the heading + supporting
-          description is variable-length copy. A fixed height clips long
-          content behind `overflow-hidden` on narrow viewports; min-height
-          lets the band grow with its content instead. */}
-      <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-primary-700 py-16 sm:min-h-[400px]">
-        <ImagePlaceholder
-          alt="JOLNHS campus and students"
-          label="Insert Overview Hero Photo Here"
-          recommendedSize="1920 x 900"
-          className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-primary/60" />
-        <div className="relative px-6 text-center text-white">
-          <h1 className="text-heading sm:text-hero">{aboutOverview.heroHeading}</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-body text-secondary-100">
-            {aboutOverview.heroDescription}
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title={aboutOverview.heroHeading}
+        description={aboutOverview.heroDescription}
+        photo={{
+          alt: "JOLNHS campus and students",
+          label: "Insert Overview Hero Photo Here",
+          recommendedSize: "1920 x 900",
+        }}
+      />
 
       <Breadcrumbs
         items={[
@@ -184,7 +161,7 @@ export function AboutOverviewPage() {
             initial={initial}
             whileInView="show"
             viewport={viewportOnce}
-            className={`mt-10 grid gap-6 ${teamGridColsClass}`}
+            className={`mt-10 grid gap-6 ${teamGridColsClass(teamPreview.length)}`}
           >
             {teamPreview.map((member) => (
               <motion.div key={member.id} variants={scaleIn}>

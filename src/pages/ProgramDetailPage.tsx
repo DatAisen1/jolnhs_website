@@ -4,7 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { PageHero } from "@/components/ui/PageHero";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AcademicsSubNav } from "@/components/ui/AcademicsSubNav";
 import { academicPrograms } from "@/data/academics";
@@ -23,33 +23,20 @@ import type { AcademicProgram } from "@/types";
  */
 function ProgramHero({ program }: { program: AcademicProgram }) {
   return (
-    <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-primary-700 py-16 sm:min-h-[400px]">
-      {program.visual.kind === "photo" ? (
-        <>
-          <ImagePlaceholder
-            alt={`Photo of ${program.name} students`}
-            label={`Insert ${program.name} Hero Photo Here`}
-            recommendedSize={program.visual.imageSize}
-            className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-primary/60" />
-        </>
-      ) : (
-        <program.visual.icon
-          className="pointer-events-none absolute -right-8 -top-8 h-64 w-64 text-white/10 sm:h-80 sm:w-80"
-          aria-hidden="true"
-          strokeWidth={1}
-        />
-      )}
-
-      <div className="relative px-6 text-center text-white">
-        <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-secondary-light">
-          {program.eyebrow}
-        </p>
-        <h1 className="text-heading sm:text-hero">{program.name}</h1>
-        <p className="mx-auto mt-2 max-w-2xl text-body text-secondary-100">{program.fullName}</p>
-      </div>
-    </section>
+    <PageHero
+      eyebrow={program.eyebrow}
+      title={program.name}
+      description={program.fullName}
+      {...(program.visual.kind === "photo"
+        ? {
+            photo: {
+              alt: `Photo of ${program.name} students`,
+              label: `Insert ${program.name} Hero Photo Here`,
+              recommendedSize: program.visual.imageSize,
+            },
+          }
+        : { watermarkIcon: program.visual.icon })}
+    />
   );
 }
 

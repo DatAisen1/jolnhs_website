@@ -37,14 +37,6 @@ const SettingsPage = lazy(() =>
   import("@/pages/admin/SettingsPage").then((m) => ({ default: m.SettingsPage }))
 );
 
-function StubPage({ title }: { title: string }) {
-  return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <p className="text-subtitle text-text-secondary">{title} — coming soon</p>
-    </div>
-  );
-}
-
 /** Public site chrome: header, footer, skip link. */
 function PublicLayout() {
   return (
@@ -82,7 +74,7 @@ export function AppRoutes() {
         <Route path="/about" element={<AboutOverviewPage />} />
         <Route path="/about/overview" element={<AboutOverviewPage />} />
         <Route path="/about/faculty-staff" element={<FacultyStaffPage />} />
-        <Route path="/about/*" element={<StubPage title="About JOLNHS" />} />
+        <Route path="/about/*" element={<NotFoundPage />} />
         <Route path="/academics" element={<AcademicsPage />} />
         <Route path="/academics/:slug" element={<ProgramDetailPage />} />
         <Route path="/campus-life" element={<CampusLifePage />} />
