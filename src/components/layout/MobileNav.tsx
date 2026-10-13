@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { navigation } from "@/data/navigation";
 
 /**
@@ -126,21 +126,21 @@ export function MobileNav() {
                               <ul className="ml-4 flex flex-col gap-1 pb-2">
                                 {item.dropdown.map((link) => (
                                   <li key={link.href}>
-                                    <a
-                                      href={link.href}
+                                    <Link
+                                      to={link.href}
                                       onClick={() => setIsOpen(false)}
                                       className="block rounded-full px-3 py-2 text-body text-text-secondary transition-colors hover:bg-primary-50 hover:text-primary"
                                     >
                                       {link.label}
-                                    </a>
+                                    </Link>
                                   </li>
                                 ))}
                               </ul>
                             )}
                           </>
                         ) : (
-                          <a
-                            href={item.href}
+                          <Link
+                            to={item.href}
                             aria-current={isActive ? "page" : undefined}
                             onClick={() => setIsOpen(false)}
                             className={`block rounded-full px-3 py-2 text-body font-semibold transition-colors ${
@@ -148,7 +148,7 @@ export function MobileNav() {
                             }`}
                           >
                             {item.label}
-                          </a>
+                          </Link>
                         )}
                       </li>
                     );

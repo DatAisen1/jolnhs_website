@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { PageHero } from "@/components/ui/PageHero";
 import { PageStatus } from "@/components/ui/PageStatus";
+import { SkeletonGrid } from "@/components/ui/SkeletonGrid";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { CampusLifeCard } from "@/components/campusLife/CampusLifeCard";
@@ -82,7 +83,11 @@ export function CampusLifePage() {
       <section className="bg-background py-section-sm md:py-section">
         <Container>
           {isLoading ? (
-            <PageStatus variant="loading" message="Loading campus life sections..." />
+            <SkeletonGrid
+              count={4}
+              imageAspect=""
+              gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            />
           ) : error ? (
             <PageStatus variant="error" message="Failed to load campus life sections. Please try again later." />
           ) : (

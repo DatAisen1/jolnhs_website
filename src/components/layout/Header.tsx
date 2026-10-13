@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { NavBar } from "./NavBar";
 import { MobileNav } from "./MobileNav";
 import { Container } from "@/components/ui/Container";
@@ -41,14 +42,14 @@ export function Header() {
     >
       <Container className="flex h-16 items-center justify-between md:h-[68px]">
         {/* LEFT: school identity */}
-        <a href="/" className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5">
           <SchoolBadge label="JO" ariaLabel="JOLNHS crest" size={38} src="/images/logo-jolnhs.png" />
           <span className="hidden text-[13px] font-semibold leading-tight tracking-tight text-primary sm:block">
             Julia Ortiz Luis
             <br />
             National High School
           </span>
-        </a>
+        </Link>
 
         {/* CENTER: primary navigation */}
         <NavBar />

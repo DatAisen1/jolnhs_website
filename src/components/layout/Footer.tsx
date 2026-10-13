@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { MapPin, Mail, FacebookIcon, Clock } from "lucide-react";
 import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -128,12 +129,12 @@ export function Footer() {
             <ul className="mt-4 flex flex-col gap-2 text-body">
               {footerQuickLinks.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className={`text-secondary-100 transition-colors hover:text-white ${focusRing}`}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

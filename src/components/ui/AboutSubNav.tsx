@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const links = [
   { label: "Overview", href: "/about/overview" },
   { label: "Faculty & Staff", href: "/about/faculty-staff" },
@@ -24,9 +26,9 @@ export function AboutSubNav({ current }: { current: string }) {
         {links.map((link) => {
           const isActive = link.href === current;
           return (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
+              to={link.href}
               aria-current={isActive ? "page" : undefined}
               className={`whitespace-nowrap border-b-2 px-4 py-3 text-small font-medium transition-colors ${
                 isActive
@@ -35,7 +37,7 @@ export function AboutSubNav({ current }: { current: string }) {
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           );
         })}
       </div>

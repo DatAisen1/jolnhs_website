@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { GalleryComingSoon } from "./GalleryComingSoon";
 import { scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
 import type { CampusLifeGalleryItem } from "@/types";
 
@@ -30,6 +31,14 @@ export function GalleryGrid({
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
+  // Until real photos exist, nothing in the gallery set has a `src` —
+  // instead of a wall of developer-facing "Insert Photo" tiles, render
+  // the designed coming-soon panel (points visitors at Facebook, where
+  // real school photos already live).
+  if (items.length === 0 || !items.some((item) => item.src)) {
+    return <GalleryComingSoon />;
+  }
+
   // No explicit density passed in — pick it from item count so every call
   // site doesn't have to re-derive the same "more items = more columns"
   // rule (e.g. section detail pages with a big vs. small gallery).
@@ -52,12 +61,21 @@ export function GalleryGrid({
     >
       {items.map((item) => (
         <motion.div key={item.label} variants={scaleIn}>
-          <ImagePlaceholder
-            alt={item.label}
-            label={item.label}
-            recommendedSize={item.imageSize}
-            className="aspect-[4/3] min-h-0"
-          />
+          {item.src ? (
+            <img
+              src={item.src}
+              alt={item.label}
+              loading="lazy"
+              className="aspect-[4/3] min-h-0 w-full rounded-card object-cover"
+            />
+          ) : (
+            <ImagePlaceholder
+              alt={item.label}
+              label={item.label}
+              recommendedSize={item.imageSize}
+              className="aspect-[4/3] min-h-0"
+            />
+          )}
         </motion.div>
       ))}
     </motion.div>

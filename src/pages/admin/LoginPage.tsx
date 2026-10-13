@@ -114,9 +114,9 @@ export function LoginPage() {
       className="
   min-h-screen
   bg-gradient-to-br
-  from-[#071A3D]
-  via-[#1455A0]
-  to-[#B9E6FF]
+  from-primary-900
+  via-primary-600
+  to-secondary-300
   p-4
   md:p-6
 "
@@ -134,10 +134,10 @@ export function LoginPage() {
             max-w-[900px]
             overflow-hidden
             rounded-2xl
-            bg-[#F4F8FF]
+            bg-background
 
-            /* More visible blue-tinted shadow */
-            shadow-[0_18px_45px_rgba(15,64,120,0.28),0_8px_18px_rgba(15,64,120,0.16)]
+            /* More visible blue-tinted shadow (primary-800 RGB) */
+            shadow-[0_18px_45px_rgba(10,23,48,0.28),0_8px_18px_rgba(10,23,48,0.16)]
 
             md:min-h-[430px]
             md:grid-cols-[1.08fr_0.92fr]
@@ -176,9 +176,9 @@ export function LoginPage() {
                 absolute
                 inset-0
                 bg-gradient-to-t
-                from-blue-950/90
-                via-blue-900/45
-                to-blue-700/10
+                from-primary-900/90
+                via-primary-800/45
+                to-primary-600/10
               "
             />
 
@@ -198,7 +198,7 @@ export function LoginPage() {
                   font-semibold
                   uppercase
                   tracking-[0.2em]
-                  text-blue-200
+                  text-secondary-300
                 "
               >
                 Content Management
@@ -219,7 +219,7 @@ export function LoginPage() {
                 National High School
               </h2>
 
-              <p className="mt-2 text-sm text-blue-100">
+              <p className="mt-2 text-sm text-secondary-100">
                 Sto. Domingo, Nueva Ecija
               </p>
             </div>
@@ -236,7 +236,7 @@ export function LoginPage() {
                 z-20
                 h-[110%]
                 w-[90px]
-                bg-[#F4F8FF]
+                bg-background
               "
               style={{
                 clipPath:
@@ -255,7 +255,7 @@ export function LoginPage() {
                 h-[50%]
                 w-[75px]
                 rounded-full
-                bg-[#F4F8FF]
+                bg-background
               "
             />
           </section>
@@ -271,7 +271,7 @@ export function LoginPage() {
               min-h-[430px]
               items-center
               justify-center
-              bg-[#F4F8FF]
+              bg-background
               px-7
               py-8
 
@@ -499,7 +499,7 @@ export function LoginPage() {
                 {error && !locked && (
                   <p
                     role="alert"
-                    className="text-xs text-red-600"
+                    className="text-xs text-status-error-text"
                   >
                     {error}
                   </p>
@@ -509,7 +509,7 @@ export function LoginPage() {
                 {locked && (
                   <p
                     role="alert"
-                    className="text-xs text-red-600"
+                    className="text-xs text-status-error-text"
                   >
                     Too many failed attempts. Try again in{" "}
                     {lockRemaining}s.

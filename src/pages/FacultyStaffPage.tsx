@@ -6,6 +6,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { PageStatus } from "@/components/ui/PageStatus";
+import { SkeletonGrid } from "@/components/ui/SkeletonGrid";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
@@ -124,7 +125,7 @@ export function FacultyStaffPage() {
       <section className="bg-white py-section-sm md:py-section">
         <Container>
           {isLoading ? (
-            <PageStatus variant="loading" message="Loading faculty & staff..." />
+            <SkeletonGrid count={8} gridClassName="mt-10 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" />
           ) : error ? (
             <PageStatus variant="error" message="Failed to load faculty & staff. Please try again later." />
           ) : (

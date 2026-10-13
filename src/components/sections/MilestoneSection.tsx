@@ -37,11 +37,7 @@ export function MilestoneSection() {
             {milestone.paragraph}
           </p>
 
-          <Button
-            variant="outline"
-            href="/about"
-            className="mt-8 !border-primary !text-primary hover:!bg-primary hover:!text-white"
-          >
+          <Button variant="outlinePrimary" href="/about" className="mt-8">
             {milestone.buttonLabel}
           </Button>
         </motion.div>

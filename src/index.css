@@ -7,9 +7,11 @@
     scroll-behavior: smooth;
   }
 
-  /* Visible, high-contrast focus ring for keyboard users (WCAG 2.4.7) */
+  /* Visible, high-contrast focus ring for keyboard users (WCAG 2.4.7).
+     Uses primary-600 (the brand hover blue), not Tailwind's default
+     blue-500 — the ring stays inside the site's own tonal family. */
   :focus-visible {
-    outline: 3px solid #3b82f6;
+    outline: 3px solid #2955a3;
     outline-offset: 2px;
     border-radius: 4px;
   }

@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { BackToTop } from "@/components/ui/BackToTop";
 import { HomePage } from "@/pages/HomePage";
 import { FacultyStaffPage } from "@/pages/FacultyStaffPage";
 import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
@@ -63,6 +64,7 @@ function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

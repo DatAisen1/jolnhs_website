@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { NavItem } from "@/types";
 
@@ -66,8 +66,8 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
 
   if (!item.dropdown) {
     return (
-      <a
-        href={item.href}
+      <Link
+        to={item.href}
         onMouseEnter={onHoverStart}
         aria-current={isActive ? "page" : undefined}
         className="relative block rounded-full px-4 py-2"
@@ -87,7 +87,7 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
         <span className={`relative z-10 text-body font-semibold transition-colors ${textColor}`}>
           {item.label}
         </span>
-      </a>
+      </Link>
     );
   }
 
@@ -115,13 +115,13 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
           "Academics" -> /academics) — it's a real link, not just a
           dropdown trigger. Hovering the whole group still opens the
           submenu preview via onMouseEnter above. */}
-      <a
-        href={item.href}
+      <Link
+        to={item.href}
         aria-current={isActive ? "page" : undefined}
         className={`relative z-10 rounded-full py-2 pl-4 pr-1 text-body font-semibold transition-colors ${textColor}`}
       >
         {item.label}
-      </a>
+      </Link>
 
       {/* Chevron is its OWN button, separate from the label link, so
           keyboard/touch users can open the submenu without navigating
@@ -164,13 +164,13 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
         }`}
       >
         {item.dropdown.map((link) => (
-          <a
+          <Link
             key={link.href}
-            href={link.href}
+            to={link.href}
             className="block px-4 py-2 text-body text-text-primary transition-colors hover:bg-primary-50 hover:text-primary"
           >
             {link.label}
-          </a>
+          </Link>
         ))}
       </div>
     </div>

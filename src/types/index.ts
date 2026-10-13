@@ -91,6 +91,10 @@ export interface CampusLifeHighlight {
 export interface CampusLifeGalleryItem {
   label: string;
   imageSize: string;
+  /** Real photo URL once one exists — absent means this slot is still
+   * a placeholder the gallery renders as "coming soon" rather than a
+   * developer-facing annotation tile. */
+  src?: string;
 }
 
 export interface CampusLifeSection {

@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
 import { PageStatus } from "@/components/ui/PageStatus";
+import { SkeletonRows } from "@/components/ui/SkeletonGrid";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { BudgetSectionNav } from "@/components/budget/BudgetSectionNav";
 import { BudgetStatsBand } from "@/components/budget/BudgetStatsBand";
@@ -91,7 +92,7 @@ export function BudgetPage() {
   // the data sections swap to a status message while loading, on error,
   // or before any fiscal year has been marked current.
   const dataStatus = isLoading ? (
-    <PageStatus variant="loading" message="Loading budget data..." />
+    <div className="mt-10"><SkeletonRows count={4} /></div>
   ) : error ? (
     <PageStatus variant="error" message="We couldn't load the budget information. Please try again later." />
   ) : !budgetData ? (

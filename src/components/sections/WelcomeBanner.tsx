@@ -44,7 +44,7 @@ export function WelcomeBanner() {
           whileInView="show"
           viewport={viewportOnce}
           transition={{ delay: shouldReduceMotion ? 0 : 0.15 }}
-          className="overflow-hidden rounded-3xl bg-slate-100"
+          className="overflow-hidden rounded-3xl bg-primary-50"
         >
           <img
             src="/facilities/welcomehome.png"

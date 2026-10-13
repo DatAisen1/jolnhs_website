@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronRight, MessageCircle, Pause, Play } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -118,16 +119,12 @@ export function HeroBanner() {
               instead of two separately-styled buttons fighting for
               attention in opposite corners of the hero. */}
           <motion.div variants={heroChild} className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <Button
-              href="/contact"
-              variant="secondary"
-              className="!gap-2 !rounded-full !border-0 !bg-white !px-6 !py-3 !text-small !text-primary transition-[filter] duration-300 ease-apple hover:!bg-white hover:brightness-95"
-            >
+            <Button href="/contact" variant="white" size="sm">
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
               Contact Us
             </Button>
-            <a
-              href="/about"
+            <Link
+              to="/about"
               className="group inline-flex items-center gap-1 text-small font-semibold text-white/90 transition-colors duration-300 ease-apple hover:text-white"
             >
               Learn more about our school
@@ -135,7 +132,7 @@ export function HeroBanner() {
                 className="h-4 w-4 transition-transform duration-300 ease-apple group-hover:translate-x-0.5"
                 aria-hidden="true"
               />
-            </a>
+            </Link>
           </motion.div>
         </motion.div>
       </Container>
