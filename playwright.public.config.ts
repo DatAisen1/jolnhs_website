@@ -16,7 +16,10 @@ for (const line of readFileSync(resolve(process.cwd(), '.env'), 'utf8').split(/\
   }
 }
 
-const baseURL = 'http://127.0.0.1:5173';
+// Default: the local dev server. Override to smoke-test any deployment:
+//   BASE_URL=https://jolnhs-website.vercel.app npx playwright test --config playwright.public.config.ts
+const baseURL = process.env.BASE_URL ?? 'http://127.0.0.1:5173';
+const isExternal = !baseURL.includes('127.0.0.1') && !baseURL.includes('localhost');
 
 export default defineConfig({
   testDir: './e2e',
@@ -37,12 +40,17 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'npm run dev -- --host 127.0.0.1 --strictPort',
-    url: baseURL,
-    // The developer's own `npm run dev` session doubles as the test
-    // target — it's already serving the real project on 5173.
-    reuseExistingServer: true,
-    timeout: 120000,
-  },
+  // No webServer when targeting a deployed site — there's nothing to boot.
+  ...(isExternal
+    ? {}
+    : {
+        webServer: {
+          command: 'npm run dev -- --host 127.0.0.1 --strictPort',
+          url: baseURL,
+          // The developer's own `npm run dev` session doubles as the test
+          // target — it's already serving the real project on 5173.
+          reuseExistingServer: true,
+          timeout: 120000,
+        },
+      }),
 });

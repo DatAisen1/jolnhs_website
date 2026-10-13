@@ -419,28 +419,34 @@
 
 ## PHASE 8 — Live Smoke Test
 
-### [ ] Public site smoke test
+### [x] Public site smoke test
 **What needs doing:** Post-deployment test of all public pages.
 
 **Area:** All public routes
+
+**Status:** Done 2025 — `e2e/public-pages.spec.ts` run against `https://jolnhs-website.vercel.app` (BASE_URL override). 30/30 pass: all routes at 3 viewports, detail pages, SPA-rewrite deep-link refresh, 404s, mobile nav, noindex, Supabase↔rendered cross-checks.
 
 **Verification:** All public pages load and function correctly on live site.
 
 ---
 
-### [ ] Admin panel smoke test
+### [~] Admin panel smoke test
 **What needs doing:** Post-deployment test of all admin pages.
 
 **Area:** All admin routes
+
+**Status:** `/admin` → `/admin/login` redirect verified on live. Remaining: owner logs in on the live site and opens each admin page (~2 min manual).
 
 **Verification:** All admin pages load and function correctly on live site.
 
 ---
 
-### [ ] CMS integration tests against live site
+### [~] CMS integration tests against live site
 **What needs doing:** Run CMS integration tests (Admin → Supabase → Public) against live site.
 
 **Area:** Staff, Campus Life, Settings, Budget
+
+**Status:** Read half verified on live (staff count, section names, settings, fiscal year label all match Supabase). Write half needs an admin session on the live site — one small edit per domain in the live admin, confirmed on the live public page.
 
 **Verification:** All CMS integration tests pass against live deployment.
 
