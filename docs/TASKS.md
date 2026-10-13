@@ -386,28 +386,32 @@
 
 ## PHASE 7 — Deployment
 
-### [ ] Git readiness
+### [x] Git readiness
 **What needs doing:** Ensure repository is ready for deployment (clean working tree, appropriate branch).
 
 **Area:** Git repository
+
+**Status:** `main` is checked out, clean, and contains all merged work. Remote push still pending owner go-ahead.
 
 **Verification:** `git status` shows clean working tree, correct branch checked out.
 
 ---
 
-### [ ] Production build
+### [x] Production build
 **What needs doing:** Generate production build.
 
 **Area:** Build process
 
-**Verification:** `npm run build` completes successfully, output in `dist/` directory.
+**Verification:** `npm run build` completes successfully — `tsc -b` + `vite build` → `dist/` (~4.5s).
 
 ---
 
-### [ ] Hosting configuration
+### [~] Hosting configuration
 **What needs doing:** Configure hosting platform (document only what repo establishes).
 
 **Area:** Deployment infrastructure
+
+**Status:** Platform chosen — **Vercel**. `vercel.json` added (SPA rewrite + security headers); Deployment Path documented in `docs/PROJECT_PLAN.md`. Remaining human steps: push `main`, import repo in Vercel, set `VITE_SUPABASE_*` env vars, update Supabase redirect URLs.
 
 **Verification:** Hosting configuration documented in PROJECT_PLAN.md (repo does not currently establish a specific platform).
 

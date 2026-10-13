@@ -171,6 +171,10 @@ npm run test:db     # Run database tests
 - `/admin/budget` — Budget management
 - `/admin/settings` — Site settings
 
+## Deployment
+
+Hosted on **Vercel** — `vercel.json` configures the Vite build and a catch-all rewrite so client-side routes work on refresh. Deploy by importing the GitHub repo in Vercel and setting `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` as project env vars. Full steps: `docs/PROJECT_PLAN.md` → Deployment Path. Post-deploy checklist: `docs/supabase-production-checklist.md`.
+
 ## Design Tokens
 
 All colors, type scale, spacing, and radii live in `tailwind.config.ts` — never hardcode a hex value or px size in a component; extend the token system instead.

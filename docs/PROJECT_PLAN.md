@@ -289,7 +289,28 @@ The website is considered **Production-Ready** when:
 
 ## Deployment Path
 
-Document only what the repo actually establishes. No hosting platform or deployment target is evidenced in the current repository structure.
+**Platform: Vercel** (owner-selected). `vercel.json` at the repo root establishes the configuration:
+
+- `framework: vite` with `buildCommand: npm run build` and `outputDirectory: dist` — Vercel auto-detects these anyway; they're pinned explicitly so a dashboard misconfiguration can't silently change them.
+- Catch-all rewrite to `/index.html` — required because React Router handles routes client-side (`/campus-life/athletes` must not 404 on refresh). Static files take precedence, so assets still serve directly.
+- Baseline security headers (`nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`).
+
+**Steps to deploy (human actions):**
+
+1. Push `main` to GitHub (`git push`) — required first, since Vercel builds from the repo.
+2. vercel.com → Add New Project → import `DatAisen1/jolnhs_website`.
+3. Set environment variables (Project → Settings → Environment Variables):
+   - `VITE_SUPABASE_URL` — same value as local `.env`
+   - `VITE_SUPABASE_ANON_KEY` — same value as local `.env`
+   (Anon key is public-by-design; it ships in the client bundle regardless.)
+4. Deploy → site live at `https://<project>.vercel.app`. Optional: attach a custom domain in Settings → Domains.
+5. In Supabase dashboard → Authentication → URL Configuration:
+   - Site URL → the production domain
+   - Redirect URLs → add `https://<domain>/admin/reset-password` and `https://<domain>/admin/login`
+   (Password-reset emails point at whatever domain is configured here.)
+6. Apply pending migrations `0011` and `0012` to the production Supabase project and provision the admin user (see `docs/supabase-production-checklist.md`).
+
+The production Supabase project is the same one `.env` already points at — there is no separate staging database.
 
 ---
 
