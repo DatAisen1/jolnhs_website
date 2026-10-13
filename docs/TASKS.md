@@ -320,55 +320,65 @@
 
 ## PHASE 6 — Testing
 
-### [ ] Run automated tests
+### [x] Run automated tests
 **What needs doing:** Ensure all automated tests pass.
 
 **Area:** Test suite
 
-**Verification:** `npm run test` passes (15 tests, 3 test files).
+**Verification:** `npm run test` passes — 28 unit/component tests. Plus `e2e/public-pages.spec.ts`: 30 Playwright checks against the live project (all public routes at desktop/tablet/mobile, detail pages, 404s, mobile nav, noindex, Supabase↔page cross-checks).
 
 ---
 
-### [ ] Manual page-by-page testing
+### [~] Manual page-by-page testing
 **What needs doing:** Manual pass through all pages on desktop, tablet, mobile.
 
 **Area:** All public and admin pages
+
+**Status:** Automated pass done — all 7 public routes render cleanly at 1280/768/375 widths, all discovered detail pages at desktop+mobile, zero console errors or broken assets. Remaining: human visual sign-off (animation feel, content fit) and admin pages (require login).
 
 **Verification:** All pages render correctly and functionally on all device sizes.
 
 ---
 
-### [ ] CMS integration test: Faculty & Staff
+### [~] CMS integration test: Faculty & Staff
 **What needs doing:** Test Admin → Supabase → Public flow for Faculty & Staff.
 
 **Area:** Staff admin + public Faculty & Staff page
+
+**Status:** Read half verified — public page renders exactly the non-archived `staff_members` count from Supabase. Write half needs an admin session: add/edit/archive one test staff member in Admin → confirm it appears/disappears publicly (or restore the e2e Supabase project so `e2e/phase2.spec.ts` can sign in).
 
 **Verification:** Add/edit/archive staff in Admin → confirm Supabase row → confirm change appears on public page.
 
 ---
 
-### [ ] CMS integration test: Campus Life
+### [~] CMS integration test: Campus Life
 **What needs doing:** Test Admin → Supabase → Public flow for Campus Life.
 
 **Area:** Campus Life admin + public Campus Life pages
+
+**Status:** Read half verified — every `campus_life_sections` row renders publicly. Write half: edit a section field or officer in Admin → confirm public change (or restore e2e project).
 
 **Verification:** Add/edit section/officer in Admin → confirm Supabase row → confirm change appears on public page.
 
 ---
 
-### [ ] CMS integration test: Settings
+### [~] CMS integration test: Settings
 **What needs doing:** Test Admin → Supabase → Public flow for Settings.
 
 **Area:** Settings admin + public site (header/footer/contact)
+
+**Status:** Read half verified — stored `address`/`email` render on the contact page. Write half: edit a setting in Admin → Settings → confirm it propagates publicly (or restore e2e project).
 
 **Verification:** Edit settings in Admin → confirm Supabase row → confirm change appears on public site.
 
 ---
 
-### [ ] CMS integration test: Budget
+### [~] CMS integration test: Budget
 **What needs doing:** Test Admin → Supabase → Public flow for Budget (after school sign-off).
 
 **Area:** Budget admin + public Budget page
+
+**Status:** Read half verified — current `budget_fiscal_years.year_label` renders publicly. Write half: add/edit a category or accomplishment in Admin → Budget → confirm public change (or restore e2e project).
 
 **Verification:** Add/edit fiscal year/category/accomplishment in Admin → confirm Supabase row → confirm change appears on public page.
 

@@ -11,7 +11,9 @@ for (const line of readFileSync(resolve(process.cwd(), '.env.e2e'), 'utf8').spli
   }
 }
 
-const baseURL = 'http://127.0.0.1:5173';
+// Port 5273 (not the usual 5173): a developer's `npm run dev` session
+// is allowed to stay up while e2e runs its own isolated server.
+const baseURL = 'http://127.0.0.1:5273';
 
 export default defineConfig({
   testDir: './e2e',
@@ -32,7 +34,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev -- --mode e2e --host 127.0.0.1 --strictPort',
+    command: 'npm run dev -- --mode e2e --host 127.0.0.1 --strictPort --port 5273',
     url: baseURL,
     reuseExistingServer: false,
     timeout: 120000,
