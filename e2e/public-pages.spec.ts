@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 /**
@@ -79,21 +80,24 @@ test('program and campus-life detail pages render (desktop + mobile)', async ({ 
 
   await page.setViewportSize(VIEWPORTS[0].size);
   await page.goto('/academics');
+  const dedupe = (list: Array<string | null>) =>
+    list.filter((v, i, a): v is string => v !== null && a.indexOf(v) === i);
   const programLinks = await page
     .locator('#main-content a[href^="/academics/"]')
-    .evaluateAll((els) => [...new Set(els.map((e) => e.getAttribute('href')!))]);
+    .evaluateAll((els) => els.map((e) => e.getAttribute('href')));
   await page.goto('/campus-life');
   const sectionLinks = await page
     .locator('#main-content a[href^="/campus-life/"]')
-    .evaluateAll((els) => [...new Set(els.map((e) => e.getAttribute('href')!))]);
+    .evaluateAll((els) => els.map((e) => e.getAttribute('href')));
 
+  const detailLinks = dedupe([...programLinks, ...sectionLinks]);
   expect(programLinks.length, 'program links found on /academics').toBeGreaterThan(0);
   expect(sectionLinks.length, 'section links found on /campus-life').toBeGreaterThan(0);
 
   const { uncaught } = watchForFailures(page);
   for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
     await page.setViewportSize(viewport.size);
-    for (const href of [...programLinks, ...sectionLinks]) {
+    for (const href of detailLinks) {
       await test.step(`${viewport.name} ${href}`, async () => {
         await page.goto(href);
         await expectHealthyPage(page, href);
