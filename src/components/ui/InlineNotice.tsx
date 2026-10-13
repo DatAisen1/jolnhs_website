@@ -11,9 +11,11 @@ interface InlineNoticeProps {
   /** Optional bold lead-in line above `message`, for the "couldn't load
    *  X" + reason pattern. Omit for a single-line notice. */
   title?: string;
-  /** When provided, renders a Retry button that calls this. */
+  /** When provided, renders an action button that calls this. */
   onRetry?: () => void;
-  /** Swaps the retry button's label to "Retrying…" and disables it. */
+  /** Action button label — defaults to "Retry". */
+  retryLabel?: string;
+  /** Swaps the action button's label to "Retrying…" and disables it. */
   retrying?: boolean;
   className?: string;
 }
@@ -52,6 +54,7 @@ export function InlineNotice({
   message,
   title,
   onRetry,
+  retryLabel = "Retry",
   retrying,
   className = "",
 }: InlineNoticeProps) {
@@ -75,7 +78,7 @@ export function InlineNotice({
           disabled={retrying}
           className="shrink-0 rounded-md border border-current px-3 py-1.5 text-small font-medium hover:bg-black/5 disabled:opacity-50"
         >
-          {retrying ? "Retrying…" : "Retry"}
+          {retrying ? "Retrying…" : retryLabel}
         </button>
       )}
     </div>

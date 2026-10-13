@@ -14,6 +14,7 @@ import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ContactPage } from "@/pages/ContactPage";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import { useNoIndex } from "@/hooks/useNoIndex";
 
 const LoginPage = lazy(() =>
   import("@/pages/admin/LoginPage").then((m) => ({ default: m.LoginPage }))
@@ -72,6 +73,9 @@ function PublicLayout() {
  *  public site. Renamed from the old `AdminLayout` to avoid colliding
  *  with the real sidebar shell (imported above) now that both exist. */
 function AdminAuthLayout() {
+  // Login and reset-password get noindex too — they're not secret, but
+  // there's no reason for a search engine to surface them.
+  useNoIndex();
   return (
     <main id="main-content" className="min-h-screen bg-background">
       <Outlet />

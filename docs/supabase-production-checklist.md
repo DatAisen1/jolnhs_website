@@ -6,7 +6,7 @@ Use this checklist when preparing the Supabase project for production deployment
 
 - [ ] **Email confirmation**: Enabled (require users to verify email addresses)
 - [ ] **Password strength**: Configured (minimum 8 characters recommended)
-- [ ] **Session duration**: Set appropriately for admin workflow (e.g., 1 week)
+- [ ] **Session duration**: Client-side policy is tab-scoped (sessionStorage) + 30-min idle sign-out. Optional extra layer on paid plans: Supabase dashboard → Auth → Sessions → time-box / inactivity timeout
 - [ ] **JWT expiry**: Verify JWT tokens expire appropriately (default is 1 hour)
 - [ ] **Email provider**: Configured (SMTP or third-party service)
 
@@ -107,6 +107,7 @@ After deploying to production:
 5. [ ] Test 404 page for invalid URLs
 6. [ ] Test login rate limiting (5 failed attempts → locked)
 7. [ ] Test admin sign out → verify can't access admin pages
+7b. [ ] Test session lifecycle: new tab requires login; 30-min idle signs out with warning; login page shows the timeout notice; `noindex` meta present on admin pages
 8. [ ] Test on mobile devices
 9. [ ] Check browser console for errors
 10. [ ] Verify HTTPS is working and certificate is valid

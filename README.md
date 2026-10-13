@@ -122,6 +122,10 @@ Admin access is gated by membership in the `admin_users` table, not just by havi
    ```
 4. Log in at `/admin/login` with that email/password.
 
+There is deliberately no login link on the public site — share `/admin/login` directly with admins (bookmark or email). Admin pages also carry a `noindex` meta tag so search engines don't surface them.
+
+**Session policy:** a login lasts only for the current browser tab — refreshing keeps you signed in, but closing the tab/browser or opening a new tab requires signing in again. After 30 minutes of inactivity you're signed out automatically (with a 1-minute warning and a "Stay signed in" button). The real security boundary remains Supabase Auth + `admin_users` + RLS, not the hidden URL.
+
 To revoke access later, `delete from admin_users where user_id = '...'` — their Auth account can keep existing, they just lose write access.
 
 ### 5. Start development server
@@ -230,6 +234,7 @@ The Campus Gallery (`/campus-life/gallery`) intentionally uses static data from 
 - Server-side login rate limiting via `record_login_attempt` RPC with caller-identity check (migration 0011)
 - `admin_users` table protected by RLS with self-row read policy (migration 0012)
 - Admin access requires membership in `admin_users` table, enforced in ProtectedRoute
+- Sessions are tab-scoped (sessionStorage) with a 30-minute idle sign-out; admin pages are `noindex`ed and no public link to `/admin/login` exists
 - Residual risk (documented, not fixed): an anonymous caller can submit *failed* attempts for another email to trigger a 60s lockout — a server/edge layer or CAPTCHA would be needed to close this
 
 ### Dependency Audit Status

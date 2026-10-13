@@ -9,7 +9,9 @@ import { Navigate, useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
+import { InlineNotice } from "@/components/ui/InlineNotice";
 import { checkLoginLock, recordLoginAttempt } from "@/lib/loginRateLimit";
+import { consumeLogoutReason, IDLE_TIMEOUT_MS } from "@/lib/idleSession";
 
 // The attempt cap and lockout window are enforced server-side in
 // record_login_attempt() (see migration 0005) — this component
@@ -26,6 +28,14 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [lockRemaining, setLockRemaining] = useState(0);
+  const [timedOut, setTimedOut] = useState(false);
+
+  // If we landed here because the idle timer signed the admin out, say
+  // so once — the flag is consumed so a later manual visit doesn't
+  // re-show a stale explanation.
+  useEffect(() => {
+    if (consumeLogoutReason() === "timeout") setTimedOut(true);
+  }, []);
 
   // Counts down the value we last got from the server. It's just a
   // display timer — if it drifts or the tab is backgrounded, the
@@ -318,6 +328,15 @@ export function LoginPage() {
                   Manage faculty, campus life, and budget content.
                 </p>
               </div>
+
+              {/* Signed out by the idle timer */}
+              {timedOut && (
+                <InlineNotice
+                  variant="info"
+                  message={`You were signed out after ${IDLE_TIMEOUT_MS / 60_000} minutes of inactivity.`}
+                  className="mb-3.5"
+                />
+              )}
 
               {/* ======================================================
                   LOGIN FORM

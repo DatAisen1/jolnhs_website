@@ -177,6 +177,19 @@
 
 ---
 
+### [~] Harden admin session lifecycle
+**What needs doing:** Keep the admin login scoped to the current browser tab (sessionStorage instead of localStorage), wipe stale long-lived tokens, sign out after 30 minutes of inactivity with a 1-minute warning, and hide admin pages from search engines via `noindex`. No public login button — `/admin/login` is shared privately.
+
+**Area:** `src/lib/supabase.ts`, `src/lib/idleSession.ts`, `src/hooks/useIdleSignOut.ts`, `src/hooks/useNoIndex.ts`, `src/components/admin/AdminLayout.tsx`, `src/pages/admin/LoginPage.tsx`, `src/context/AuthContext.tsx`
+
+**Verification:**
+- Closing the tab/browser or opening a new tab requires signing in again; refresh keeps the session
+- 30 minutes idle signs out and the login page explains why
+- `noindex` meta present on admin pages, absent on public pages
+- Manual end-to-end check against live Supabase still required
+
+---
+
 ## PHASE 3 — Visitor-Facing Pages
 
 ### [x] Implement Contact page

@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, ShieldCheck, ClipboardList } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useIdleSignOut } from "@/hooks/useIdleSignOut";
+import { useNoIndex } from "@/hooks/useNoIndex";
+import { InlineNotice } from "@/components/ui/InlineNotice";
 
 type NavItem = {
   to?: string;
@@ -70,6 +73,8 @@ export function AdminLayout() {
   const sidebarRef = useRef<HTMLElement>(null);
   const currentNavItem = useCurrentNavItem();
   const email = session?.user.email;
+  const { secondsLeft, staySignedIn } = useIdleSignOut();
+  useNoIndex();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
@@ -225,6 +230,19 @@ export function AdminLayout() {
           <Outlet />
         </main>
       </div>
+
+      {/* Idle-timeout warning — appears one minute before sign-out.
+          z-[60] keeps it above the sidebar (z-50) and mobile scrim. */}
+      {secondsLeft !== null && (
+        <InlineNotice
+          variant="warning"
+          title="You'll be signed out soon"
+          message={`No activity detected — signing out in ${secondsLeft}s.`}
+          onRetry={staySignedIn}
+          retryLabel="Stay signed in"
+          className="fixed bottom-4 left-1/2 z-[60] w-[min(92vw,26rem)] -translate-x-1/2 shadow-lg"
+        />
+      )}
     </div>
   );
 }
