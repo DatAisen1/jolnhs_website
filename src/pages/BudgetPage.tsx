@@ -1,4 +1,4 @@
-import { AlertCircle, BookOpen, Wrench, Laptop, Users, Zap, Trophy, HeartPulse, Briefcase, Wallet, LayoutGrid } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
@@ -12,47 +12,12 @@ import { ProposedBudgetTable } from "@/components/budget/ProposedBudgetTable";
 import { BudgetAllocationChart } from "@/components/budget/BudgetAllocationChart";
 import { AccomplishmentsGrid } from "@/components/budget/AccomplishmentsGrid";
 import { budgetOverview, getBudgetStats } from "@/data/budget";
-import { usePublicBudget, type BudgetCategory as DBCategory, type BudgetAccomplishment as DBAccomplishment } from "@/lib/data/publicBudget";
-import type { BudgetCategory, BudgetAccomplishment } from "@/types";
+import { usePublicBudget } from "@/lib/data/publicBudget";
+import { getBudgetIcon } from "@/lib/data/budgetIcons";
+import type { BudgetCategory, BudgetAccomplishment, BudgetOverview } from "@/types";
 import { fadeUp, viewportOnce } from "@/lib/motion";
-import type { LucideIcon } from "lucide-react";
 
-/**
- * Helper to assign icons to budget categories based on name patterns.
- * This is a simple heuristic since icons are presentation-only and not stored in the database.
- */
-function getIconForCategory(name: string): LucideIcon {
-  const lowerName = name.toLowerCase();
-  
-  if (lowerName.includes("instructional") || lowerName.includes("material") || lowerName.includes("book")) {
-    return BookOpen;
-  }
-  if (lowerName.includes("facility") || lowerName.includes("maintenance") || lowerName.includes("repair")) {
-    return Wrench;
-  }
-  if (lowerName.includes("ict") || lowerName.includes("tech") || lowerName.includes("computer")) {
-    return Laptop;
-  }
-  if (lowerName.includes("personnel") || lowerName.includes("staff") || lowerName.includes("teacher")) {
-    return Users;
-  }
-  if (lowerName.includes("electric") || lowerName.includes("power") || lowerName.includes("energy")) {
-    return Zap;
-  }
-  if (lowerName.includes("sports") || lowerName.includes("award") || lowerName.includes("trophy")) {
-    return Trophy;
-  }
-  if (lowerName.includes("health") || lowerName.includes("medical") || lowerName.includes("clinic")) {
-    return HeartPulse;
-  }
-  if (lowerName.includes("office") || lowerName.includes("admin")) {
-    return Briefcase;
-  }
-  if (lowerName.includes("fund") || lowerName.includes("money") || lowerName.includes("budget")) {
-    return Wallet;
-  }
-  return LayoutGrid; // Default icon
-}
+const lastUpdatedFormatter = new Intl.DateTimeFormat("en-PH", { month: "long", year: "numeric" });
 
 /**
  * BudgetPage (/budget)
@@ -82,69 +47,63 @@ export function BudgetPage() {
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
-  // Map database categories to UI format with icons from static data
-  const uiCategories: BudgetCategory[] = budgetData?.categories.map((cat: DBCategory) => ({
+  const uiCategories: BudgetCategory[] = (budgetData?.categories ?? []).map((cat) => ({
     id: cat.id,
     name: cat.name,
-    icon: getIconForCategory(cat.name),
+    icon: getBudgetIcon(cat.icon_key),
     amount: cat.amount,
     percentage: cat.percentage,
     colorClass: cat.color_class || "bg-primary",
-    description: cat.description,
-  })) || [];
+    description: cat.description ?? "",
+  }));
 
-  // Map database accomplishments to UI format
-  const uiAccomplishments: BudgetAccomplishment[] = budgetData?.accomplishments.map((acc: DBAccomplishment) => ({
+  const uiAccomplishments: BudgetAccomplishment[] = (budgetData?.accomplishments ?? []).map((acc) => ({
     id: acc.id,
     title: acc.title,
     categoryId: acc.category_id,
     amount: acc.amount,
     status: acc.status,
-    period: acc.period,
-    description: acc.description,
-  })) || [];
+    period: acc.period ?? "",
+    description: acc.description ?? "",
+  }));
 
-  const stats = getBudgetStats(budgetOverview, uiCategories, uiAccomplishments);
+  // Page copy: values the admin saved on the current fiscal year win;
+  // static copy in src/data/budget.ts fills anything left blank. The
+  // disclaimer always shows — if the admin hasn't written one, the
+  // default "illustrative placeholder data" notice is used.
+  const fy = budgetData?.fiscalYear;
+  const overview: BudgetOverview = {
+    ...budgetOverview,
+    fiscalYear: fy?.year_label ?? budgetOverview.fiscalYear,
+    totalProposedBudget: fy?.total_proposed_budget ?? 0,
+    lastUpdated: fy?.last_updated
+      ? lastUpdatedFormatter.format(new Date(fy.last_updated))
+      : budgetOverview.lastUpdated,
+    heroHeading: fy?.hero_heading || budgetOverview.heroHeading,
+    heroDescription: fy?.hero_description || budgetOverview.heroDescription,
+    introParagraphs: fy?.intro_paragraphs?.length ? fy.intro_paragraphs : budgetOverview.introParagraphs,
+    disclaimer: fy?.disclaimer || budgetOverview.disclaimer,
+  };
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <Container className="flex min-h-[50vh] items-center justify-center py-section-sm">
-        <PageStatus variant="loading" message="Loading budget data..." />
-      </Container>
-    );
-  }
+  const stats = getBudgetStats(overview, uiCategories, uiAccomplishments);
 
-  // Error state
-  if (error) {
-    return (
-      <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-4 py-section-sm text-center">
-        <h1 className="text-section text-text-primary">Budget Data Unavailable</h1>
-        <p className="max-w-md text-body text-text-secondary">
-          We couldn't load the budget information. Please try again later.
-        </p>
-      </Container>
-    );
-  }
-
-  // No data state
-  if (!budgetData) {
-    return (
-      <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-4 py-section-sm text-center">
-        <h1 className="text-section text-text-primary">No Budget Data Available</h1>
-        <p className="max-w-md text-body text-text-secondary">
-          Budget information has not been configured yet.
-        </p>
-      </Container>
-    );
-  }
+  // The page shell (hero, intro, disclaimer, CTA) always renders; only
+  // the data sections swap to a status message while loading, on error,
+  // or before any fiscal year has been marked current.
+  const dataStatus = isLoading ? (
+    <PageStatus variant="loading" message="Loading budget data..." />
+  ) : error ? (
+    <PageStatus variant="error" message="We couldn't load the budget information. Please try again later." />
+  ) : !budgetData ? (
+    <PageStatus variant="error" message="Budget figures for the current fiscal year haven't been published yet." />
+  ) : null;
 
   return (
     <>
       {/* Hero */}
       <PageHero
-        title={budgetOverview.heroHeading}
-        description={budgetOverview.heroDescription}
+        title={overview.heroHeading}
+        description={overview.heroDescription}
         overlayVariant="gradient"
         photo={{
           alt: "JOLNHS campus building, representing the school's public budget",
@@ -161,11 +120,11 @@ export function BudgetPage() {
         <Container className="mx-auto max-w-3xl text-center">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
-              {budgetOverview.introEyebrow}
+              {overview.introEyebrow}
             </p>
-            <h2 className="text-section text-text-primary">{budgetOverview.introHeading}</h2>
+            <h2 className="text-section text-text-primary">{overview.introHeading}</h2>
             <div className="mt-6 flex flex-col gap-4">
-              {budgetOverview.introParagraphs.map((paragraph, i) => (
+              {overview.introParagraphs.map((paragraph, i) => (
                 <p key={i} className="text-body text-text-secondary">
                   {paragraph}
                 </p>
@@ -184,19 +143,19 @@ export function BudgetPage() {
             className="mt-8 flex items-start gap-3 rounded-card border border-status-warning bg-status-warning-bg p-4 text-left"
           >
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-status-warning" aria-hidden="true" />
-            <p className="text-small text-status-warning-text">{budgetOverview.disclaimer}</p>
+            <p className="text-small text-status-warning-text">{overview.disclaimer}</p>
           </motion.div>
         </Container>
       </section>
 
-      <BudgetStatsBand stats={stats} />
+      {budgetData ? <BudgetStatsBand stats={stats} /> : null}
 
       {/* Section 1: Proposed Budget */}
       <section id="proposed-budget" className="scroll-mt-36 bg-background py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
-              {budgetOverview.fiscalYear}
+              {overview.fiscalYear}
             </p>
             <h2 className="text-section text-text-primary">Proposed Budget</h2>
             <p className="mt-4 max-w-2xl text-body text-text-secondary">
@@ -205,11 +164,15 @@ export function BudgetPage() {
             </p>
           </motion.div>
 
-          <div className="mt-10">
-            <ProposedBudgetTable categories={uiCategories} total={budgetOverview.totalProposedBudget} />
-          </div>
+          {dataStatus ?? (
+            <>
+              <div className="mt-10">
+                <ProposedBudgetTable categories={uiCategories} total={overview.totalProposedBudget} />
+              </div>
 
-          <p className="mt-4 text-small text-text-secondary">Last updated: {budgetOverview.lastUpdated}</p>
+              <p className="mt-4 text-small text-text-secondary">Last updated: {overview.lastUpdated}</p>
+            </>
+          )}
         </Container>
       </section>
 
@@ -225,9 +188,11 @@ export function BudgetPage() {
             </p>
           </motion.div>
 
-          <div className="mt-10 max-w-3xl">
-            <BudgetAllocationChart categories={uiCategories} />
-          </div>
+          {dataStatus ?? (
+            <div className="mt-10 max-w-3xl">
+              <BudgetAllocationChart categories={uiCategories} />
+            </div>
+          )}
         </Container>
       </section>
 
@@ -242,9 +207,11 @@ export function BudgetPage() {
             </p>
           </motion.div>
 
-          <div className="mt-10">
-            <AccomplishmentsGrid accomplishments={uiAccomplishments} categories={uiCategories} />
-          </div>
+          {dataStatus ?? (
+            <div className="mt-10">
+              <AccomplishmentsGrid accomplishments={uiAccomplishments} categories={uiCategories} />
+            </div>
+          )}
         </Container>
       </section>
 
@@ -252,10 +219,10 @@ export function BudgetPage() {
       <section className="bg-primary py-section-sm md:py-section">
         <Container className="text-center">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce} className="mx-auto max-w-2xl">
-            <h2 className="text-section text-white">{budgetOverview.ctaHeading}</h2>
-            <p className="mt-5 text-body text-secondary-50">{budgetOverview.ctaBlurb}</p>
-            <Button variant="outline" href={budgetOverview.ctaHref} className="mt-8">
-              {budgetOverview.ctaLabel}
+            <h2 className="text-section text-white">{overview.ctaHeading}</h2>
+            <p className="mt-5 text-body text-secondary-50">{overview.ctaBlurb}</p>
+            <Button variant="outline" href={overview.ctaHref} className="mt-8">
+              {overview.ctaLabel}
             </Button>
           </motion.div>
         </Container>
