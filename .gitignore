@@ -4,7 +4,44 @@ dist
 *.local
 public/videos/*.mp4
 public/videos/*.mov
+
+# Environment files — never commit credentials.
+# `.env` alone only covers the base file; `.env.*` covers per-mode files
+# (.env.production, .env.e2e, ...) so a future deploy file can't leak in.
 .env
-.env.e2e
+.env.*
+!.env.example
+
+# Build artifacts
+*.tsbuildinfo
+*.log
+logs/
+
+# Test output
 test-results/
 playwright-report/
+coverage/
+
+# Playwright saved auth/session state — contains live tokens
+**/storageState*.json
+
+# Deployment tooling state (may hold tokens)
+.vercel/
+.netlify/
+.firebase/
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/
+
+# Keys & certificates
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+
+# OS files
+Thumbs.db
+desktop.ini
+ehthumbs.db
