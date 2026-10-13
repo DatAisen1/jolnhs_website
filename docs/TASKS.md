@@ -223,48 +223,64 @@
 
 ## PHASE 4 — Content & Data Verification
 
-### [ ] Verify school information accuracy
+> **Owner decision:** development does not wait for school verification.
+> Sample data for every domain is in `docs/sample-data.md`, encoded via
+> the admin panel (same flow the school will use for real values). The
+> items below stay `[~]` until real data replaces the samples — that
+> swap is a content task, not a blocker for later phases.
+
+### [~] Verify school information accuracy
 **What needs doing:** Confirm all school information displayed on site is factually correct.
 
 **Area:** All pages with school info
+
+**Status:** Sample values for every Admin → Settings field provided in `docs/sample-data.md` §1. Replace via admin panel when school supplies real contact details.
 
 **Verification:** School administrator confirms accuracy of address, phone, email, social links, programs, etc.
 
 ---
 
-### [ ] Verify faculty/staff data accuracy
+### [~] Verify faculty/staff data accuracy
 **What needs doing:** Confirm all faculty/staff names, positions, categories are correct.
 
 **Area:** Faculty & Staff page
 
+**Status:** 16 sample staff records across all 4 categories in `docs/sample-data.md` §2. Replace via Admin → Staff & Faculty.
+
 **Verification:** School administrator confirms accuracy.
 
 ---
 
-### [ ] Verify campus life data accuracy
+### [~] Verify campus life data accuracy
 **What needs doing:** Confirm all campus life sections, stats, highlights are correct.
 
 **Area:** Campus Life pages
 
+**Status:** Full sample content for all 4 sections (athletes, pta, organizations, journalists) in `docs/sample-data.md` §3. Replace via Admin → Campus Life.
+
 **Verification:** School administrator confirms accuracy.
 
 ---
 
-### [ ] Verify budget data accuracy
+### [~] Verify budget data accuracy
 **What needs doing:** Confirm all budget figures are accurate (after school sign-off).
 
 **Area:** Budget page
 
+**Status:** Sample fiscal year SY 2026-2027 (₱4,850,000, 8 categories, 9 accomplishments) in `docs/sample-data.md` §4. Public disclaimer marks figures as sample until replaced via Admin → Budget.
+
 **Verification:** School administrator confirms accuracy.
 
 ---
 
-### [ ] Verify enrollment information accuracy
+### [x] Verify enrollment information accuracy
 **What needs doing:** Confirm enrollment requirements and process are correct.
 
 **Area:** Enrollment page
 
 **Verification:** School administrator confirms accuracy.
+
+**Status note:** Not applicable — `/enroll` intentionally falls through to the global 404 (owner decision C, Phase 3). There is no enrollment content to verify.
 
 ---
 

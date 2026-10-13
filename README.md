@@ -198,6 +198,8 @@ All colors, type scale, spacing, and radii live in `tailwind.config.ts` — neve
 
 - **[docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md)** — Development and deployment plan, current status, phases, and architecture
 - **[docs/TASKS.md](docs/TASKS.md)** — Actionable task tracker with verification criteria
+- **[docs/sample-data.md](docs/sample-data.md)** — Encode-ready sample content for all admin panels (development/demo only — replace with real school data when provided)
+- **[docs/supabase-production-checklist.md](docs/supabase-production-checklist.md)** — Production Supabase configuration and post-deployment verification
 - **[docs/archive/JOLNHS_Admin_Development_Plan.md](docs/archive/JOLNHS_Admin_Development_Plan.md)** — Archived admin panel development plan (historical reference)
 
 ## Testing
