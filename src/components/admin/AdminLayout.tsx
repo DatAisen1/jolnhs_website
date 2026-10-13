@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useIdleSignOut } from "@/hooks/useIdleSignOut";
 import { useNoIndex } from "@/hooks/useNoIndex";
 import { InlineNotice } from "@/components/ui/InlineNotice";
+import { PageTransition } from "@/components/ui/PageTransition";
 
 type NavItem = {
   to?: string;
@@ -227,7 +228,9 @@ export function AdminLayout() {
         </header>
 
         <main className="flex-1 p-4 sm:p-6">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </main>
       </div>
 

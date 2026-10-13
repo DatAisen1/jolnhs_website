@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { PageTransition } from "@/components/ui/PageTransition";
 import { HomePage } from "@/pages/HomePage";
 import { FacultyStaffPage } from "@/pages/FacultyStaffPage";
 import { AboutOverviewPage } from "@/pages/AboutOverviewPage";
@@ -61,7 +62,9 @@ function PublicLayout() {
       </a>
       <Header />
       <main id="main-content">
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </main>
       <Footer />
       <BackToTop />
@@ -80,7 +83,9 @@ function AdminAuthLayout() {
   useNoIndex();
   return (
     <main id="main-content" className="min-h-screen bg-background">
-      <Outlet />
+      <PageTransition>
+        <Outlet />
+      </PageTransition>
     </main>
   );
 }
