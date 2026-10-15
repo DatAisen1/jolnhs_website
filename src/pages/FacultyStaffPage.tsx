@@ -10,6 +10,7 @@ import { SkeletonGrid } from "@/components/ui/SkeletonGrid";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
+import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { FacultyFilterTabs } from "@/components/faculty/FacultyFilterTabs";
 import { staffCategories } from "@/data/facultyStaff";
 import { useAllStaffMembers } from "@/lib/data/publicStaff";
@@ -166,6 +167,8 @@ export function FacultyStaffPage() {
                 {filteredMembers.length} staff member
                 {filteredMembers.length === 1 ? "" : "s"} found
               </p>
+
+              <PrivacyNotice className="mt-8" />
 
               {filteredMembers.length > 0 ? (
                 <motion.div

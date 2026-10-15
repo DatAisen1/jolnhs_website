@@ -24,15 +24,18 @@ const PUBLIC_ROUTES = [
   '/campus-life',
   '/budget',
   '/contact',
+  '/privacy-policy',
+  '/cookie-policy',
 ];
 
 // Visible copy emitted by PageStatus variant="error" and ErrorBoundary —
 // none of it should appear on a healthy page.
 const ERROR_TEXT = /something went wrong|failed to load|couldn't load|data unavailable/i;
 
-// Placeholder assets intentionally absent until the school supplies
-// media — a 404 on these is expected, not a defect.
-const EXPECTED_MISSING = ['/videos/hero.mp4', '/images/hero-poster.jpg'];
+// Assets expected to 404. Currently empty: the hero gates its video on
+// heroMedia.videoSrc, so missing media never reaches the network —
+// any >=400 response is now a real defect.
+const EXPECTED_MISSING: string[] = [];
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY!;
@@ -139,6 +142,27 @@ test('admin login is noindexed; public homepage is not', async ({ page }) => {
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   await page.goto('/');
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+});
+
+// ---------------------------------------------------------------------------
+// Cookie consent — banner on first visit, map gated until Accept
+// ---------------------------------------------------------------------------
+
+test('cookie banner gates the footer map until accepted', async ({ page }) => {
+  await page.goto('/');
+
+  const banner = page.getByRole('region', { name: 'Cookie consent' });
+  await expect(banner).toBeVisible();
+  // The iframe is absent from the DOM entirely before consent — blocked,
+  // not merely hidden.
+  await expect(page.locator('iframe[title*="Location"]')).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Accept' }).click();
+  await expect(page.locator('iframe[title*="Location"]')).toBeVisible();
+
+  // The choice persists across navigation — banner must not reappear.
+  await page.goto('/about');
+  await expect(page.getByRole('region', { name: 'Cookie consent' })).toHaveCount(0);
 });
 
 // ---------------------------------------------------------------------------

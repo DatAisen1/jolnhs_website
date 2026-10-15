@@ -7,6 +7,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AboutSubNav } from "@/components/ui/AboutSubNav";
 import { FacultyCard } from "@/components/faculty/FacultyCard";
+import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { aboutOverview } from "@/data/aboutOverview";
 import { quickFacts } from "@/data/quickFacts";
 import { useAllStaffMembers } from "@/lib/data/publicStaff";
@@ -170,6 +171,8 @@ export function AboutOverviewPage() {
               </motion.div>
             ))}
           </motion.div>
+
+          <PrivacyNotice className="mt-10" />
         </Container>
       </section>
     </>

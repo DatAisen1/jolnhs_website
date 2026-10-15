@@ -11,6 +11,7 @@ import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { CampusLifeCard } from "@/components/campusLife/CampusLifeCard";
 import { CommunityStats } from "@/components/campusLife/CommunityStats";
 import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
+import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { QuoteCard } from "@/components/campusLife/QuoteCard";
 import { campusLifeOverview } from "@/data/campusLifeOverview";
 import { useAllCampusLifeSections } from "@/lib/data/publicCampusLife";
@@ -140,6 +141,8 @@ export function CampusLifePage() {
               columns={4}
             />
           </div>
+
+          <PrivacyNotice className="mt-10" />
         </Container>
       </section>
 

@@ -14,6 +14,9 @@ import { CampusLifeSectionPage } from "@/pages/CampusLifeSectionPage";
 import { BudgetPage } from "@/pages/BudgetPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ContactPage } from "@/pages/ContactPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
+import { CookiePolicyPage } from "@/pages/CookiePolicyPage";
+import { CookieBanner } from "@/components/privacy/CookieBanner";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useNoIndex } from "@/hooks/useNoIndex";
@@ -68,6 +71,7 @@ function PublicLayout() {
       </main>
       <Footer />
       <BackToTop />
+      <CookieBanner />
     </>
   );
 }
@@ -106,6 +110,8 @@ export function AppRoutes() {
         <Route path="/budget" element={<BudgetPage />} />
         <Route path="/budget/*" element={<BudgetPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/cookie-policy" element={<CookiePolicyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
 

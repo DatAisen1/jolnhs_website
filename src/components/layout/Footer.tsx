@@ -3,6 +3,7 @@ import { MapPin, Mail, FacebookIcon, Clock } from "lucide-react";
 import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
+import { ConsentGatedMap } from "@/components/privacy/ConsentGatedMap";
 import { SchoolBadge } from "@/components/ui/SchoolBadge";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 import { navigation } from "@/data/navigation";
@@ -208,21 +209,10 @@ export function Footer() {
           </motion.div>
         </motion.div>
 
-        {/* Map — full width so a 300px-tall embed isn't squeezed into a
-            narrow grid column. The "Get Directions" link gives
-            screen-reader and no-JS visitors a real way to act on this,
-            not just an inert iframe. */}
+        {/* Map — gated on cookie consent (the embed sets Google
+            cookies). "Get Directions" stays live either way. */}
         <div className="mt-10 overflow-hidden rounded-xl border border-white/10 shadow-lg">
-          <iframe
-            title="Julia Ortiz Luis National High School Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3686.8384851614747!2d120.8768644!3d15.6002918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396d56bc6c4569f%3A0x38a58219fbe28103!2sJulia%20Ortiz%20Luis%20National%20High%20School!5e0!3m2!1sen!2sus!4v1784873839872"
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <ConsentGatedMap />
           <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-primary-800 px-4 py-3 text-small">
             <span className="text-secondary-100">View on Google Maps</span>
             <a
@@ -238,8 +228,24 @@ export function Footer() {
       </Container>
 
       <div className="border-t border-white/10 py-4">
-        <Container className="text-center text-small text-secondary-100">
-          &copy; {new Date().getFullYear()} Julia Ortiz Luis National High School. All rights reserved.
+        <Container className="flex flex-col items-center gap-2 text-center text-small text-secondary-100 sm:flex-row sm:justify-between sm:text-left">
+          <span>
+            &copy; {new Date().getFullYear()} Julia Ortiz Luis National High School. All rights reserved.
+          </span>
+          <nav aria-label="Legal" className="flex gap-5">
+            <Link
+              to="/privacy-policy"
+              className={`transition-colors hover:text-white ${focusRing}`}
+            >
+              Data Privacy
+            </Link>
+            <Link
+              to="/cookie-policy"
+              className={`transition-colors hover:text-white ${focusRing}`}
+            >
+              Cookies
+            </Link>
+          </nav>
         </Container>
       </div>
     </footer>

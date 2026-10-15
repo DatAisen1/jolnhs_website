@@ -8,6 +8,7 @@ import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
+import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { campusLifeSections as staticCampusLifeSections } from "@/data/campusLife";
 import { useCampusLifeSectionDetail, type CampusLifeSectionDetail } from "@/lib/data/publicCampusLife";
 import { fadeUp, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
@@ -228,6 +229,8 @@ export function CampusLifeSectionPage() {
           <div className="mt-10">
             <GalleryGrid items={section.gallery} />
           </div>
+
+          <PrivacyNotice className="mt-10" />
         </Container>
       </section>
 
