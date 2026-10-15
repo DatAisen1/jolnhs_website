@@ -173,7 +173,11 @@ export const academicPrograms: AcademicProgram[] = [
       "Academic and technical-vocational tracks aligned with the K-12 curriculum, giving Grade 11 and 12 learners a focused path toward college, employment, or entrepreneurship after graduation.",
     imagePosition: "right",
     theme: "light",
-    visual: { kind: "photo", imageSize: "1200 x 800" },
+    visual: {
+      kind: "photo",
+      imageSize: "1200 x 800",
+      src: "/images/site/program-shs.webp",
+    },
     quickFacts: [
       { label: "Grade Levels", value: "Grade 11 – 12" },
       { label: "Curriculum Standard", value: "DepEd K-12 Senior High School Program" },
