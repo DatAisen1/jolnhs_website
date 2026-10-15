@@ -34,6 +34,7 @@ export function ProgramSpotlight() {
               alt={`Photo representing ${item.title}`}
               label={item.title}
               recommendedSize={item.imageSize}
+              src={item.src}
               className={`min-h-[320px] rounded-none border-none ${
                 item.imagePosition === "right" ? "lg:order-2" : ""
               }`}

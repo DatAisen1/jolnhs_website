@@ -21,6 +21,7 @@ function VisualPanel({ program }: { program: AcademicProgram }) {
         alt={`Photo of ${program.name} students`}
         label={`${program.name} Students`}
         recommendedSize={program.visual.imageSize}
+        src={program.visual.src}
         className="min-h-[280px] rounded-none border-none"
       />
     );

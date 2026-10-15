@@ -10,6 +10,8 @@ export interface ProgramSpotlightItem {
   title: string;
   description: string;
   imageSize: string;
+  /** Photo URL once the real asset exists (see ImagePlaceholder `src`). */
+  src?: string;
   imagePosition: "left" | "right";
 }
 
@@ -20,6 +22,7 @@ export const spotlights: ProgramSpotlightItem[] = [
     description:
       "Julia Ortiz Luis National High School offers the Special Program in ICT (SP-ICT) under its academic department, developing programming, digital media, and systems thinking skills for the next generation of technology-driven graduates.",
     imageSize: "800 x 800",
+    src: "/images/site/spotlight-sp-ict.webp",
     imagePosition: "left",
   },
   {
@@ -28,6 +31,7 @@ export const spotlights: ProgramSpotlightItem[] = [
     description:
       "Julia Ortiz Luis National High School offers the Special Program in Science, Technology, and Engineering (STE) under its academic department, strengthening laboratory research, advanced mathematics, and scientific inquiry skills for the next generation of STEM-driven graduates.",
     imageSize: "800 x 800",
+    src: "/images/site/spotlight-ste.webp",
     imagePosition: "right",
   },
 ];

@@ -22,7 +22,7 @@ export function WhyChooseUs() {
       <div ref={parallaxRef} className="absolute inset-0 overflow-hidden opacity-60">
         <motion.div style={{ y }} className="absolute inset-x-0 -top-[15%] h-[130%]">
           <img
-            src="/facilities/side.png"
+            src="/images/site/campus-side.webp"
             alt=""
             className="h-full w-full object-cover"
             loading="lazy"

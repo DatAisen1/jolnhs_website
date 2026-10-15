@@ -125,6 +125,7 @@ export function AboutOverviewPage() {
           alt="JOLNHS faculty and staff group photo"
           label="Insert Faculty Group Photo Here"
           recommendedSize="1920 x 700"
+          src={aboutOverview.facultyGroupSrc}
           className="absolute inset-0 h-full rounded-none border-none"
         />
         <div className="absolute inset-0 bg-primary/70" />

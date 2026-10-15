@@ -159,7 +159,7 @@ export function LoginPage() {
           >
             {/* Campus image */}
             <img
-              src="/facilities/infront.png"
+              src="/images/site/login-campus.webp"
               alt=""
               className="
                 absolute

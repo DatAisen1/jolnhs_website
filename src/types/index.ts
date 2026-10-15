@@ -19,6 +19,8 @@ export interface Facility {
   name: string;
   description: string;
   imageSize: string;
+  /** Photo URL once the real asset exists (see ImagePlaceholder `src`). */
+  src?: string;
   imagePosition: "left" | "right";
   theme: "light" | "dark";
 }
@@ -71,7 +73,7 @@ export interface AcademicProgram {
   theme: "light" | "dark";
   visual:
     | { kind: "icon"; icon: LucideIcon }
-    | { kind: "photo"; imageSize: string };
+    | { kind: "photo"; imageSize: string; src?: string };
   quickFacts: ProgramFact[];
   highlights: ProgramHighlight[];
   admissionRequirements: string[];

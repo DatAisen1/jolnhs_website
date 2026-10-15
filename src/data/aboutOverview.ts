@@ -15,6 +15,11 @@ export const aboutOverview = {
   welcomeMessage: "Welcome Home, JOLNHS Family.",
   principalName: "Add Principal Name",
   principalTitle: "School Principal",
+  /** Faculty group photo behind the mid-page tagline band — set once
+   *  the real asset exists (recommended 1920 x 700). Leave undefined
+   *  for the placeholder. */
+  facultyGroupSrc: undefined as string | undefined,
+
   taglineHeading: "Together in Purpose, Excellence in Education.",
   teamSectionHeading: "Meet Our Team",
   teamSectionBlurb:

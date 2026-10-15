@@ -33,6 +33,7 @@ function ProgramHero({ program }: { program: AcademicProgram }) {
               alt: `Photo of ${program.name} students`,
               label: `Insert ${program.name} Hero Photo Here`,
               recommendedSize: program.visual.imageSize,
+              src: program.visual.src,
             },
           }
         : { watermarkIcon: program.visual.icon })}

@@ -32,6 +32,7 @@ function FacilityRow({ facility }: { facility: Facility }) {
           alt={`Photo of the ${facility.name}`}
           label={facility.name}
           recommendedSize={facility.imageSize}
+          src={facility.src}
           className="min-h-[280px] rounded-none border-none"
         />
       </div>

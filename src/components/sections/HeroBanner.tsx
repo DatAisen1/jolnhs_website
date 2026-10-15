@@ -5,6 +5,7 @@ import { ChevronRight, MessageCircle, Pause, Play } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { heroChild, heroReveal } from "@/lib/motion";
+import { heroMedia } from "@/data/heroMedia";
 
 /**
  * Full-bleed hero VIDEO with a dark gradient overlay and type-dominant
@@ -64,25 +65,28 @@ export function HeroBanner() {
         aria-hidden="true"
         className="absolute inset-0 bg-gradient-to-br from-primary-600/45 via-primary-700 to-primary-900"
       />
-      {prefersReducedMotion ? (
-        <img
-          src="/images/hero-poster.jpg"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      ) : (
+      {/* Media layer: video only when a real file is configured in
+          data/heroMedia.ts (none yet — avoids 404ing a placeholder
+          src). Otherwise the poster photo, then the brand gradient. */}
+      {heroMedia.videoSrc && !prefersReducedMotion ? (
         <video
           ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          poster="/images/hero-poster.jpg"
+          poster={heroMedia.posterSrc}
           className="absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          <source src={heroMedia.videoSrc} type="video/mp4" />
         </video>
-      )}
+      ) : heroMedia.posterSrc ? (
+        <img
+          src={heroMedia.posterSrc}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/5" />
 
       <Container className="absolute inset-x-0 bottom-0 z-10 pb-14 sm:pb-16 lg:pb-20">
@@ -137,7 +141,9 @@ export function HeroBanner() {
         </motion.div>
       </Container>
 
-      {!prefersReducedMotion && (
+      {/* Pause/play control only exists when a video is actually
+          playing — no button hovering over a still photo. */}
+      {heroMedia.videoSrc && !prefersReducedMotion && (
         <button
           type="button"
           onClick={togglePlayback}

@@ -5,6 +5,10 @@ dist
 public/videos/*.mp4
 public/videos/*.mov
 
+# Raw photo inbox — optimize-image.mjs reads from here and writes
+# compressed output to public/images/site/ (which IS committed)
+public/images/incoming/
+
 # Environment files — never commit credentials.
 # `.env` alone only covers the base file; `.env.*` covers per-mode files
 # (.env.production, .env.e2e, ...) so a future deploy file can't leak in.

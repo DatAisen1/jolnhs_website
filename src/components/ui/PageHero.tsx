@@ -4,11 +4,13 @@ import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { heroChild, heroReveal } from "@/lib/motion";
 
 interface PageHeroPhoto {
-  /** Alt text the eventual real photo will use. */
+  /** Alt text the real photo uses. */
   alt: string;
   /** Placeholder label shown until a real photo is supplied. */
   label: string;
   recommendedSize: string;
+  /** Real photo URL — renders instead of the placeholder when set. */
+  src?: string;
 }
 
 interface PageHeroProps {
@@ -66,6 +68,7 @@ export function PageHero({
             alt={photo.alt}
             label={photo.label}
             recommendedSize={photo.recommendedSize}
+            src={photo.src}
             className="absolute inset-0 h-full rounded-none border-none bg-primary-700 text-secondary-100"
           />
           {overlayVariant === "gradient" ? (

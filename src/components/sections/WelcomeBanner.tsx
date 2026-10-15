@@ -47,7 +47,7 @@ export function WelcomeBanner() {
           className="overflow-hidden rounded-3xl bg-primary-50"
         >
           <img
-            src="/facilities/welcomehome.png"
+            src="/images/site/welcome-home.webp"
             alt="Students and faculty at a JOLNHS school event"
             className="h-full w-full object-cover"
             loading="lazy"

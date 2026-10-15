@@ -156,6 +156,7 @@ export function CampusLifePage() {
           alt="JOLNHS students celebrating together on campus"
           label="Insert Campus Community Photo Here"
           recommendedSize="1920 x 700"
+          src={campusLifeOverview.communityBandSrc}
           className="absolute inset-0 h-full rounded-none border-none"
         />
         <div className="absolute inset-0 bg-primary/70" />
