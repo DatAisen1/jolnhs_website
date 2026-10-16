@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { SchoolBadge } from "@/components/ui/SchoolBadge";
 import { heroChild, heroReveal } from "@/lib/motion";
 
 interface PageHeroPhoto {
@@ -38,10 +37,11 @@ interface PageHeroProps {
    */
   overlayVariant?: "flat" | "gradient";
   /**
-   * Optional school crest rendered centered above the title — the
-   * seal-above-heading treatment used on identity pages (About).
+   * Third visual variant: the school seal rendered huge and faint as
+   * the hero background — for identity pages where the logo itself IS
+   * the imagery (About). Mutually exclusive with `photo`/`watermarkIcon`.
    */
-  logoSrc?: string;
+  logoWatermark?: string;
 }
 
 /**
@@ -63,7 +63,7 @@ export function PageHero({
   photo,
   watermarkIcon: WatermarkIcon,
   overlayVariant = "flat",
-  logoSrc,
+  logoWatermark,
 }: PageHeroProps) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -83,6 +83,26 @@ export function PageHero({
           ) : (
             <div className="pointer-events-none absolute inset-0 bg-primary/60" />
           )}
+        </>
+      ) : logoWatermark ? (
+        /* School seal as a huge, faint centered watermark — same slow
+           ambient drift as the icon variant, frozen under
+           prefers-reduced-motion. A scrim still sits over it so the
+           headline keeps its contrast. */
+        <>
+          <motion.div
+            className="pointer-events-none absolute inset-0 flex items-center justify-center"
+            animate={shouldReduceMotion ? undefined : { y: [0, -10, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <img
+              src={logoWatermark}
+              alt=""
+              className="h-64 w-64 object-contain opacity-[0.12] sm:h-96 sm:w-96"
+              aria-hidden="true"
+            />
+          </motion.div>
+          <div className="pointer-events-none absolute inset-0 bg-primary/60" />
         </>
       ) : WatermarkIcon ? (
         /* Slow ambient drift on the watermark — enough to feel alive
@@ -110,18 +130,6 @@ export function PageHero({
         animate="show"
         className="relative px-6 text-center text-white"
       >
-        {logoSrc ? (
-          <motion.div variants={heroChild} className="mb-5 flex justify-center">
-            <div className="rounded-full bg-white/10 p-1.5 ring-1 ring-white/25">
-              <SchoolBadge
-                label="JO"
-                ariaLabel="JOLNHS school seal"
-                size={72}
-                src={logoSrc}
-              />
-            </div>
-          </motion.div>
-        ) : null}
         {eyebrow ? (
           <motion.p
             variants={heroChild}

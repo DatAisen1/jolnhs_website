@@ -44,12 +44,7 @@ export function AboutOverviewPage() {
       <PageHero
         title={aboutOverview.heroHeading}
         description={aboutOverview.heroDescription}
-        logoSrc="/images/logo-jolnhs.png"
-        photo={{
-          alt: "JOLNHS campus and students",
-          label: "Insert Overview Hero Photo Here",
-          recommendedSize: "1920 x 900",
-        }}
+        logoWatermark="/images/logo-jolnhs.png"
       />
 
       <Breadcrumbs
