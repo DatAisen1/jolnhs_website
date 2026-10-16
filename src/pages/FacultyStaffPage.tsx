@@ -18,17 +18,12 @@ import { scaleIn, staggerContainer } from "@/lib/motion";
 
 const VALID_CATEGORY_IDS = new Set(staffCategories.map((c) => c.id));
 
-// Result-grid column count follows how many cards actually matched, so a
-// small filtered set (e.g. 2 Administrators) doesn't leave a visibly empty
-// trailing column next to the real cards — same fix pattern as the About
-// page's team preview grid, just computed per-render since the count here
-// changes with every filter/search instead of being fixed at build time.
-function getResultsGridColsClass(count: number): string {
-  if (count <= 1) return "grid-cols-1";
-  if (count === 2) return "grid-cols-2 sm:grid-cols-2 lg:grid-cols-2";
-  if (count === 3) return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3";
-  return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4";
-}
+// Cards use fixed fractional widths (2 / 3 / 4 per row like the skeleton
+// grid) inside a centered flex-wrap row instead of a count-dependent grid —
+// a single matching member stays card-sized and centered rather than
+// stretching a one-column grid to full container width.
+const MEMBER_CARD_WIDTH =
+  "w-[calc(50%-0.75rem)] sm:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.125rem)]";
 
 /**
  * FacultyStaffPage
@@ -177,10 +172,10 @@ export function FacultyStaffPage() {
                   variants={staggerContainer}
                   initial={shouldReduceMotion ? "show" : "hidden"}
                   animate="show"
-                  className={`mt-10 grid gap-6 ${getResultsGridColsClass(filteredMembers.length)}`}
+                  className="mt-10 flex flex-wrap justify-center gap-6"
                 >
                   {filteredMembers.map((member) => (
-                    <motion.div key={member.id} variants={scaleIn}>
+                    <motion.div key={member.id} variants={scaleIn} className={MEMBER_CARD_WIDTH}>
                       <FacultyCard member={member} />
                     </motion.div>
                   ))}
