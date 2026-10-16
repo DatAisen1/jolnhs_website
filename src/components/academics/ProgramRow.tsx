@@ -103,6 +103,7 @@ export function ProgramRow({ program }: { program: AcademicProgram }) {
         <Button
           href={`/academics/${program.slug}`}
           variant={isDark ? "outline" : "primary"}
+          arrow
           className="mt-6 self-start"
         >
           Learn More

@@ -68,7 +68,7 @@ export function AcademicsPage() {
           >
             <h2 className="text-section text-text-primary">{academicsOverview.ctaHeading}</h2>
             <p className="mt-5 text-body text-text-secondary">{academicsOverview.ctaBlurb}</p>
-            <Button variant="primary" href={academicsOverview.ctaHref} className="mt-8">
+            <Button variant="primary" href={academicsOverview.ctaHref} arrow className="mt-8">
               {academicsOverview.ctaLabel}
             </Button>
           </motion.div>

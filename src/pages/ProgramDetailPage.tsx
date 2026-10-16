@@ -62,7 +62,7 @@ function OverviewVisual({ program }: { program: AcademicProgram }) {
         alt={program.photos?.overview?.alt ?? `Photo of ${program.name} students`}
         loading="lazy"
         decoding="async"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-apple motion-safe:group-hover:scale-[1.03]"
       />
     );
   }
@@ -140,12 +140,16 @@ export function ProgramDetailPage() {
             </dl>
           </motion.div>
 
+          {/* Arch-shaped photo frame (fully rounded top corners) — one
+              deliberate shape on a page of rectangles, the kind of
+              signature form detail that keeps the editorial layout from
+              feeling box-on-box. The photo zooms a touch on hover. */}
           <motion.div
             variants={scaleIn}
             initial={initial}
             whileInView="show"
             viewport={viewportOnce}
-            className="relative aspect-[4/3] overflow-hidden rounded-card border border-border"
+            className="group relative aspect-[4/3] overflow-hidden rounded-t-[10rem] rounded-b-card border border-border"
           >
             <OverviewVisual program={program} />
           </motion.div>
@@ -264,7 +268,7 @@ export function ProgramDetailPage() {
           >
             <h2 className="text-section text-white">Interested in {program.name}?</h2>
             <p className="mt-5 text-body text-secondary-50">{academicsOverview.ctaBlurb}</p>
-            <Button variant="outline" href={academicsOverview.ctaHref} className="mt-8">
+            <Button variant="outline" href={academicsOverview.ctaHref} arrow className="mt-8">
               {academicsOverview.ctaLabel}
             </Button>
           </motion.div>

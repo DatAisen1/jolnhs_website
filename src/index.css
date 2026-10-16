@@ -7,6 +7,14 @@
     scroll-behavior: smooth;
   }
 
+  /* Brand-tinted text selection — a small detail, but a default blue
+     highlight is one of the most visible "unstyled browser" tells on
+     any site. */
+  ::selection {
+    background-color: #1c3e7c;
+    color: #f7faff;
+  }
+
   /* Visible, high-contrast focus ring for keyboard users (WCAG 2.4.7).
      Uses primary-600 (the brand hover blue), not Tailwind's default
      blue-500 — the ring stays inside the site's own tonal family. */

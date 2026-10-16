@@ -33,7 +33,7 @@ export function WelcomeBanner() {
           <p className="mt-5 max-w-md text-body text-text-secondary">
             {welcome.paragraph}
           </p>
-          <Button variant="primary" href="/about" className="mt-6">
+          <Button variant="primary" href="/about" arrow className="mt-6">
             {welcome.buttonLabel}
           </Button>
         </motion.div>

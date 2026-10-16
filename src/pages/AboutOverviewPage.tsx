@@ -144,7 +144,7 @@ export function AboutOverviewPage() {
             <h2 className="text-section text-text-primary">{aboutOverview.teamSectionHeading}</h2>
             <div className="max-w-sm">
               <p className="text-body text-text-secondary">{aboutOverview.teamSectionBlurb}</p>
-              <Button variant="primary" href="/about/faculty-staff" className="mt-4">
+              <Button variant="primary" href="/about/faculty-staff" arrow className="mt-4">
                 {aboutOverview.teamSectionCta}
               </Button>
             </div>

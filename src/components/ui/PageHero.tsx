@@ -121,6 +121,14 @@ export function PageHero({
         </motion.div>
       ) : null}
 
+      {/* Soft radial glow behind the headline — keeps the flat navy band
+          from reading as a solid block by giving the center a whisper of
+          lift, like a light source behind the type. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_65%_at_50%_60%,rgba(127,166,221,0.22),transparent)]"
+      />
+
       {/* Same eyebrow→title→description stagger as the homepage hero —
           interior pages compose the same way instead of appearing as one
           static block. */}
