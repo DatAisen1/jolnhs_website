@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Mail, FacebookIcon, Clock } from "lucide-react";
+import { MapPin, Mail, FacebookIcon, Clock, Lock } from "lucide-react";
 import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
@@ -244,6 +244,14 @@ export function Footer() {
               className={`transition-colors hover:text-white ${focusRing}`}
             >
               Cookies
+            </Link>
+            <Link
+              to="/admin/login"
+              rel="nofollow"
+              className={`inline-flex items-center gap-1.5 transition-colors hover:text-white ${focusRing}`}
+            >
+              <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+              Admin Login
             </Link>
           </nav>
         </Container>
