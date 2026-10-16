@@ -108,9 +108,10 @@ export function FacultyStaffPage() {
         title="Faculty & Staff"
         description="Meet the administrators, teachers, and staff members who make JOLNHS run."
         photo={{
-          alt: "JOLNHS faculty in a staff meeting",
+          alt: "JOLNHS front garden with the I-love-JOLNHS sign and school name board",
           label: "Insert Faculty & Staff Header Photo Here",
           recommendedSize: "1920 x 600",
+          src: "/images/site/hero-faculty-staff.webp",
         }}
       />
 
