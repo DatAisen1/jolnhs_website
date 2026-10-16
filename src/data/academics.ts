@@ -20,6 +20,14 @@ export const academicPrograms: AcademicProgram[] = [
     imagePosition: "right",
     theme: "light",
     visual: { kind: "icon", icon: FlaskConical },
+    photos: {
+      overview: { alt: "STE students working on an experiment in the Science Laboratory" },
+      gallery: [
+        { alt: "STE students conducting a laboratory experiment", caption: "Laboratory Work" },
+        { alt: "STE students presenting a research project", caption: "Research Projects" },
+        { alt: "STE students at a school science fair", caption: "Science Fair" },
+      ],
+    },
     quickFacts: [
       { label: "Grade Levels", value: "Grade 7 – 10" },
       { label: "Class Size", value: "~35 learners per section" },
@@ -60,6 +68,14 @@ export const academicPrograms: AcademicProgram[] = [
     imagePosition: "left",
     theme: "dark",
     visual: { kind: "icon", icon: Cpu },
+    photos: {
+      overview: { alt: "SP-ICT students working at computers in the ICT Laboratory" },
+      gallery: [
+        { alt: "SP-ICT students during a hands-on computer class", caption: "ICT Laboratory" },
+        { alt: "SP-ICT students assembling or troubleshooting computer hardware", caption: "Hardware Servicing" },
+        { alt: "SP-ICT students creating a multimedia project", caption: "Multimedia" },
+      ],
+    },
     quickFacts: [
       { label: "Grade Levels", value: "Grade 7 – 10" },
       { label: "Lab Access", value: "Dedicated ICT Laboratory" },
@@ -99,6 +115,14 @@ export const academicPrograms: AcademicProgram[] = [
     imagePosition: "right",
     theme: "light",
     visual: { kind: "icon", icon: HeartHandshake },
+    photos: {
+      overview: { alt: "SNED teacher guiding a learner in a small-group session" },
+      gallery: [
+        { alt: "SNED learner receiving one-on-one instruction", caption: "Individualized Learning" },
+        { alt: "SNED learners in an inclusive classroom activity", caption: "Inclusive Classrooms" },
+        { alt: "SNED teacher supporting a learner's schoolwork", caption: "Learner Support" },
+      ],
+    },
     quickFacts: [
       { label: "Grade Levels", value: "Grade 7 – 10" },
       { label: "Class Size", value: "Small-group, individualized instruction" },
@@ -136,6 +160,14 @@ export const academicPrograms: AcademicProgram[] = [
     imagePosition: "left",
     theme: "dark",
     visual: { kind: "icon", icon: BookOpen },
+    photos: {
+      overview: { alt: "Junior High School students during a regular class session" },
+      gallery: [
+        { alt: "Students participating in a class discussion", caption: "Classroom Learning" },
+        { alt: "Students joining a co-curricular school activity", caption: "School Activities" },
+        { alt: "Students working together in the library", caption: "Group Study" },
+      ],
+    },
     quickFacts: [
       { label: "Grade Levels", value: "Grade 7 – 10" },
       { label: "Class Size", value: "~40 – 45 learners per section" },
@@ -177,6 +209,14 @@ export const academicPrograms: AcademicProgram[] = [
       kind: "photo",
       imageSize: "1200 x 800",
       src: "/images/site/program-shs.webp",
+    },
+    photos: {
+      overview: { alt: "Senior High School students of JOLNHS together in class" },
+      gallery: [
+        { alt: "SHS students during a strand class", caption: "Strand Classes" },
+        { alt: "SHS learners on work immersion", caption: "Work Immersion" },
+        { alt: "SHS students presenting a culminating project", caption: "Culminating Projects" },
+      ],
     },
     quickFacts: [
       { label: "Grade Levels", value: "Grade 11 – 12" },

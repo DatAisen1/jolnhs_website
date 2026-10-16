@@ -41,6 +41,18 @@ export interface ProgramStrand {
 }
 
 /**
+ * One photo slot on a program detail page. `src` stays undefined until a
+ * real photo is supplied and optimized; `alt` is required up front so the
+ * slot is born accessible, and `caption` is a short label shown under
+ * gallery photos.
+ */
+export interface ProgramPhoto {
+  src?: string;
+  alt: string;
+  caption?: string;
+}
+
+/**
  * AcademicProgram
  *
  * `slug` must match the trailing path segment used in the Academics
@@ -74,6 +86,15 @@ export interface AcademicProgram {
   visual:
     | { kind: "icon"; icon: LucideIcon }
     | { kind: "photo"; imageSize: string; src?: string };
+  /**
+   * Photo slots on /academics/:slug: one large overview photo beside the
+   * "About" text plus a gallery strip under "What You'll Learn". Empty
+   * slots fall back gracefully — see ProgramDetailPage.
+   */
+  photos?: {
+    overview?: ProgramPhoto;
+    gallery?: ProgramPhoto[];
+  };
   quickFacts: ProgramFact[];
   highlights: ProgramHighlight[];
   admissionRequirements: string[];

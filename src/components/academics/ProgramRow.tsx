@@ -15,14 +15,20 @@ import type { AcademicProgram } from "@/types";
  * next to the text column rather than blending into it.
  */
 function VisualPanel({ program }: { program: AcademicProgram }) {
-  if (program.visual.kind === "photo") {
+  // Photo source priority: the program's own visual, then the overview
+  // photo defined for its detail page — so wiring a photo on the
+  // /academics/:slug page fills this landing-page row automatically.
+  const photoSrc =
+    program.visual.kind === "photo" ? program.visual.src : program.photos?.overview?.src;
+
+  if (program.visual.kind === "photo" || photoSrc) {
     return (
       <ImagePlaceholder
-        alt={`Photo of ${program.name} students`}
+        alt={program.photos?.overview?.alt ?? `Photo of ${program.name} students`}
         label={`${program.name} Students`}
-        recommendedSize={program.visual.imageSize}
-        src={program.visual.src}
-        className="min-h-[280px] rounded-none border-none"
+        recommendedSize={program.visual.kind === "photo" ? program.visual.imageSize : "1200 x 900"}
+        src={photoSrc}
+        className="absolute inset-0 rounded-none border-none"
       />
     );
   }
@@ -32,7 +38,7 @@ function VisualPanel({ program }: { program: AcademicProgram }) {
 
   return (
     <div
-      className={`flex min-h-[280px] items-center justify-center ${
+      className={`absolute inset-0 flex items-center justify-center ${
         isDark ? "bg-primary-700" : "bg-primary-50"
       }`}
     >
@@ -66,7 +72,11 @@ export function ProgramRow({ program }: { program: AcademicProgram }) {
       viewport={viewportOnce}
       className={`grid grid-cols-1 lg:grid-cols-2 ${isDark ? "bg-primary" : "bg-white"}`}
     >
-      <div className={imageFirst ? "lg:order-1" : "lg:order-2"}>
+      {/* relative + min-h on the wrapper lets the panel sit absolutely and
+          always fill the full row height on desktop — previously a
+          min-height-only panel left a visible empty strip under it
+          whenever the text column was taller. */}
+      <div className={`relative min-h-[280px] ${imageFirst ? "lg:order-1" : "lg:order-2"}`}>
         <VisualPanel program={program} />
       </div>
       <div

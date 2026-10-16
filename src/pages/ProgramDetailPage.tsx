@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AcademicsSubNav } from "@/components/ui/AcademicsSubNav";
+import { ProgramPhotoGallery } from "@/components/academics/ProgramPhotoGallery";
 import { academicPrograms } from "@/data/academics";
 import { academicsOverview } from "@/data/academicsOverview";
 import { fadeUp, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
@@ -38,6 +39,40 @@ function ProgramHero({ program }: { program: AcademicProgram }) {
           }
         : { watermarkIcon: program.visual.icon })}
     />
+  );
+}
+
+/**
+ * OverviewVisual
+ *
+ * The large photo beside "About {program}" — prefers the dedicated
+ * overview photo, falls back to the program's own visual photo (SHS's
+ * cohort shot), and shows the program's icon panel when no photo has
+ * been supplied yet so no empty placeholder ever ships to visitors.
+ */
+function OverviewVisual({ program }: { program: AcademicProgram }) {
+  const photoSrc =
+    program.photos?.overview?.src ??
+    (program.visual.kind === "photo" ? program.visual.src : undefined);
+
+  if (photoSrc) {
+    return (
+      <img
+        src={photoSrc}
+        alt={program.photos?.overview?.alt ?? `Photo of ${program.name} students`}
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    );
+  }
+
+  const Icon = program.visual.kind === "icon" ? program.visual.icon : null;
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-primary-50">
+      {Icon && <Icon className="h-24 w-24 text-primary" aria-hidden="true" strokeWidth={1.5} />}
+    </div>
   );
 }
 
@@ -80,37 +115,40 @@ export function ProgramDetailPage() {
       />
       <AcademicsSubNav current={`/academics/${program.slug}`} />
 
-      {/* Overview + Quick Facts, same grid rhythm as AboutOverviewPage's
-          intro section */}
+      {/* Overview: text + quick-fact tiles on the left, the program's
+          overview photo on the right (falls back to the program's icon
+          panel when no photo has been supplied yet). */}
       <section className="bg-white py-section-sm md:py-section">
-        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)]">
+        <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
               Program Overview
             </p>
             <h2 className="text-section text-text-primary">About {program.name}</h2>
             <p className="mt-6 max-w-prose text-body text-text-secondary">{program.description}</p>
+
+            <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {program.quickFacts.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="rounded-card border border-border bg-background p-4"
+                >
+                  <dt className="text-small text-text-secondary">{fact.label}</dt>
+                  <dd className="mt-1 font-medium text-text-primary">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
           </motion.div>
 
-          <motion.aside
+          <motion.div
             variants={scaleIn}
             initial={initial}
             whileInView="show"
             viewport={viewportOnce}
-            className="h-fit self-start rounded-card border border-border bg-background p-6 lg:sticky lg:top-28"
+            className="relative aspect-[4/3] overflow-hidden rounded-card border border-border"
           >
-            <p className="text-small font-semibold uppercase tracking-[0.18em] text-primary">
-              Quick Facts
-            </p>
-            <dl className="mt-4 flex flex-col gap-4">
-              {program.quickFacts.map((fact) => (
-                <div key={fact.label}>
-                  <dt className="text-small text-text-secondary">{fact.label}</dt>
-                  <dd className="mt-0.5 font-medium text-text-primary">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </motion.aside>
+            <OverviewVisual program={program} />
+          </motion.div>
         </Container>
       </section>
 
@@ -147,6 +185,13 @@ export function ProgramDetailPage() {
           </motion.div>
         </Container>
       </section>
+
+      {/* Photo strip — renders slots in order; empty slots are dev-only
+          placeholders, and the section disappears in production until at
+          least one photo exists. */}
+      {program.photos?.gallery && program.photos.gallery.length > 0 && (
+        <ProgramPhotoGallery programName={program.name} photos={program.photos.gallery} />
+      )}
 
       {/* Strands — SHS only */}
       {program.strands && (
