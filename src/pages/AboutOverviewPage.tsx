@@ -44,7 +44,7 @@ export function AboutOverviewPage() {
       <PageHero
         title={aboutOverview.heroHeading}
         description={aboutOverview.heroDescription}
-        logoWatermark="/images/logo-jolnhs.png"
+        logoWatermark="/images/logo-jolnhs-transparent.webp"
       />
 
       <Breadcrumbs
