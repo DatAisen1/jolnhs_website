@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { staffPhotoUrl } from "@/lib/storageUrl";
 import { campusLifeSections as staticCampusLifeSections } from "@/data/campusLife";
 import { Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -193,7 +194,18 @@ export function useCampusLifeSectionDetail(slug: string) {
       if (highlightsError) throw highlightsError;
       if (officersError) throw officersError;
 
-      return { ...section, stats: stats ?? [], highlights: highlights ?? [], officers: officers ?? [] };
+      // Storage paths become public URLs at this boundary, same as
+      // publicStaff — so a future officer card can put photo_path
+      // straight into <img src> without repeating the storage-path bug.
+      return {
+        ...section,
+        stats: stats ?? [],
+        highlights: highlights ?? [],
+        officers: (officers ?? []).map((o) => ({
+          ...o,
+          photo_path: staffPhotoUrl(o.photo_path),
+        })),
+      };
     },
   });
 }

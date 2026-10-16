@@ -99,7 +99,7 @@ export function FacultyStaffPage() {
         member.position.toLowerCase().includes(normalizedQuery);
       return matchesCategory && matchesQuery;
     });
-  }, [activeCategory, query]);
+  }, [activeCategory, query, staffMembers]);
 
   return (
     <>

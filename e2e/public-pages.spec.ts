@@ -184,12 +184,15 @@ test('faculty page renders every non-archived staff member', async ({ page, requ
   const staff = await supabaseGet(request, 'staff_members?select=id&is_archived=eq.false');
 
   await page.goto('/about/faculty-staff');
-  // The a11y live region announces the rendered result count — reading it
-  // beats counting cards (which can paginate/grid differently).
-  const live = await page.getByText(/\d+ staff members? found/).textContent();
-  const rendered = Number(live?.match(/\d+/)?.[0]);
-
-  expect(rendered, 'rendered staff count').toBe(staff.length);
+  // The a11y live region announces the rendered result count — wait for
+  // the expected number to appear instead of reading whatever the
+  // pre-fetch empty state happens to say ("0 staff members found").
+  // The earlier read-once version raced the Supabase query and only
+  // passed because the staff table used to be empty (0 === 0).
+  await expect(
+    page.getByText(new RegExp(`^${staff.length} staff members? found`)),
+    'rendered staff count'
+  ).toHaveCount(1);
 });
 
 test('campus life index shows every section in the database', async ({ page, request }) => {
