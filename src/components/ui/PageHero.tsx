@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { SchoolBadge } from "@/components/ui/SchoolBadge";
 import { heroChild, heroReveal } from "@/lib/motion";
 
 interface PageHeroPhoto {
@@ -36,6 +37,11 @@ interface PageHeroProps {
    * little extra separation between headline and imagery (Budget).
    */
   overlayVariant?: "flat" | "gradient";
+  /**
+   * Optional school crest rendered centered above the title — the
+   * seal-above-heading treatment used on identity pages (About).
+   */
+  logoSrc?: string;
 }
 
 /**
@@ -57,6 +63,7 @@ export function PageHero({
   photo,
   watermarkIcon: WatermarkIcon,
   overlayVariant = "flat",
+  logoSrc,
 }: PageHeroProps) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -103,6 +110,18 @@ export function PageHero({
         animate="show"
         className="relative px-6 text-center text-white"
       >
+        {logoSrc ? (
+          <motion.div variants={heroChild} className="mb-5 flex justify-center">
+            <div className="rounded-full bg-white/10 p-1.5 ring-1 ring-white/25">
+              <SchoolBadge
+                label="JO"
+                ariaLabel="JOLNHS school seal"
+                size={72}
+                src={logoSrc}
+              />
+            </div>
+          </motion.div>
+        ) : null}
         {eyebrow ? (
           <motion.p
             variants={heroChild}
