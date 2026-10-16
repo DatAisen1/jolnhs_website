@@ -119,7 +119,7 @@ export function AboutOverviewPage() {
         className="relative flex h-[280px] items-center justify-center overflow-hidden"
       >
         <ImagePlaceholder
-          alt="JULIA ORTIZ LUIS National High School junior high building facade with school signage"
+          alt="JOLNHS library reading area with tables, chairs, and bookshelves"
           label="Insert Faculty Group Photo Here"
           recommendedSize="1920 x 700"
           src={aboutOverview.facultyGroupSrc}
