@@ -119,7 +119,7 @@ export function AboutOverviewPage() {
         className="relative flex h-[280px] items-center justify-center overflow-hidden"
       >
         <ImagePlaceholder
-          alt="JOLNHS library interior — mezzanine reading room above the main hall"
+          alt="JOLNHS library reading area with tables and chairs"
           label="Insert Faculty Group Photo Here"
           recommendedSize="1920 x 700"
           src={aboutOverview.facultyGroupSrc}
