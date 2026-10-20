@@ -102,7 +102,7 @@ export function ResetPasswordPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-border bg-white p-7 shadow-sm">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-7 shadow-sm">
         <div className="mb-5 flex flex-col items-center text-center">
           <img
             src="/images/logo-jolnhs.png"
@@ -152,7 +152,7 @@ export function ResetPasswordPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
-                  className="w-full rounded-lg border border-border bg-white px-3.5 py-2.5 pr-10 text-sm text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 pr-10 text-sm text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button
                   type="button"
@@ -177,7 +177,7 @@ export function ResetPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter the password above"
-                className="w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 

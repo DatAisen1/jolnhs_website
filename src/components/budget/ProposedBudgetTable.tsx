@@ -44,7 +44,7 @@ export function ProposedBudgetTable({ categories, total }: { categories: BudgetC
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-border bg-white">
+        <tbody className="divide-y divide-border bg-surface">
           {categories.map((category, index) => {
             const Icon = category.icon;
             return (
@@ -84,7 +84,7 @@ export function ProposedBudgetTable({ categories, total }: { categories: BudgetC
             <motion.li
               key={category.id}
               variants={fadeUp}
-              className="rounded-card border border-border bg-white p-5"
+              className="rounded-card border border-border bg-surface p-5"
             >
               <div className="flex items-center gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-50">

@@ -45,7 +45,7 @@ export function ConsentGatedMap() {
       <button
         type="button"
         onClick={() => setConsent("accepted")}
-        className="rounded-full bg-white px-5 py-2 text-small font-semibold text-primary transition-colors hover:bg-secondary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="rounded-full bg-surface px-5 py-2 text-small font-semibold text-primary transition-colors hover:bg-secondary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
         Load map
       </button>

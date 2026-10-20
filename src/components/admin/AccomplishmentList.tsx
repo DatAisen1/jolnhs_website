@@ -104,7 +104,7 @@ export function AccomplishmentList({ fiscalYearId, categoryId, readOnly }: { fis
               key={item.id}
               title={item.title}
               subtitle={`${formatPHP(item.amount)}${item.accomplishment_date ? ` · ${item.accomplishment_date}` : ""}`}
-              leadingVisual={{ kind: "swatch", color: "#E1E7F0" }}
+              leadingVisual={{ kind: "swatch", color: "rgb(var(--border))" }}
               fields={[{ key: "id", label: "Accomplishment ID", initialValue: item.id }, { key: "title", label: "Title", placeholder: "Project title", initialValue: item.title }, { key: "amount", label: "Amount", placeholder: "0", initialValue: String(item.amount) }, { key: "status", label: "Status", type: "select", initialValue: item.status, options: STATUS_OPTIONS }, { key: "period", label: "Period", placeholder: "e.g. March 2026", initialValue: item.period ?? "" }, { key: "description", label: "Description", placeholder: "Description", type: "textarea", initialValue: item.description ?? "" }]}
               onSave={handleEdit}
               onDelete={() => deleteAccomplishment.mutate(item.id)}
@@ -122,11 +122,11 @@ export function AccomplishmentList({ fiscalYearId, categoryId, readOnly }: { fis
         <AdminCard className="bg-background">
           <h4 className="text-small font-semibold text-text-primary">Add Accomplishment</h4>
           <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <label className="text-small font-medium text-text-primary">Title *<input value={title} onChange={(event) => { setTitle(event.target.value); setDirty(true); }} className="mt-1 w-full rounded-md border border-border bg-white px-3 py-2 font-normal" /></label>
-            <label className="text-small font-medium text-text-primary">Date *<input type="date" value={date} onChange={(event) => { setDate(event.target.value); setDirty(true); }} className="mt-1 w-full rounded-md border border-border bg-white px-3 py-2 font-normal" /></label>
-            <label className="text-small font-medium text-text-primary">Amount *<input inputMode="decimal" value={amount} onChange={(event) => { setAmount(event.target.value); setDirty(true); }} className="mt-1 w-full rounded-md border border-border bg-white px-3 py-2 font-normal" /></label>
+            <label className="text-small font-medium text-text-primary">Title *<input value={title} onChange={(event) => { setTitle(event.target.value); setDirty(true); }} className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 font-normal" /></label>
+            <label className="text-small font-medium text-text-primary">Date *<input type="date" value={date} onChange={(event) => { setDate(event.target.value); setDirty(true); }} className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 font-normal" /></label>
+            <label className="text-small font-medium text-text-primary">Amount *<input inputMode="decimal" value={amount} onChange={(event) => { setAmount(event.target.value); setDirty(true); }} className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 font-normal" /></label>
             <label className="text-small font-medium text-text-primary">Photo<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { setPhoto(event.target.files?.[0]); setDirty(true); }} className="mt-1 block w-full text-small font-normal" /></label>
-            <label className="text-small font-medium text-text-primary sm:col-span-2">Description<textarea value={description} onChange={(event) => { setDescription(event.target.value); setDirty(true); }} rows={3} className="mt-1 w-full rounded-md border border-border bg-white px-3 py-2 font-normal" /></label>
+            <label className="text-small font-medium text-text-primary sm:col-span-2">Description<textarea value={description} onChange={(event) => { setDescription(event.target.value); setDirty(true); }} rows={3} className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 font-normal" /></label>
             <label className="text-small font-medium text-text-primary sm:col-span-2">Document<input type="file" accept="application/pdf" onChange={(event) => { setDocumentFile(event.target.files?.[0]); setDirty(true); }} className="mt-1 block w-full text-small font-normal" /></label>
           </div>
           {formError && <p className="mt-3 text-small text-status-error-text">{formError}</p>}

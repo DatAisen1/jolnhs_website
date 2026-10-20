@@ -70,7 +70,7 @@ export function ProgramRow({ program }: { program: AcademicProgram }) {
       initial={shouldReduceMotion ? "show" : "hidden"}
       whileInView="show"
       viewport={viewportOnce}
-      className={`grid grid-cols-1 lg:grid-cols-2 ${isDark ? "bg-primary" : "bg-white"}`}
+      className={`grid grid-cols-1 lg:grid-cols-2 ${isDark ? "bg-primary" : "bg-surface"}`}
     >
       {/* relative + min-h on the wrapper lets the panel sit absolutely and
           always fill the full row height on desktop — previously a

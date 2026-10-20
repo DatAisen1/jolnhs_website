@@ -4,6 +4,7 @@ import { NavBar } from "./NavBar";
 import { MobileNav } from "./MobileNav";
 import { Container } from "@/components/ui/Container";
 import { SchoolBadge } from "@/components/ui/SchoolBadge";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 /**
  * Header: a flat, edge-to-edge translucent strip — the pattern Apple's
@@ -37,14 +38,16 @@ export function Header() {
   return (
     <header
       className={`sticky top-0 z-[1000] border-b backdrop-blur-xl backdrop-saturate-[180%] transition-[background-color,border-color] duration-300 ease-apple ${
-        scrolled ? "border-black/10 bg-white/90" : "border-black/[0.06] bg-white/70"
+        scrolled
+          ? "border-black/10 bg-white/90 dark:border-white/10 dark:bg-primary-800/90"
+          : "border-black/[0.06] bg-white/70 dark:border-white/5 dark:bg-primary-800/75"
       }`}
     >
       <Container className="flex h-16 items-center justify-between md:h-[68px]">
         {/* LEFT: school identity */}
         <Link to="/" className="flex items-center gap-2.5">
           <SchoolBadge label="JO" ariaLabel="JOLNHS crest" size={38} src="/images/logo-jolnhs.png" />
-          <span className="hidden text-[13px] font-semibold leading-tight tracking-tight text-primary sm:block">
+          <span className="hidden text-[13px] font-semibold leading-tight tracking-tight text-primary dark:text-secondary-100 sm:block">
             Julia Ortiz Luis
             <br />
             National High School
@@ -54,8 +57,9 @@ export function Header() {
         {/* CENTER: primary navigation */}
         <NavBar />
 
-        {/* RIGHT: DepEd affiliation seal + mobile trigger */}
+        {/* RIGHT: DepEd affiliation seal + theme toggle + mobile trigger */}
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <div className="hidden sm:block">
             <SchoolBadge
               label="DepEd"

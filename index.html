@@ -10,7 +10,8 @@
     />
     <link rel="icon" type="image/png" href="/images/logo-jolnhs.png" />
     <link rel="apple-touch-icon" href="/images/logo-jolnhs.png" />
-    <meta name="theme-color" content="#1C3E7C" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1C3E7C" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#081120" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Julia Ortiz Luis National High School" />
     <meta property="og:title" content="Julia Ortiz Luis National High School" />
@@ -28,6 +29,18 @@
       name="twitter:image"
       content="https://jolnhs-website.vercel.app/images/site/hero-poster.webp"
     />
+    <!-- Applies the saved/OS theme before first paint — without this, a
+         dark-mode visitor sees a full light flash on every navigation. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("jolnhs-theme");
+          if (t === "dark" || (t !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

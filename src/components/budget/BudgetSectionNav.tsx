@@ -41,7 +41,7 @@ export function BudgetSectionNav({ items = defaultSections }: BudgetSectionNavPr
   return (
     <nav
       aria-label="Budget page sections"
-      className="sticky top-16 z-40 border-b border-border bg-white/90 shadow-sm backdrop-blur-md md:top-[68px]"
+      className="sticky top-16 z-40 border-b border-border bg-white/90 shadow-sm backdrop-blur-md dark:bg-primary-800/90 md:top-[68px]"
     >
       <div className="mx-auto flex max-w-content gap-1 overflow-x-auto px-6 md:px-10">
         {sections.map((section) => {

@@ -109,14 +109,14 @@ function LeadingVisual({ visual }: { visual: ListItemCardLeadingVisual }) {
   }
 
   const circle = (
-    <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-border">
+    <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface ring-1 ring-border">
       {visual.photoUrl ? (
         <img src={visual.photoUrl} alt="" className="h-full w-full object-cover" />
       ) : (
         <User size={22} className="text-text-secondary" aria-hidden="true" />
       )}
       {visual.uploading && (
-        <span className="absolute inset-0 flex items-center justify-center bg-white/70 text-[10px] text-text-secondary">
+        <span className="absolute inset-0 flex items-center justify-center bg-surface/70 text-[10px] text-text-secondary">
           …
         </span>
       )}
@@ -245,7 +245,7 @@ className="rounded-md bg-status-error px-2 py-1 text-small font-medium text-whit
             const inputId = `${title}-${field.key}`.replace(/\s+/g, "-");
             const error = fieldErrors[field.key];
             const value = values[field.key] ?? "";
-            const inputClassName = `w-full rounded-md border bg-white px-2.5 py-1.5 text-small text-text-primary focus:outline-none focus:ring-2 ${
+            const inputClassName = `w-full rounded-md border bg-surface px-2.5 py-1.5 text-small text-text-primary focus:outline-none focus:ring-2 ${
               error ? "border-status-error focus:ring-status-error" : "border-border focus:ring-primary"
             }`;
             return (

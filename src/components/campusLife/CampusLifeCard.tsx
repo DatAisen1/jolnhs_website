@@ -15,7 +15,7 @@ export function CampusLifeCard({ section }: { section: PublicCampusLifeSection }
       to={`/campus-life/${section.slug}`}
       variants={scaleIn}
       className={`group flex flex-col rounded-card border p-8 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:rounded-card focus-visible:outline-offset-4 ${
-        isDark ? "border-primary-700 bg-primary text-white" : "border-border bg-white text-text-primary"
+        isDark ? "border-primary-700 bg-primary text-white" : "border-border bg-surface text-text-primary"
       }`}
     >
       <div className={`flex h-14 w-14 items-center justify-center rounded-full ${isDark ? "bg-white/10" : "bg-primary-50"}`}>

@@ -33,7 +33,7 @@ export function SkeletonGrid({
       {Array.from({ length: count }, (_, i) => (
         <div
           key={i}
-          className="animate-pulse overflow-hidden rounded-card border border-border bg-white"
+          className="animate-pulse overflow-hidden rounded-card border border-border bg-surface"
           aria-hidden="true"
         >
           {imageAspect && <div className={`${imageAspect} w-full bg-primary-100/70`} />}

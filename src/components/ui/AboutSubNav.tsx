@@ -21,7 +21,7 @@ const links = [
  */
 export function AboutSubNav({ current }: { current: string }) {
   return (
-    <nav aria-label="About JOLNHS sections" className="border-b border-border bg-white">
+    <nav aria-label="About JOLNHS sections" className="border-b border-border bg-surface">
       <div className="mx-auto flex max-w-content gap-1 overflow-x-auto px-6 md:px-10">
         {links.map((link) => {
           const isActive = link.href === current;

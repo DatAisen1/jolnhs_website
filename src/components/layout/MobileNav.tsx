@@ -14,7 +14,7 @@ import { navigation } from "@/data/navigation";
  * WHEN NOT: Never render both NavBar and MobileNav visible at once — Tailwind
  *           breakpoints (hidden lg:flex / lg:hidden) enforce that split.
  *
- * The panel is SOLID white (`bg-white`), not translucent — an earlier
+ * The panel is SOLID white (`bg-surface`), not translucent — an earlier
  * version used the header's frosted-glass treatment (`bg-white/15
  * backdrop-blur`) here too, but at full-screen size that left menu text
  * sitting at ~15% opacity over whatever photo or colored section was
@@ -80,7 +80,7 @@ export function MobileNav() {
               exit={shouldReduceMotion ? { x: 0 } : { x: "100%" }}
               transition={{ duration: 0.25, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="ml-auto flex h-full w-full max-w-sm flex-col bg-white shadow-2xl"
+              className="ml-auto flex h-full w-full max-w-sm flex-col bg-surface shadow-2xl"
             >
               <div className="flex items-center justify-between border-b border-border px-6 py-4">
                 <span className="text-subtitle text-primary">Menu</span>

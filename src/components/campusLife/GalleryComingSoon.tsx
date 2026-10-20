@@ -28,7 +28,7 @@ export function GalleryComingSoon() {
       viewport={viewportOnce}
       className="flex flex-col items-center gap-4 rounded-card border border-dashed border-primary-200 bg-primary-50 px-6 py-14 text-center"
     >
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-surface shadow-sm">
         <ImageIcon className="h-6 w-6 text-primary" aria-hidden="true" />
       </span>
       <div>

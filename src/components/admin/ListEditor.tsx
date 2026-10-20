@@ -65,7 +65,7 @@ export function ListEditor<T extends { id: string }>({
               const fieldError = errors?.[index]?.[field.key];
               const value = (item[field.key] as string | undefined) ?? "";
               const inputId = `${item.id}-${String(field.key)}`;
-              const inputClassName = `w-full rounded-md border bg-white px-3 py-1.5 text-small text-text-primary focus:outline-none focus:ring-2 ${
+              const inputClassName = `w-full rounded-md border bg-surface px-3 py-1.5 text-small text-text-primary focus:outline-none focus:ring-2 ${
                 fieldError ? "border-status-error focus:ring-status-error" : "border-border focus:ring-primary"
               }`;
               return (

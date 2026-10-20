@@ -13,12 +13,18 @@ import type { Config } from "tailwindcss";
 // Change ONLY these hex values to re-theme the entire site.
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  // Theme toggling is class-driven (`.dark` on <html>), same mechanism
+  // Tailwind's own dark: variant supports for the few glass overlays
+  // that need per-spot overrides.
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         primary: {
-          50: "#EEF3FC",
-          100: "#D7E4F6",
+          // 50/100 are theme-aware (light tints in light mode, navy glaze
+          // in dark mode) — values live as CSS variables in index.css.
+          50: "rgb(var(--primary-50) / <alpha-value>)",
+          100: "rgb(var(--primary-100) / <alpha-value>)",
           200: "#AFC8EC",
           300: "#7FA6DD",
           400: "#4C7DC8",
@@ -35,23 +41,41 @@ export default {
           300: "#9FC3F0", // refined sky-blue — hover accents, decorative icons on dark backgrounds
           light: "#9FC3F0", // alias kept for existing call sites — same value as 300
         },
-        surface: "#FFFFFF",
-        background: "#F9FBFD", // quiet, warm-leaning off-white — reads calmer than a cool slate gray
-        border: "#E1E7F0",
+        // surface/background/border/text flips between the light and dark
+        // palettes in index.css; always-white chrome (buttons on navy
+        // heroes, text on navy panels) keeps using `white` (fixed) or the
+        // navy tiers directly.
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        background: "rgb(var(--background) / <alpha-value>)", // quiet off-white / deep ink-navy in dark
+        border: "rgb(var(--border) / <alpha-value>)",
         text: {
-          primary: "#0B1730", // deep ink-navy instead of generic slate — ties body copy into the brand
-          secondary: "#4A5B7C", // blue-gray secondary text, same family as primary
+          primary: "rgb(var(--text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--text-secondary) / <alpha-value>)",
         },
         // Semantic status colors for the Budget page's accomplishment
-        // badges and info/warning banners. Centralized here (like every
-        // other color) instead of reaching for Tailwind's default
-        // green-100/amber-100/etc inline, so re-theming status colors
-        // is a one-line edit here rather than a grep-and-replace.
+        // badges and info/warning banners. bg/text pairs are theme-aware;
+        // the DEFAULT accent stays fixed (used as icon/border accents).
         status: {
-          success: { bg: "#E6F4EA", text: "#1E7B34", DEFAULT: "#2F9E44" },
-          warning: { bg: "#FDF3D8", text: "#92660B", DEFAULT: "#D9A611" },
-          info: { bg: "#EEF3FC", text: "#1C3E7C", DEFAULT: "#1C3E7C" },
-          error: { bg: "#FCEAEA", text: "#B42318", DEFAULT: "#D92D20" },
+          success: {
+            bg: "rgb(var(--status-success-bg) / <alpha-value>)",
+            text: "rgb(var(--status-success-text) / <alpha-value>)",
+            DEFAULT: "#2F9E44",
+          },
+          warning: {
+            bg: "rgb(var(--status-warning-bg) / <alpha-value>)",
+            text: "rgb(var(--status-warning-text) / <alpha-value>)",
+            DEFAULT: "#D9A611",
+          },
+          info: {
+            bg: "rgb(var(--status-info-bg) / <alpha-value>)",
+            text: "rgb(var(--status-info-text) / <alpha-value>)",
+            DEFAULT: "#1C3E7C",
+          },
+          error: {
+            bg: "rgb(var(--status-error-bg) / <alpha-value>)",
+            text: "rgb(var(--status-error-text) / <alpha-value>)",
+            DEFAULT: "#D92D20",
+          },
         },
       },
       fontFamily: {

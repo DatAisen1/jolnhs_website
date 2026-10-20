@@ -45,7 +45,7 @@ export function ContactPage() {
           { label: "Contact Us" },
         ]}
       />
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container>
           {isLoading ? (
             <p role="status" className="mt-8 text-body text-text-secondary">

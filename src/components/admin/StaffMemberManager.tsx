@@ -153,7 +153,7 @@ export function StaffMemberManager({ category, members }: StaffMemberManagerProp
               }}
               placeholder="Name"
               aria-invalid={Boolean(newNameError)}
-              className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {newNameError && <p className="mt-1 text-small text-status-error-text">{newNameError}</p>}
           </div>
@@ -170,7 +170,7 @@ export function StaffMemberManager({ category, members }: StaffMemberManagerProp
               }}
               placeholder="Position"
               aria-invalid={Boolean(newPositionError)}
-              className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {newPositionError && <p className="mt-1 text-small text-status-error-text">{newPositionError}</p>}
           </div>

@@ -34,7 +34,7 @@ export function FacultyFilterTabs({ active, onChange }: FacultyFilterTabsProps) 
             className={`rounded-full px-4 py-2 text-small font-medium transition-colors ${
               isActive
                 ? "bg-primary text-white"
-                : "border border-border bg-white text-text-secondary hover:border-primary hover:text-primary"
+                : "border border-border bg-surface text-text-secondary hover:border-primary hover:text-primary"
             }`}
           >
             {category.label}

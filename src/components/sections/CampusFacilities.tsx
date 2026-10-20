@@ -24,7 +24,7 @@ function FacilityRow({ facility }: { facility: Facility }) {
       whileInView="show"
       viewport={viewportOnce}
       className={`grid grid-cols-1 lg:grid-cols-2 ${
-        isDark ? "bg-primary" : "bg-white"
+        isDark ? "bg-primary" : "bg-surface"
       }`}
     >
       <div className={imageFirst ? "lg:order-1" : "lg:order-2"}>

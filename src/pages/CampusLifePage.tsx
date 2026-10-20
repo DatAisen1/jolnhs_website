@@ -59,7 +59,7 @@ export function CampusLifePage() {
           text+sidebar split, because there's no "quick facts" list that
           belongs here; CommunityStats right below does that job as a
           full-width band instead of a cramped sidebar. */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container className="mx-auto max-w-3xl text-center">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
@@ -124,7 +124,7 @@ export function CampusLifePage() {
           visitor ever clicks into a sub-page. Reuses GalleryGrid at its
           4-column density, same component the section detail pages use
           for their own (larger) galleries. */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container>
           <motion.h2
             variants={fadeUp}
@@ -169,7 +169,7 @@ export function CampusLifePage() {
       </motion.section>
 
       {/* In their own words — 2-up testimonials */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container>
           <motion.h2
             variants={fadeUp}

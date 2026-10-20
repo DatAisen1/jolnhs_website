@@ -6,6 +6,7 @@ import { useIdleSignOut } from "@/hooks/useIdleSignOut";
 import { useNoIndex } from "@/hooks/useNoIndex";
 import { InlineNotice } from "@/components/ui/InlineNotice";
 import { PageTransition } from "@/components/ui/PageTransition";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 type NavItem = {
   to?: string;
@@ -116,7 +117,7 @@ export function AdminLayout() {
 
       <aside
         ref={sidebarRef}
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-white shadow-sm transition-transform md:static md:transition-none ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-surface shadow-sm transition-transform md:static md:transition-none ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         } ${sidebarOpen ? "md:translate-x-0 md:flex" : "md:hidden"}`}
       >
@@ -211,7 +212,7 @@ export function AdminLayout() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-3 border-b border-border bg-white px-4 py-3 shadow-sm">
+        <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3 shadow-sm">
           <button
             onClick={() => {
               if (window.innerWidth < 768) setMobileOpen((v) => !v);
@@ -225,6 +226,9 @@ export function AdminLayout() {
           <h2 className="font-heading text-small font-semibold text-text-primary">
             {currentNavItem?.label ?? "Admin"}
           </h2>
+          <div className="ml-auto">
+            <ThemeToggle />
+          </div>
         </header>
 
         <main className="flex-1 p-4 sm:p-6">

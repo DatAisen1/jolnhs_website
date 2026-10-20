@@ -31,7 +31,7 @@ export function PrivacyPolicyPage() {
           { label: privacyPolicy.pageTitle },
         ]}
       />
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container className="max-w-3xl">
           <p className="text-small font-semibold uppercase tracking-widest text-text-secondary">
             Last updated: {privacyPolicy.lastUpdated}

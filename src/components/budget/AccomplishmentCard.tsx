@@ -40,7 +40,7 @@ export function AccomplishmentCard({
   return (
     <motion.li
       variants={fadeUp}
-      className="group flex flex-col overflow-hidden rounded-card border border-border bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
     >
       <div aria-hidden="true" className={`h-1.5 w-full ${category?.colorClass ?? "bg-primary"}`} />
 

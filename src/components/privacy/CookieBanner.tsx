@@ -28,7 +28,7 @@ export function CookieBanner() {
       transition={{ duration: 0.4, ease: appleEase }}
       className="fixed bottom-4 left-4 right-4 z-40 mx-auto max-w-md sm:left-6 sm:right-auto"
     >
-      <div className="rounded-xl border border-border bg-white p-5 shadow-xl">
+      <div className="rounded-xl border border-border bg-surface p-5 shadow-xl">
         <div className="flex items-start gap-3">
           <Cookie className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
           <div>

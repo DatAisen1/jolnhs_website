@@ -49,7 +49,7 @@ function OfficerFormModal({ sectionId, onClose }: { sectionId: string; onClose: 
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4" role="presentation" onMouseDown={(event) => {
       if (event.target === event.currentTarget) requestClose();
     }}>
-      <section className="max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-white shadow-xl" role="dialog" aria-modal="true" aria-labelledby="officer-modal-title">
+      <section className="max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-surface shadow-xl" role="dialog" aria-modal="true" aria-labelledby="officer-modal-title">
         <header className="flex items-center justify-between border-b border-border px-5 py-4">
           <div>
             <h2 id="officer-modal-title" className="font-heading text-subtitle text-text-primary">Add Officer</h2>

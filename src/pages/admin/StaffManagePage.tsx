@@ -165,18 +165,18 @@ export function StaffManagePage() {
         <label className="relative block">
           <span className="sr-only">Search staff by name</span>
           <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" aria-hidden="true" />
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by name" className="w-full rounded-md border border-border bg-white py-2 pl-9 pr-3 text-small focus:outline-none focus:ring-2 focus:ring-primary" />
+          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by name" className="w-full rounded-md border border-border bg-surface py-2 pl-9 pr-3 text-small focus:outline-none focus:ring-2 focus:ring-primary" />
         </label>
         <label className="flex items-center gap-2 text-small text-text-secondary">
           <span>Status</span>
-          <select value={archived ? "archived" : "active"} onChange={(event) => setArchived(event.target.value === "archived")} className="rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+          <select value={archived ? "archived" : "active"} onChange={(event) => setArchived(event.target.value === "archived")} className="rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
             <option value="active">Active</option>
             <option value="archived">Archived</option>
           </select>
         </label>
         <label className="flex items-center gap-2 text-small text-text-secondary">
           <span>Sort</span>
-          <select value={sort} onChange={(event) => setSort(event.target.value as StaffSort)} className="rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+          <select value={sort} onChange={(event) => setSort(event.target.value as StaffSort)} className="rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
             <option value="name-asc">Name A-Z</option>
             <option value="name-desc">Name Z-A</option>
             <option value="created-desc">Recently added</option>

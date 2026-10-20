@@ -27,7 +27,7 @@ export function ProgramPhotoGallery({ programName, photos }: ProgramPhotoGallery
   if (visible.length === 0) return null;
 
   return (
-    <section aria-label={`${programName} photos`} className="bg-white py-section-sm md:py-section">
+    <section aria-label={`${programName} photos`} className="bg-surface py-section-sm md:py-section">
       <Container>
         <motion.h2
           variants={fadeUp}

@@ -119,7 +119,7 @@ export function FacultyStaffPage() {
       />
       <AboutSubNav current="/about/faculty-staff" />
 
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container>
           {isLoading ? (
             <SkeletonGrid count={8} gridClassName="mt-10 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" />

@@ -77,7 +77,7 @@ function QuickAction({ label, to, disabled = false }: { label: string; to?: stri
   return (
     <Link
       to={to}
-      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-border bg-white px-3.5 py-2 text-small font-semibold text-text-primary transition-colors hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-border bg-surface px-3.5 py-2 text-small font-semibold text-text-primary transition-colors hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
       <Plus size={15} aria-hidden="true" />
       {label}

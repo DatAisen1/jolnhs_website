@@ -21,7 +21,7 @@ export function MissionStatement() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="border-y border-border bg-white py-section-sm md:py-section" aria-labelledby="mission-heading">
+    <section className="border-y border-border bg-surface py-section-sm md:py-section" aria-labelledby="mission-heading">
       <Container className="text-center">
         <motion.div
           variants={fadeUp}

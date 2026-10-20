@@ -16,7 +16,7 @@ export function MilestoneSection() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="bg-white py-section-sm md:py-section" aria-labelledby="milestone-heading">
+    <section className="bg-surface py-section-sm md:py-section" aria-labelledby="milestone-heading">
       <Container className="text-center">
         <motion.div
           variants={fadeUp}

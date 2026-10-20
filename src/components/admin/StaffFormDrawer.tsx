@@ -59,7 +59,7 @@ export function StaffFormDrawer({
       if (event.target === event.currentTarget) requestClose();
     }}>
       <section
-        className="flex h-full w-full max-w-xl flex-col overflow-y-auto bg-white shadow-xl"
+        className="flex h-full w-full max-w-xl flex-col overflow-y-auto bg-surface shadow-xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="staff-drawer-title"
@@ -92,7 +92,7 @@ export function StaffFormDrawer({
 
             <div>
               <label htmlFor="staff-category" className="mb-1 block text-small font-medium text-text-primary">Category *</label>
-              <select id="staff-category" value={form.values.category} onChange={(event) => { setDirty(true); form.updateValue("category", event.target.value as StaffCategory); }} className="w-full rounded-md border border-border bg-white px-3 py-2 text-small focus:outline-none focus:ring-2 focus:ring-primary">
+              <select id="staff-category" value={form.values.category} onChange={(event) => { setDirty(true); form.updateValue("category", event.target.value as StaffCategory); }} className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small focus:outline-none focus:ring-2 focus:ring-primary">
                 {CATEGORY_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
               </select>
             </div>

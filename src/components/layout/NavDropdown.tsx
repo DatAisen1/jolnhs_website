@@ -157,7 +157,7 @@ export function NavDropdown({ item, isHighlighted, onHoverStart }: NavDropdownPr
 
       {/* Dropdown */}
       <div
-        className={`absolute left-0 top-full mt-3 z-[1100] min-w-[220px] overflow-hidden rounded-2xl border border-white/15 bg-white/15 backdrop-blur-[24px] backdrop-saturate-[180%] py-2 shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-200 ${
+        className={`absolute left-0 top-full mt-3 z-[1100] min-w-[220px] overflow-hidden rounded-2xl border border-white/15 bg-white/15 backdrop-blur-[24px] backdrop-saturate-[180%] py-2 shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-200 dark:border-white/10 dark:bg-primary-800/80 ${
           isOpen
             ? "visible translate-y-0 opacity-100"
             : "invisible -translate-y-1 opacity-0"

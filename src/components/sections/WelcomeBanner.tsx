@@ -16,7 +16,7 @@ export function WelcomeBanner() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="bg-white py-section-sm md:py-section" aria-labelledby="welcome-heading">
+    <section className="bg-surface py-section-sm md:py-section" aria-labelledby="welcome-heading">
       <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
         <motion.div
           variants={fadeUp}

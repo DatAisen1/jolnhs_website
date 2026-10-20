@@ -164,7 +164,7 @@ function FiscalYearEditor({
             }}
             placeholder="e.g. SY 2026-2027"
             aria-invalid={Boolean(fieldErrors.yearLabel)}
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
           />
           {fieldErrors.yearLabel && <p className="mt-1 text-small text-status-error-text">{fieldErrors.yearLabel}</p>}
         </div>
@@ -183,7 +183,7 @@ function FiscalYearEditor({
             }}
             placeholder="0"
             aria-invalid={Boolean(fieldErrors.totalBudget)}
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
           />
           {fieldErrors.totalBudget && (
             <p className="mt-1 text-small text-status-error-text">{fieldErrors.totalBudget}</p>
@@ -202,7 +202,7 @@ function FiscalYearEditor({
               markDirty();
             }}
             placeholder="Budget Transparency"
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
           />
         </div>
         <div>
@@ -219,7 +219,7 @@ function FiscalYearEditor({
             }}
             rows={2}
             placeholder="A clear, public look at how the school proposes and spends its budget…"
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
           />
         </div>
         <div>
@@ -235,7 +235,7 @@ function FiscalYearEditor({
               markDirty();
             }}
             rows={4}
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
           />
         </div>
         <div>
@@ -251,7 +251,7 @@ function FiscalYearEditor({
               markDirty();
             }}
             rows={2}
-            className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-background disabled:text-text-secondary"
           />
         </div>
       </section>
@@ -291,7 +291,7 @@ function FiscalYearEditor({
               value={fiscalYear.status}
               onChange={(e) => setStatus.mutate({ id: fiscalYear.id, status: e.target.value as FiscalYearStatus })}
               disabled={setStatus.isPending}
-              className="rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              className="rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {STATUS_ORDER.map((status) => <option key={status} value={status}>{STATUS_BADGE[status].label}</option>)}
             </select>
@@ -397,7 +397,7 @@ export function BudgetManagePage() {
           id="fiscal-year-select"
           value={selectedId ?? ""}
           onChange={(e) => handleSelectYear(e.target.value)}
-          className="rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+          className="rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
         >
           {data.length === 0 && <option value="">No fiscal years yet</option>}
           {data.map((year) => (
@@ -429,7 +429,7 @@ export function BudgetManagePage() {
                 setNewYearError("");
               }}
               placeholder="e.g. SY 2027-2028"
-              className="w-44 rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-44 rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {newYearError && <p className="basis-full text-small text-status-error-text">{newYearError}</p>}
             <AdminButton

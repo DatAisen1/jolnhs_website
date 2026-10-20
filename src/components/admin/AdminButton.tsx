@@ -8,7 +8,7 @@ interface AdminButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANT_CLASSES = {
   primary: "bg-primary text-white hover:bg-primary-600 focus-visible:outline-primary",
-  secondary: "border border-border bg-white text-text-primary hover:bg-background focus-visible:outline-primary",
+  secondary: "border border-border bg-surface text-text-primary hover:bg-background focus-visible:outline-primary",
   danger: "bg-status-error text-white hover:bg-status-error-text focus-visible:outline-status-error",
   ghost: "text-text-secondary hover:bg-background hover:text-text-primary focus-visible:outline-primary",
 } as const;

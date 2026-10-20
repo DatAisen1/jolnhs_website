@@ -2,6 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme palettes as RGB triplets for Tailwind's `<alpha-value>` syntax.
+   Only theme-AWARE tokens live here — brand navy (primary DEFAULT–900)
+   and light-on-navy text (secondary-*) stay fixed in tailwind.config
+   because navy sections look identical in both modes. `.dark` is set on
+   <html> by useTheme (or the anti-FOUC script in index.html). */
+:root {
+  color-scheme: light;
+  --background: 249 251 253; /* #F9FBFD */
+  --surface: 255 255 255; /* #FFFFFF */
+  --border: 225 231 240; /* #E1E7F0 */
+  --text-primary: 11 23 48; /* #0B1730 */
+  --text-secondary: 74 91 124; /* #4A5B7C */
+  --primary-50: 238 243 252; /* #EEF3FC — tinted panels, icon discs */
+  --primary-100: 215 228 246; /* #D7E4F6 — pale navy fills */
+  --status-success-bg: 230 244 234;
+  --status-success-text: 30 123 52;
+  --status-warning-bg: 253 243 216;
+  --status-warning-text: 146 102 11;
+  --status-info-bg: 238 243 252;
+  --status-info-text: 28 62 124;
+  --status-error-bg: 252 234 234;
+  --status-error-text: 180 35 24;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: 8 17 32; /* #081120 — deep ink-navy, below the footer tier */
+  --surface: 16 31 58; /* #101F3A — cards & panels */
+  --border: 38 57 97; /* #263961 — one tier above surface */
+  --text-primary: 237 242 252; /* #EDF2FC */
+  --text-secondary: 166 186 223; /* #A6BADF — muted steel-blue */
+  --primary-50: 23 43 82; /* #172B52 — tinted panels read as navy glaze */
+  --primary-100: 32 58 108; /* #203A6C */
+  --status-success-bg: 18 53 38;
+  --status-success-text: 123 199 148;
+  --status-warning-bg: 58 46 14;
+  --status-warning-text: 229 196 99;
+  --status-info-bg: 20 37 63;
+  --status-info-text: 143 180 232;
+  --status-error-bg: 61 23 20;
+  --status-error-text: 240 140 130;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -22,6 +65,9 @@
     outline: 3px solid #2955a3;
     outline-offset: 2px;
     border-radius: 4px;
+  }
+  .dark :focus-visible {
+    outline-color: #9fc3f0;
   }
 
   /* Respect users who've asked the OS to reduce motion */
@@ -54,6 +100,23 @@
 }
 
 @layer utilities {
+  /* Dark-mode contrast relief for brand-navy text/border utilities:
+     #1C3E7C on the dark surface falls below WCAG's 3:1 line, so in
+     .dark these specific utilities shift to the palette's light azure
+     (secondary-300). Anything sitting ON navy (hero copy, CTAs) uses
+     white/secondary-* tokens and is untouched by this. Buttons primary
+     bg stays fixed navy, white text — correct in both modes. */
+  .dark .text-primary,
+  .dark .hover\:text-primary:hover,
+  .dark .group:hover .group-hover\:text-primary {
+    color: #9fc3f0;
+  }
+  .dark .border-primary {
+    border-color: #4c7dc8;
+  }
+  .dark .focus-visible\:outline-primary:focus-visible {
+    outline-color: #9fc3f0;
+  }
   /* Permanently visually-hidden but screen-reader-accessible heading text */
   .sr-only {
     position: absolute;

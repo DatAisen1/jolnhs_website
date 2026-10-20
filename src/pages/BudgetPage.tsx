@@ -125,7 +125,7 @@ export function BudgetPage() {
       ) : null}
 
       {/* Intro copy */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container className="mx-auto max-w-3xl text-center">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
@@ -170,7 +170,7 @@ export function BudgetPage() {
       </section>
 
       {/* Section 2: Budget Allocation */}
-      <section id="budget-allocation" className="scroll-mt-36 bg-white py-section-sm md:py-section">
+      <section id="budget-allocation" className="scroll-mt-36 bg-surface py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">AT A GLANCE</p>
@@ -225,7 +225,7 @@ export function BudgetPage() {
                 initial={initial}
                 whileInView="show"
                 viewport={viewportOnce}
-                className="mx-auto max-w-xl rounded-card border border-border bg-white p-10 text-center shadow-sm"
+                className="mx-auto max-w-xl rounded-card border border-border bg-surface p-10 text-center shadow-sm"
               >
                 <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-50">
                   <Landmark className="h-8 w-8 text-primary" aria-hidden="true" strokeWidth={1.5} />

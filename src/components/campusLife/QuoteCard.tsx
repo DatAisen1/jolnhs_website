@@ -22,7 +22,7 @@ export function QuoteCard({ quote }: { quote: CampusLifeQuote }) {
   return (
     <motion.figure
       variants={scaleIn}
-      className="flex flex-col rounded-card border border-border bg-white p-8"
+      className="flex flex-col rounded-card border border-border bg-surface p-8"
     >
       <Quote className="h-8 w-8 text-primary-200" aria-hidden="true" strokeWidth={1.5} />
       <blockquote className="mt-4 text-body italic text-text-secondary">

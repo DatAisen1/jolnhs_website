@@ -16,7 +16,7 @@ export function AdminPageSkeleton() {
 
 export function AdminCardSkeleton() {
   return (
-    <div className="space-y-4 rounded-lg border border-border bg-white p-5" aria-hidden="true">
+    <div className="space-y-4 rounded-lg border border-border bg-surface p-5" aria-hidden="true">
       <div className="h-5 w-40 animate-pulse rounded bg-background" />
       <div className="h-10 w-full animate-pulse rounded bg-background" />
       <div className="h-10 w-full animate-pulse rounded bg-background" />
@@ -28,7 +28,7 @@ export function AdminListSkeleton({ rows = 3 }: { rows?: number }) {
   return (
     <div className="space-y-3" role="status" aria-label="Loading list">
       {Array.from({ length: rows }, (_, index) => (
-        <div key={index} className="flex items-center gap-3 rounded-lg border border-border bg-white p-4" aria-hidden="true">
+        <div key={index} className="flex items-center gap-3 rounded-lg border border-border bg-surface p-4" aria-hidden="true">
           <div className="h-10 w-10 animate-pulse rounded-full bg-background" />
           <div className="min-w-0 flex-1 space-y-2">
             <div className="h-4 w-40 max-w-full animate-pulse rounded bg-background" />

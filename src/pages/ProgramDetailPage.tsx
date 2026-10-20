@@ -118,7 +118,7 @@ export function ProgramDetailPage() {
       {/* Overview: text + quick-fact tiles on the left, the program's
           overview photo on the right (falls back to the program's icon
           panel when no photo has been supplied yet). */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
@@ -180,7 +180,7 @@ export function ProgramDetailPage() {
               <motion.div
                 key={highlight.title}
                 variants={scaleIn}
-                className="rounded-card border border-border bg-white p-6"
+                className="rounded-card border border-border bg-surface p-6"
               >
                 <h3 className="text-subtitle text-text-primary">{highlight.title}</h3>
                 <p className="mt-3 text-body text-text-secondary">{highlight.description}</p>
@@ -199,7 +199,7 @@ export function ProgramDetailPage() {
 
       {/* Strands — SHS only */}
       {program.strands && (
-        <section className="bg-white py-section-sm md:py-section">
+        <section className="bg-surface py-section-sm md:py-section">
           <Container>
             <motion.h2
               variants={fadeUp}

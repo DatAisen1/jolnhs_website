@@ -24,7 +24,7 @@ const links = [
  */
 export function CampusLifeSubNav({ current }: { current: string }) {
   return (
-    <nav aria-label="Campus Life sections" className="border-b border-border bg-white">
+    <nav aria-label="Campus Life sections" className="border-b border-border bg-surface">
       <div className="mx-auto flex max-w-content gap-1 overflow-x-auto px-6 md:px-10 max-md:[mask-image:linear-gradient(to_right,black_92%,transparent)]">
         {links.map((link) => {
           const isActive = link.href === current;

@@ -147,7 +147,7 @@ export function CampusLifeSectionPage() {
 
       {/* Overview + stats sidebar — same grid rhythm as ProgramDetailPage
           and AboutOverviewPage's own intro section. */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)]">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">
@@ -204,7 +204,7 @@ export function CampusLifeSectionPage() {
               <motion.div
                 key={highlight.title}
                 variants={scaleIn}
-                className="rounded-card border border-border bg-white p-6"
+                className="rounded-card border border-border bg-surface p-6"
               >
                 <h3 className="text-subtitle text-text-primary">{highlight.title}</h3>
                 <p className="mt-3 text-body text-text-secondary">{highlight.description}</p>
@@ -215,7 +215,7 @@ export function CampusLifeSectionPage() {
       </section>
 
       {/* Photo gallery */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container>
           <motion.h2
             variants={fadeUp}

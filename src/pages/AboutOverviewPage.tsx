@@ -57,7 +57,7 @@ export function AboutOverviewPage() {
       <AboutSubNav current="/about/overview" />
 
       {/* Intro / philosophy, with a Quick Facts sidebar for scannability */}
-      <section className="bg-white py-section-sm md:py-section">
+      <section className="bg-surface py-section-sm md:py-section">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)]">
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
             <p className="mb-3 text-small font-semibold uppercase tracking-[0.18em] text-primary">

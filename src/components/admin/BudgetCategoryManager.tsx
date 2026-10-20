@@ -157,7 +157,7 @@ function AccomplishmentList({
               label: STATUS_OPTIONS.find((s) => s.value === accomplishment.status)?.label ?? accomplishment.status,
               variant: STATUS_BADGE_VARIANT[accomplishment.status],
             }}
-            leadingVisual={{ kind: "swatch", color: "#E1E7F0" }}
+            leadingVisual={{ kind: "swatch", color: "rgb(var(--border))" }}
             fields={[
               { key: "id", label: "Accomplishment ID", placeholder: "", initialValue: accomplishment.id },
               { key: "title", label: "Title", placeholder: "Project title", initialValue: accomplishment.title },
@@ -202,7 +202,7 @@ function AccomplishmentList({
       )}
 
       {!readOnly && (
-        <div className="rounded-lg border border-dashed border-border bg-white p-3">
+        <div className="rounded-lg border border-dashed border-border bg-surface p-3">
           <div className="space-y-2">
             <div>
               <label htmlFor={`new-accomplishment-title-${categoryId}`} className="sr-only">
@@ -217,7 +217,7 @@ function AccomplishmentList({
                 }}
                 placeholder="Accomplishment title"
                 aria-invalid={Boolean(newTitleError)}
-                className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {newTitleError && <p className="mt-1 text-small text-status-error-text">{newTitleError}</p>}
             </div>
@@ -236,7 +236,7 @@ function AccomplishmentList({
                   placeholder="Amount"
                   inputMode="decimal"
                   aria-invalid={Boolean(newAmountError)}
-                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 {newAmountError && <p className="mt-1 text-small text-status-error-text">{newAmountError}</p>}
               </div>
@@ -249,7 +249,7 @@ function AccomplishmentList({
                   value={newPeriod}
                   onChange={(e) => setNewPeriod(e.target.value)}
                   placeholder="Period (optional)"
-                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
@@ -387,7 +387,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
 
       <div className="space-y-4">
         {data.map((category) => (
-          <div key={category.id} className="rounded-lg border border-border bg-white p-3">
+          <div key={category.id} className="rounded-lg border border-border bg-surface p-3">
             <ListItemCard
               title={category.name}
               subtitle={formatPHP(category.amount)}
@@ -470,7 +470,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
                 }}
                 placeholder="Category name"
                 aria-invalid={Boolean(newNameError)}
-                className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {newNameError && <p className="mt-1 text-small text-status-error-text">{newNameError}</p>}
             </div>
@@ -488,7 +488,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
                 placeholder="Amount"
                 inputMode="decimal"
                 aria-invalid={Boolean(newAmountError)}
-                className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {newAmountError && <p className="mt-1 text-small text-status-error-text">{newAmountError}</p>}
             </div>
@@ -501,7 +501,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
                   id="new-category-icon"
                   value={newIconKey}
                   onChange={(e) => setNewIconKey(e.target.value)}
-                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   {BUDGET_ICON_OPTIONS.map((option) => (
                     <option key={option.key} value={option.key}>
@@ -518,7 +518,7 @@ export function BudgetCategoryManager({ fiscalYearId, readOnly }: BudgetCategory
                   id="new-category-color"
                   value={newColorClass}
                   onChange={(e) => setNewColorClass(e.target.value)}
-                  className="w-full rounded-md border border-border bg-white px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   {BUDGET_COLOR_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
