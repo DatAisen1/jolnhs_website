@@ -34,11 +34,11 @@
    Status colors keep the white palette values; they read fine on sky. */
 .theme-sky {
   color-scheme: light;
-  --background: 201 229 249; /* #C9E5F9 — clear sky wash */
-  --surface: 235 246 253; /* #EBF6FD — pale sky cards, not white */
-  --border: 158 200 233; /* #9EC8E9 — bluer hairlines */
-  --primary-50: 214 235 251; /* #D6EBFB */
-  --primary-100: 184 218 246; /* #B8DAF6 */
+  --background: 138 207 248; /* #8ACFF8 — the requested sky blue, full wash */
+  --surface: 223 241 253; /* #DFF1FD — pale sky cards, lifted off the wash */
+  --border: 100 181 235; /* #64B5EB — deeper blue edge, visible on both */
+  --primary-50: 179 222 251; /* #B3DEFB */
+  --primary-100: 140 202 246; /* #8CCAF6 */
 }
 
 .dark {
