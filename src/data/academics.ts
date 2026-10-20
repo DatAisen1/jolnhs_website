@@ -1,4 +1,4 @@
-import { FlaskConical, Cpu, HeartHandshake, BookOpen } from "lucide-react";
+import { FlaskConical, Cpu, HeartHandshake, BookOpen, GraduationCap } from "lucide-react";
 import type { AcademicProgram } from "@/types";
 
 // Order here is the display order on the Academics landing page. Each
@@ -261,13 +261,12 @@ export const academicPrograms: AcademicProgram[] = [
       "Academic and technical-vocational tracks aligned with the K-12 curriculum, giving Grade 11 and 12 learners a focused path toward college, employment, or entrepreneurship after graduation.",
     imagePosition: "right",
     theme: "light",
-    visual: {
-      kind: "photo",
-      imageSize: "1200 x 800",
-      src: "/images/site/program-shs.webp",
-    },
+    visual: { kind: "icon", icon: GraduationCap },
     photos: {
-      overview: { alt: "Senior High School students of JOLNHS together in class" },
+      overview: {
+        alt: "Senior High School students of JOLNHS together in class",
+        src: "/images/site/program-shs.webp",
+      },
       gallery: [
         { alt: "SHS students during a strand class", caption: "Strand Classes" },
         { alt: "SHS learners on work immersion", caption: "Work Immersion" },
