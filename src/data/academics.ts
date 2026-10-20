@@ -202,11 +202,26 @@ export const academicPrograms: AcademicProgram[] = [
     theme: "dark",
     visual: { kind: "icon", icon: BookOpen },
     photos: {
-      overview: { alt: "Junior High School students during a regular class session" },
+      overview: {
+        alt: "Junior High School students listening to their teacher during a regular class session",
+        src: "/images/site/program-regular-overview.webp",
+      },
       gallery: [
-        { alt: "Students participating in a class discussion", caption: "Classroom Learning" },
-        { alt: "Students joining a co-curricular school activity", caption: "School Activities" },
-        { alt: "Students working together in the library", caption: "Group Study" },
+        {
+          alt: "Regular Program students eagerly raising their hands to answer",
+          caption: "Active Participation",
+          src: "/images/site/program-regular-gallery-1.webp",
+        },
+        {
+          alt: "Students attentively listening during a lesson in a colorful classroom",
+          caption: "Engaged Learners",
+          src: "/images/site/program-regular-gallery-2.webp",
+        },
+        {
+          alt: "A typical JOLNHS classroom during a regular class session",
+          caption: "Our Classrooms",
+          src: "/images/site/program-regular-gallery-3.webp",
+        },
       ],
     },
     quickFacts: [
