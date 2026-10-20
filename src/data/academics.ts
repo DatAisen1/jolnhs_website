@@ -213,13 +213,13 @@ export const academicPrograms: AcademicProgram[] = [
           src: "/images/site/program-regular-gallery-1.webp",
         },
         {
-          alt: "A typical JOLNHS classroom during a regular class session",
-          caption: "Our Classrooms",
+          alt: "A wide view of a JOLNHS classroom during a regular class session",
+          caption: "Engaged Learners",
           src: "/images/site/program-regular-gallery-3.webp",
         },
         {
           alt: "Students attentively listening during a lesson in a colorful classroom",
-          caption: "Engaged Learners",
+          caption: "Our Classrooms",
           src: "/images/site/program-regular-gallery-2.webp",
         },
       ],
