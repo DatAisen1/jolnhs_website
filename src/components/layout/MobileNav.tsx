@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -56,9 +57,14 @@ export function MobileNav() {
         <Menu className="h-7 w-7" aria-hidden="true" />
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
+      {/* Portal to <body>: the header's `backdrop-blur` creates a
+          containing block for fixed-position descendants, which would
+          clip `fixed inset-0` to the 64px header box instead of the
+          viewport — the drawer must mount outside the header. */}
+      {createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
             role="dialog"
             aria-modal="true"
             aria-label="Site navigation"
@@ -66,7 +72,7 @@ export function MobileNav() {
             animate={{ opacity: 1 }}
             exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed inset-0 z-50 bg-primary-900/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[1100] bg-primary-900/40 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           >
             {/* Panel: stopPropagation so clicking inside doesn't close
@@ -155,10 +161,42 @@ export function MobileNav() {
                   })}
                 </ul>
               </nav>
+
+              {/* Drawer's conversion strip — the Enroll CTA that desktop
+                  shows as a header pill, plus the two utility links that
+                  don't warrant accordion slots. Stays pinned to the
+                  bottom regardless of how long the accordion list gets. */}
+              <div className="border-t border-border px-6 py-4">
+                <Link
+                  to="/enroll"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full rounded-full bg-primary px-5 py-3 text-center text-body font-semibold text-white transition-colors hover:bg-primary-600"
+                >
+                  Enroll at JOLNHS
+                </Link>
+                <div className="mt-3 flex justify-center gap-6 text-small">
+                  <Link
+                    to="/downloads"
+                    onClick={() => setIsOpen(false)}
+                    className="text-text-secondary transition-colors hover:text-primary"
+                  >
+                    Downloads
+                  </Link>
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="text-text-secondary transition-colors hover:text-primary"
+                  >
+                    Contact Us
+                  </Link>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }

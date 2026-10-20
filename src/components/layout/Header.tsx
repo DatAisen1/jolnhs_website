@@ -56,8 +56,18 @@ export function Header() {
         {/* CENTER: primary navigation */}
         <NavBar />
 
-        {/* RIGHT: DepEd affiliation seal + mobile trigger */}
-        <div className="flex items-center gap-4">
+        {/* RIGHT: enrollment CTA + DepEd affiliation seal + mobile trigger.
+            The Enroll pill is the site's primary conversion action — it
+            gets the only solid color block in the chrome so it reads as
+            "the button," not "another link." Shown at md+ where there's
+            room beside the seal; below that it lives in the mobile drawer. */}
+        <div className="flex items-center gap-3 md:gap-4">
+          <Link
+            to="/enroll"
+            className="hidden rounded-full bg-primary px-4 py-1.5 text-small font-semibold text-white transition-colors hover:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:block"
+          >
+            Enroll
+          </Link>
           <div className="hidden sm:block">
             <SchoolBadge
               label="DepEd"
