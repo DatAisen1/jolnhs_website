@@ -80,11 +80,26 @@ export const academicPrograms: AcademicProgram[] = [
     theme: "dark",
     visual: { kind: "icon", icon: Cpu },
     photos: {
-      overview: { alt: "SP-ICT students working at computers in the ICT Laboratory" },
+      overview: {
+        alt: "SP-ICT students working on laptops during a computer class",
+        src: "/images/site/program-spict-overview.webp",
+      },
       gallery: [
-        { alt: "SP-ICT students during a hands-on computer class", caption: "ICT Laboratory" },
-        { alt: "SP-ICT students assembling or troubleshooting computer hardware", caption: "Hardware Servicing" },
-        { alt: "SP-ICT students creating a multimedia project", caption: "Multimedia" },
+        {
+          alt: "SP-ICT students typing on laptops in the ICT Laboratory",
+          caption: "Hands-On Sessions",
+          src: "/images/site/program-spict-gallery-1.webp",
+        },
+        {
+          alt: "An SP-ICT student writing code on a laptop",
+          caption: "Intro to Programming",
+          src: "/images/site/program-spict-gallery-2.webp",
+        },
+        {
+          alt: "Rows of desktop workstations inside the JOLNHS ICT Laboratory",
+          caption: "The ICT Laboratory",
+          src: "/images/site/program-spict-gallery-3.webp",
+        },
       ],
     },
     quickFacts: [
