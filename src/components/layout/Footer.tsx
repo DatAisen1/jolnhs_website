@@ -6,15 +6,25 @@ import { Container } from "@/components/ui/Container";
 import { ConsentGatedMap } from "@/components/privacy/ConsentGatedMap";
 import { SchoolBadge } from "@/components/ui/SchoolBadge";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
-import { navigation } from "@/data/navigation";
 import { tagline } from "@/data/tagline";
 import { useSiteSettings, getSettingValue, parseOfficeHours } from "@/lib/data/siteSettings";
 
-// Reuses the header's nav data (same labels/hrefs the top nav uses) plus
-// the Contact route, which exists (see App.tsx) but isn't in the main
-// nav — it still deserves a footer link even without a full dropdown.
-const footerQuickLinks = [
-  ...navigation.map(({ label, href }) => ({ label, href })),
+// Footer links are grouped by VISITOR INTENT, not by mirroring the
+// header — the header already does "browse the site"; the footer is
+// where people look for a specific destination (enroll, a form, the
+// staff list) after scrolling to the bottom.
+const exploreLinks = [
+  { label: "About JOLNHS", href: "/about" },
+  { label: "Academics", href: "/academics" },
+  { label: "Campus Life", href: "/campus-life" },
+  { label: "Budget Transparency", href: "/budget" },
+  { label: "News", href: "/news" },
+];
+
+const resourceLinks = [
+  { label: "Enroll", href: "/enroll" },
+  { label: "Downloads & Forms", href: "/downloads" },
+  { label: "Faculty & Staff", href: "/about/faculty-staff" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -92,10 +102,10 @@ export function Footer() {
           initial={shouldReduceMotion ? "show" : "hidden"}
           whileInView="show"
           viewport={viewportOnce}
-          className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[auto_1fr_1fr_1fr]"
+          className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.3fr]"
         >
-          {/* Identity: badges, school name, tagline */}
-          <motion.div variants={fadeUp} className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left lg:pr-8 lg:border-r lg:border-white/10">
+          {/* Identity: badges, school name, tagline, social */}
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left lg:pr-8">
             <div className="flex gap-3">
               <SchoolBadge
                 label="JO"
@@ -117,18 +127,28 @@ export function Footer() {
               <br />
               National High School
             </p>
-            <p className="max-w-[220px] text-small italic text-secondary-100">
+            <p className="max-w-[240px] text-small italic text-secondary-100">
               {siteTagline}
             </p>
+            <a
+              href={facebookUrl || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="JOLNHS on Facebook"
+              className={`mt-1 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-small text-secondary-100 transition-colors hover:bg-white/15 hover:text-white ${focusRing}`}
+            >
+              <FacebookIcon className="h-3.5 w-3.5" aria-hidden="true" />
+              {facebookHandle || "Facebook"}
+            </a>
           </motion.div>
 
-          {/* Quick Links */}
-          <motion.nav variants={fadeUp} aria-label="Footer">
+          {/* Explore — the site's main sections */}
+          <motion.nav variants={fadeUp} aria-label="Explore">
             <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
-              Quick Links
+              Explore
             </p>
             <ul className="mt-4 flex flex-col gap-2 text-body">
-              {footerQuickLinks.map((link) => (
+              {exploreLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
@@ -141,10 +161,29 @@ export function Footer() {
             </ul>
           </motion.nav>
 
-          {/* Address + social + email */}
+          {/* Resources — the destinations people come to the footer for */}
+          <motion.nav variants={fadeUp} aria-label="Resources">
+            <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
+              Resources
+            </p>
+            <ul className="mt-4 flex flex-col gap-2 text-body">
+              {resourceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    to={link.href}
+                    className={`text-secondary-100 transition-colors hover:text-white ${focusRing}`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.nav>
+
+          {/* Visit — contact + condensed hours */}
           <motion.div variants={fadeUp}>
             <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
-              Address
+              Visit Us
             </p>
             <ul className="mt-4 flex flex-col gap-3 text-body">
               <li className="flex items-start gap-3">
@@ -162,20 +201,6 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <IconBadge>
-                  <FacebookIcon className="h-4 w-4 text-secondary-300" aria-hidden="true" />
-                </IconBadge>
-                <a
-                  href={facebookUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="JOLNHS on Facebook"
-                  className={`text-secondary-100 transition-colors hover:text-white ${focusRing}`}
-                >
-                  {facebookHandle || "Facebook"}
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <IconBadge>
                   <Mail className="h-4 w-4 text-secondary-300" aria-hidden="true" />
                 </IconBadge>
                 <a
@@ -185,44 +210,77 @@ export function Footer() {
                   {email || "Email not configured"}
                 </a>
               </li>
-            </ul>
-          </motion.div>
-
-          {/* Office Hours */}
-          <motion.div variants={fadeUp}>
-            <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
-              Office Hours
-            </p>
-            <dl className="mt-4 flex flex-col gap-3 text-body">
-              {officeHours.map((item) => (
-                <div key={item.day} className="flex items-start gap-3">
-                  <IconBadge>
-                    <Clock className="h-4 w-4 text-secondary-300" aria-hidden="true" />
-                  </IconBadge>
-                  <div className="pt-1">
-                    <dt className="font-semibold text-white">{item.day}</dt>
-                    <dd className="text-secondary-100">{item.hours}</dd>
-                  </div>
+              <li className="flex items-start gap-3">
+                <IconBadge>
+                  <Clock className="h-4 w-4 text-secondary-300" aria-hidden="true" />
+                </IconBadge>
+                <div className="pt-1 text-secondary-100">
+                  {officeHours[0] && (
+                    <p>
+                      <span className="font-semibold text-white">{officeHours[0].day}</span>
+                      {" · "}
+                      {officeHours[0].hours}
+                    </p>
+                  )}
+                  {officeHours.length > 1 && officeHours.slice(1).every((h) => /closed/i.test(h.hours)) ? (
+                    <p className="mt-0.5 text-small">Closed on weekends & holidays</p>
+                  ) : (
+                    officeHours.slice(1).map((item) => (
+                      <p key={item.day} className="mt-0.5 text-small">
+                        {item.day} · {item.hours}
+                      </p>
+                    ))
+                  )}
                 </div>
-              ))}
-            </dl>
+              </li>
+            </ul>
           </motion.div>
         </motion.div>
 
-        {/* Map — gated on cookie consent (the embed sets Google
-            cookies). "Get Directions" stays live either way. */}
-        <div className="mt-10 overflow-hidden rounded-xl border border-white/10 shadow-lg">
-          <ConsentGatedMap />
-          <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-primary-800 px-4 py-3 text-small">
-            <span className="text-secondary-100">View on Google Maps</span>
-            <a
-              href={mapsUrl || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`whitespace-nowrap font-semibold text-secondary-300 hover:text-white hover:underline ${focusRing}`}
-            >
-              Get Directions →
-            </a>
+        {/* Map + enrollment CTA — the footer's last conversion chance.
+            Map keeps its consent gate; the Enroll card balances the row
+            so the map isn't a full-width dead strip. */}
+        <div className="mt-10 grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+          <div className="overflow-hidden rounded-xl border border-white/10 shadow-lg">
+            <ConsentGatedMap />
+            <div className="flex items-center justify-between gap-2 border-t border-white/10 bg-primary-800 px-4 py-3 text-small">
+              <span className="text-secondary-100">View on Google Maps</span>
+              <a
+                href={mapsUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`whitespace-nowrap font-semibold text-secondary-300 hover:text-white hover:underline ${focusRing}`}
+              >
+                Get Directions →
+              </a>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-center rounded-xl border border-white/10 bg-primary-800 p-6 lg:p-8">
+            <p className="text-small font-semibold uppercase tracking-widest text-secondary-300">
+              Admissions
+            </p>
+            <h3 className="mt-2 font-heading text-subtitle text-white">
+              Ready to become a Jolian?
+            </h3>
+            <p className="mt-2 text-small text-secondary-100">
+              See the requirements, enrollment steps, and downloadable forms —
+              everything you need in one place.
+            </p>
+            <div className="mt-5 flex flex-col items-start gap-3">
+              <Link
+                to="/enroll"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-small font-semibold text-primary-700 transition-colors hover:bg-secondary-50"
+              >
+                Enrollment guide →
+              </Link>
+              <Link
+                to="/downloads"
+                className={`text-small text-secondary-300 transition-colors hover:text-white hover:underline ${focusRing}`}
+              >
+                Downloads & forms
+              </Link>
+            </div>
           </div>
         </div>
       </Container>
