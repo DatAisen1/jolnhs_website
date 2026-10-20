@@ -21,10 +21,21 @@ export const academicPrograms: AcademicProgram[] = [
     theme: "light",
     visual: { kind: "icon", icon: FlaskConical },
     photos: {
-      overview: { alt: "STE students working on an experiment in the Science Laboratory" },
+      overview: {
+        alt: "STE teacher guiding a student pointing at a human skeleton model in the Science Laboratory",
+        src: "/images/site/program-ste-overview.webp",
+      },
       gallery: [
-        { alt: "STE students conducting a laboratory experiment", caption: "Laboratory Work" },
-        { alt: "STE students presenting a research project", caption: "Research Projects" },
+        {
+          alt: "STE students building a colorful DNA double-helix model",
+          caption: "DNA Model Building",
+          src: "/images/site/program-ste-gallery-1.webp",
+        },
+        {
+          alt: "STE students gathered around a microscope in the lab",
+          caption: "Microscopy Session",
+          src: "/images/site/program-ste-gallery-2.webp",
+        },
         { alt: "STE students at a school science fair", caption: "Science Fair" },
       ],
     },
