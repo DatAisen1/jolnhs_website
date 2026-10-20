@@ -4,7 +4,6 @@ import { NavBar } from "./NavBar";
 import { MobileNav } from "./MobileNav";
 import { Container } from "@/components/ui/Container";
 import { SchoolBadge } from "@/components/ui/SchoolBadge";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 /**
  * Header: a flat, edge-to-edge translucent strip — the pattern Apple's
@@ -57,9 +56,8 @@ export function Header() {
         {/* CENTER: primary navigation */}
         <NavBar />
 
-        {/* RIGHT: DepEd affiliation seal + theme toggle + mobile trigger */}
+        {/* RIGHT: DepEd affiliation seal + mobile trigger */}
         <div className="flex items-center gap-4">
-          <ThemeToggle />
           <div className="hidden sm:block">
             <SchoolBadge
               label="DepEd"

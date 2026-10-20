@@ -26,6 +26,21 @@
   --status-error-text: 180 35 24;
 }
 
+/* Sky Blue palette — the tinted light theme. The page's rhythm is
+   background/surface alternation, so: background becomes soft sky,
+   surfaces stay white (cards pop against the tint), borders pick up a
+   bluer edge, and the light-navy tint tiers (primary-50/100) shift
+   toward sky to match. Text stays the navy pair — already readable on
+   any light tint. Status colors keep the white palette values; their
+   light palettes read fine on sky. */
+.theme-sky {
+  color-scheme: light;
+  --background: 218 238 252; /* #DAEEFC — soft sky wash */
+  --border: 179 213 238; /* #B3D5EE — bluer hairlines */
+  --primary-50: 204 229 250; /* #CCE5FA */
+  --primary-100: 173 210 243; /* #ADD2F3 */
+}
+
 .dark {
   color-scheme: dark;
   --background: 8 17 32; /* #081120 — deep ink-navy, below the footer tier */

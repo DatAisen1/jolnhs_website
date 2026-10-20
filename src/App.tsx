@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { HomePage } from "@/pages/HomePage";
 import { FacultyStaffPage } from "@/pages/FacultyStaffPage";
@@ -71,6 +72,7 @@ function PublicLayout() {
       </main>
       <Footer />
       <BackToTop />
+      <ThemeSwitcher />
       <CookieBanner />
     </>
   );

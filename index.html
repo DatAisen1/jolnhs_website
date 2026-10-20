@@ -35,8 +35,12 @@
       (function () {
         try {
           var t = localStorage.getItem("jolnhs-theme");
-          if (t === "dark" || (t !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-            document.documentElement.classList.add("dark");
+          if (t === "light") t = "white"; // pre-sky choice
+          var root = document.documentElement;
+          if (t === "dark" || (t !== "white" && t !== "sky" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            root.classList.add("dark");
+          } else if (t === "sky") {
+            root.classList.add("theme-sky");
           }
         } catch (e) {}
       })();

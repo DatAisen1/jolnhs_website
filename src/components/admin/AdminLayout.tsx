@@ -6,7 +6,7 @@ import { useIdleSignOut } from "@/hooks/useIdleSignOut";
 import { useNoIndex } from "@/hooks/useNoIndex";
 import { InlineNotice } from "@/components/ui/InlineNotice";
 import { PageTransition } from "@/components/ui/PageTransition";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 
 type NavItem = {
   to?: string;
@@ -226,9 +226,6 @@ export function AdminLayout() {
           <h2 className="font-heading text-small font-semibold text-text-primary">
             {currentNavItem?.label ?? "Admin"}
           </h2>
-          <div className="ml-auto">
-            <ThemeToggle />
-          </div>
         </header>
 
         <main className="flex-1 p-4 sm:p-6">
@@ -237,6 +234,10 @@ export function AdminLayout() {
           </PageTransition>
         </main>
       </div>
+
+      {/* Floating palette switcher — same three-theme control the
+          public site gets, mounted here so the admin flips too. */}
+      <ThemeSwitcher />
 
       {/* Idle-timeout warning — appears one minute before sign-out.
           z-[60] keeps it above the sidebar (z-50) and mobile scrim. */}

@@ -33,7 +33,7 @@ export function BackToTop() {
             window.scrollTo({ top: 0, behavior: shouldReduceMotion ? "auto" : "smooth" })
           }
           aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors duration-300 ease-apple hover:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          className="fixed bottom-[88px] right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors duration-300 ease-apple hover:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <ArrowUp className="h-5 w-5" aria-hidden="true" />
         </motion.button>
