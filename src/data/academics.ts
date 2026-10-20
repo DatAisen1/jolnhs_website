@@ -142,11 +142,26 @@ export const academicPrograms: AcademicProgram[] = [
     theme: "light",
     visual: { kind: "icon", icon: HeartHandshake },
     photos: {
-      overview: { alt: "SNED teacher guiding a learner in a small-group session" },
+      overview: {
+        alt: "SNED teacher guiding a learner one-on-one at her desk",
+        src: "/images/site/program-sned-overview.webp",
+      },
       gallery: [
-        { alt: "SNED learner receiving one-on-one instruction", caption: "Individualized Learning" },
-        { alt: "SNED learners in an inclusive classroom activity", caption: "Inclusive Classrooms" },
-        { alt: "SNED teacher supporting a learner's schoolwork", caption: "Learner Support" },
+        {
+          alt: "SNED learners working at their desks while a teacher assists",
+          caption: "Individualized Learning",
+          src: "/images/site/program-sned-gallery-1.webp",
+        },
+        {
+          alt: "Wide view of the inclusive SNED classroom during a session",
+          caption: "Inclusive Classrooms",
+          src: "/images/site/program-sned-gallery-2.webp",
+        },
+        {
+          alt: "SNED teachers moving between desks to support learners",
+          caption: "Learner Support",
+          src: "/images/site/program-sned-gallery-3.webp",
+        },
       ],
     },
     quickFacts: [
