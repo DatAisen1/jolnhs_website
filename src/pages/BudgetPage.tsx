@@ -1,4 +1,4 @@
-import { AlertCircle, Landmark } from "lucide-react";
+import { Landmark } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
@@ -111,7 +111,18 @@ export function BudgetPage() {
       />
 
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Budget Transparency" }]} />
-      {isDataReady ? <BudgetSectionNav /> : null}
+      {isDataReady ? (
+        <BudgetSectionNav
+          items={
+            uiAccomplishments.length > 0
+              ? undefined
+              : [
+                  { id: "proposed-budget", label: "Proposed Budget" },
+                  { id: "budget-allocation", label: "Budget Allocation" },
+                ]
+          }
+        />
+      ) : null}
 
       {/* Intro copy */}
       <section className="bg-white py-section-sm md:py-section">
@@ -128,20 +139,6 @@ export function BudgetPage() {
                 </p>
               ))}
             </div>
-          </motion.div>
-
-          {/* Placeholder-data disclaimer — required whenever displayed
-              figures aren't yet confirmed records; keeps the page
-              honest about what it's showing while it's under development. */}
-          <motion.div
-            variants={fadeUp}
-            initial={initial}
-            whileInView="show"
-            viewport={viewportOnce}
-            className="mt-8 flex items-start gap-3 rounded-card border border-status-warning bg-status-warning-bg p-4 text-left"
-          >
-            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-status-warning" aria-hidden="true" />
-            <p className="text-small text-status-warning-text">{overview.disclaimer}</p>
           </motion.div>
         </Container>
       </section>
@@ -190,7 +187,11 @@ export function BudgetPage() {
         </Container>
       </section>
 
-      {/* Section 3: Accomplishments */}
+      {/* Section 3: Accomplishments — hidden entirely until the first
+          accomplishment is published in the admin; its sub-nav link is
+          filtered out above in step, so the bar never links to an empty
+          section. */}
+      {uiAccomplishments.length > 0 ? (
       <section id="accomplishments" className="scroll-mt-36 bg-background py-section-sm md:py-section">
         <Container>
           <motion.div variants={fadeUp} initial={initial} whileInView="show" viewport={viewportOnce}>
@@ -206,6 +207,7 @@ export function BudgetPage() {
           </div>
         </Container>
       </section>
+      ) : null}
         </>
       ) : (
         /* One status block for the whole not-ready page: skeleton while

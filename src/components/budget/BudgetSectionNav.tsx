@@ -1,10 +1,16 @@
 import { useActiveSection } from "@/hooks/useActiveSection";
 
-const sections = [
+const defaultSections = [
   { id: "proposed-budget", label: "Proposed Budget" },
   { id: "budget-allocation", label: "Budget Allocation" },
   { id: "accomplishments", label: "Accomplishments" },
 ];
+
+interface BudgetSectionNavProps {
+  /** Override when a section has no content (e.g. no accomplishments
+      published yet) so the bar never links to an empty section. */
+  items?: { id: string; label: string }[];
+}
 
 /**
  * BudgetSectionNav
@@ -22,19 +28,20 @@ const sections = [
  * WHEN: Directly below the hero/breadcrumbs on the Budget Transparency
  *       page only.
  *
- * Sticky at `top-24` (96px) — that's the Header's own height (h-20) plus
- * its `top-4` offset, so this bar docks directly under the floating
- * header pill instead of fighting it for the same vertical space. Sits
- * at `z-40`, below the header's `z-[1000]`, so the header always wins
- * if anything ever overlaps during the scroll transition.
+ * Sticky flush under the header: the header is a full-width sticky bar
+ * (`top-0`, h-16 on mobile / 68px on desktop), so `top-16 md:top-[68px]`
+ * docks this bar directly beneath it with no gap. Sits at `z-40`, below
+ * the header's `z-[1000]`, so the header always wins if anything ever
+ * overlaps during the scroll transition.
  */
-export function BudgetSectionNav() {
+export function BudgetSectionNav({ items = defaultSections }: BudgetSectionNavProps) {
+  const sections = items;
   const activeId = useActiveSection(sections.map((s) => s.id));
 
   return (
     <nav
       aria-label="Budget page sections"
-      className="sticky top-24 z-40 border-b border-border bg-white/90 shadow-sm backdrop-blur-md"
+      className="sticky top-16 z-40 border-b border-border bg-white/90 shadow-sm backdrop-blur-md md:top-[68px]"
     >
       <div className="mx-auto flex max-w-content gap-1 overflow-x-auto px-6 md:px-10">
         {sections.map((section) => {
