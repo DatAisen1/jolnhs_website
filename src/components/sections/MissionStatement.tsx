@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { mission } from "@/data/mission";
 import { fadeUp, viewportOnce } from "@/lib/motion";
+import { usePageContent } from "@/lib/data/pageContent";
 
 /**
  * MissionStatement
@@ -19,6 +20,10 @@ import { fadeUp, viewportOnce } from "@/lib/motion";
  */
 export function MissionStatement() {
   const shouldReduceMotion = useReducedMotion();
+  // The mission_statement settings key has been admin-editable since the
+  // settings page shipped — the public side just never read it. Now it
+  // does, with the static copy as the offline fallback.
+  const paragraph = usePageContent("mission_statement", mission.paragraph);
 
   return (
     <section className="border-y border-border bg-surface py-section-sm md:py-section" aria-labelledby="mission-heading">
@@ -36,7 +41,7 @@ export function MissionStatement() {
           <h2 id="mission-heading" className="text-section text-text-primary">
             {mission.heading}
           </h2>
-          <p className="mt-5 text-body text-text-secondary">{mission.paragraph}</p>
+          <p className="mt-5 text-body text-text-secondary">{paragraph}</p>
         </motion.div>
       </Container>
     </section>

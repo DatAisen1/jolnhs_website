@@ -44,4 +44,13 @@ export const navigation: NavItem[] = [
   // see src/components/budget/BudgetSectionNav.tsx. Omitting `dropdown`
   // makes NavDropdown/MobileNav render this as a plain link automatically.
   { label: "Budget Transparency", href: "/budget" },
+  {
+    label: "News",
+    href: "/news",
+    dropdown: [
+      { label: "All News", href: "/news" },
+      { label: "Enroll", href: "/enroll" },
+      { label: "Downloads", href: "/downloads" },
+    ],
+  },
 ];

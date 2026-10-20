@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { ContactForm } from "@/components/contact/ContactForm";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
@@ -136,6 +137,14 @@ export function ContactPage() {
               </section>
             </div>
           )}
+        </Container>
+      </section>
+      <section className="bg-background py-section-sm md:py-section" aria-labelledby="contact-form-heading">
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <h2 id="contact-form-heading" className="sr-only">Send a message</h2>
+            <ContactForm />
+          </div>
         </Container>
       </section>
     </>

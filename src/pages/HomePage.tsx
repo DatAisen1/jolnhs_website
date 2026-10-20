@@ -5,6 +5,7 @@ import { MilestoneSection } from "@/components/sections/MilestoneSection";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { TaglineBanner } from "@/components/sections/TaglineBanner";
 import { WelcomeBanner } from "@/components/sections/WelcomeBanner";
+import { LatestAnnouncements } from "@/components/sections/LatestAnnouncements";
 import { CampusFacilities } from "@/components/sections/CampusFacilities";
 import { MissionStatement } from "@/components/sections/MissionStatement";
 
@@ -23,6 +24,7 @@ export function HomePage() {
   return (
     <>
       <HeroBanner />
+      <LatestAnnouncements />
       <ProgramSpotlight />
       <MilestoneSection />
       <WhyChooseUs />

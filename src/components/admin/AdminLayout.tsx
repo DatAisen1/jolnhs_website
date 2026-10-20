@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, ShieldCheck, ClipboardList } from "lucide-react";
+import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, ShieldCheck, ClipboardList, Megaphone, Mail, Images, FileText } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useIdleSignOut } from "@/hooks/useIdleSignOut";
 import { useNoIndex } from "@/hooks/useNoIndex";
@@ -23,8 +23,11 @@ const NAV_GROUPS: ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }
   {
     label: "Content",
     items: [
+      { to: "/admin/announcements", label: "Announcements", icon: Megaphone, end: false },
       { to: "/admin/staff", label: "Staff & Faculty", icon: Users, end: false },
       { to: "/admin/campus-life", label: "Campus Life", icon: Building2, end: false },
+      { to: "/admin/gallery", label: "Gallery", icon: Images, end: false },
+      { to: "/admin/documents", label: "Documents", icon: FileText, end: false },
     ],
   },
   {
@@ -32,10 +35,14 @@ const NAV_GROUPS: ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }
     items: [{ to: "/admin/budget", label: "Budget", icon: Wallet, end: false }],
   },
   {
+    label: "Inbox",
+    items: [{ to: "/admin/messages", label: "Messages", icon: Mail, end: false }],
+  },
+  {
     label: "System",
     items: [
-      { label: "Admin Users", icon: ShieldCheck },
-      { label: "Activity Log", icon: ClipboardList },
+      { to: "/admin/users", label: "Admin Users", icon: ShieldCheck, end: false },
+      { to: "/admin/activity", label: "Activity Log", icon: ClipboardList, end: false },
       { to: "/admin/settings", label: "Settings", icon: Settings, end: false },
     ],
   },

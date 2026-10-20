@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { logActivity } from "@/lib/activity";
 
 /** Mirrors the `staff_members.category` check constraint in
  *  supabase/migrations/0001_init.sql — keep these two in sync. */
@@ -68,6 +69,13 @@ export function useSaveStaffMember() {
         updated_at: new Date().toISOString(),
       });
       if (error) throw error;
+      logActivity(
+        member.id ? "update" : "create",
+        "staff_member",
+        member.id ?? null,
+        `${member.id ? "Updated" : "Added"} staff member ${member.name}`,
+        { category: member.category },
+      );
     },
     // Broad ["staff-members"] key invalidates every category's query, not
     // just the one just edited — cheap (four small queries) and avoids
@@ -91,6 +99,7 @@ export function useArchiveStaffMember() {
         .update({ is_archived: true })
         .eq("id", memberId);
       if (error) throw error;
+      logActivity("archive", "staff_member", memberId, "Archived a staff member");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["staff-members"] });
@@ -109,6 +118,7 @@ export function useRestoreStaffMember() {
         .update({ is_archived: false })
         .eq("id", memberId);
       if (error) throw error;
+      logActivity("restore", "staff_member", memberId, "Restored a staff member");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["staff-members"] });

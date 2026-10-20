@@ -20,12 +20,16 @@ function routeLabel(pathname: string): string {
     "/academics": "Academic Programs",
     "/campus-life": "Campus Life",
     "/budget": "Budget",
+    "/news": "News & Announcements",
+    "/enroll": "Enroll",
+    "/downloads": "Downloads",
     "/contact": "Contact Us",
     "/privacy-policy": "Data Privacy",
     "/cookie-policy": "Cookie Policy",
   };
   if (staticLabels[canonical]) return staticLabels[canonical];
   if (canonical.startsWith("/admin")) return "Admin Panel";
+  if (canonical.startsWith("/news/")) return "News";
 
   const programMatch = canonical.match(/^\/academics\/([a-z0-9-]+)$/);
   if (programMatch) {

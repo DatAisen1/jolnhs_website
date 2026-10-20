@@ -111,16 +111,33 @@ test('program and campus-life detail pages render (desktop + mobile)', async ({ 
 });
 
 // ---------------------------------------------------------------------------
-// 404 behaviour — /enroll intentionally falls through (owner decision)
+// 404 behaviour — only genuinely-unknown routes fall through.
+// (/enroll became a real admissions page in the Phase-3 feature build.)
 // ---------------------------------------------------------------------------
 
-for (const route of ['/enroll', '/this-page-definitely-does-not-exist']) {
+for (const route of ['/this-page-definitely-does-not-exist']) {
   test(`${route} shows the 404 page`, async ({ page }) => {
     await page.goto(route);
     await expect(page.getByText('Error 404')).toBeVisible();
     await expect(page.locator('h1')).toBeVisible();
   });
 }
+
+test('/enroll renders the admissions landing page', async ({ page }) => {
+  await page.goto('/enroll');
+  await expect(page.locator('h1')).toContainText('Enroll');
+  await expect(page.getByText('Requirements checklist')).toBeVisible();
+});
+
+test('/news renders the announcements feed page', async ({ page }) => {
+  await page.goto('/news');
+  await expect(page.locator('h1')).toContainText('News & Announcements');
+});
+
+test('/downloads renders the documents page', async ({ page }) => {
+  await page.goto('/downloads');
+  await expect(page.locator('h1')).toContainText('Downloads');
+});
 
 // ---------------------------------------------------------------------------
 // Mobile navigation

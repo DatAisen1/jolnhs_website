@@ -11,6 +11,7 @@ import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { aboutOverview } from "@/data/aboutOverview";
 import { quickFacts } from "@/data/quickFacts";
 import { useAllStaffMembers } from "@/lib/data/publicStaff";
+import { usePageContent } from "@/lib/data/pageContent";
 import { fadeUp, fadeIn, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
 
 // Grid columns follow how many preview cards actually exist, so a
@@ -39,6 +40,11 @@ export function AboutOverviewPage() {
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
 
+  // Admin-editable intro copy (site_settings). Stored as plain text with
+  // paragraphs separated by blank lines; the static file is the fallback.
+  const introText = usePageContent("about_intro", aboutOverview.introParagraphs.join("\n\n"));
+  const introParagraphs = introText.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+
   return (
     <>
       <PageHero
@@ -65,7 +71,7 @@ export function AboutOverviewPage() {
             </p>
             <h2 className="text-section text-text-primary">{aboutOverview.introHeading}</h2>
             <div className="mt-6 flex max-w-prose flex-col gap-4">
-              {aboutOverview.introParagraphs.map((paragraph, i) => (
+              {introParagraphs.map((paragraph, i) => (
                 <p key={i} className="text-body text-text-secondary">
                   {paragraph}
                 </p>

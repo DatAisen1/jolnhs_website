@@ -24,11 +24,21 @@ export const informationSettingsSchema = z.object({
   office_hours: z.string().trim().min(1, "Office hours is required").max(300, "Office hours must be 300 characters or fewer"),
 });
 
+// Page content settings — editable copy on the public pages
+export const pageContentSettingsSchema = z.object({
+  home_hero_title: z.string().trim().max(200, "Hero title must be 200 characters or fewer").optional(),
+  home_hero_subtitle: z.string().trim().max(400, "Hero subtitle must be 400 characters or fewer").optional(),
+  home_welcome_title: z.string().trim().max(200, "Welcome title must be 200 characters or fewer").optional(),
+  home_welcome_body: z.string().trim().max(2000, "Welcome text must be 2000 characters or fewer").optional(),
+  about_intro: z.string().trim().max(4000, "Intro text must be 4000 characters or fewer").optional(),
+});
+
 // Combined settings schema for form validation
 export const settingsSchema = z.object({
   ...identitySettingsSchema.shape,
   ...contactSettingsSchema.shape,
   ...informationSettingsSchema.shape,
+  ...pageContentSettingsSchema.shape,
 });
 
 export type IdentitySettingsFormValues = z.infer<typeof identitySettingsSchema>;

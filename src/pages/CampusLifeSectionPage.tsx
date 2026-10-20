@@ -7,7 +7,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
-import { GalleryGrid } from "@/components/campusLife/GalleryGrid";
+import { SectionPhotoGallery } from "@/components/campusLife/SectionPhotoGallery";
 import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { campusLifeSections as staticCampusLifeSections } from "@/data/campusLife";
 import { useCampusLifeSectionDetail, type CampusLifeSectionDetail } from "@/lib/data/publicCampusLife";
@@ -227,7 +227,7 @@ export function CampusLifeSectionPage() {
             Gallery
           </motion.h2>
           <div className="mt-10">
-            <GalleryGrid items={section.gallery} />
+            <SectionPhotoGallery slug={section.slug} />
           </div>
 
           <PrivacyNotice className="mt-10" />

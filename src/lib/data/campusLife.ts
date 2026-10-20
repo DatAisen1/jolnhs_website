@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { logActivity } from "@/lib/activity";
 
 export interface CampusLifeStat {
   id: string;
@@ -116,6 +117,9 @@ export function useSaveCampusLifeSection() {
         p_highlights: input.highlights,
       });
       if (error) throw error;
+      logActivity("update", "campus_life", input.sectionId, `Updated Campus Life section "${input.name}"`, {
+        slug: input.slug,
+      });
     },
     onSuccess: (_data, variables) => {
       // Invalidate both the section detail query and the landing page list query
@@ -144,6 +148,12 @@ export function useSaveOfficer() {
         updated_at: new Date().toISOString(),
       });
       if (error) throw error;
+      logActivity(
+        officer.id ? "update" : "create",
+        "campus_life_officer",
+        officer.id ?? null,
+        `${officer.id ? "Updated" : "Added"} officer ${officer.name}`,
+      );
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["campus-life-section"] }),
   });
@@ -160,6 +170,7 @@ export function useArchiveOfficer() {
         .update({ is_archived: true })
         .eq("id", officerId);
       if (error) throw error;
+      logActivity("archive", "campus_life_officer", officerId, "Archived a section officer");
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["campus-life-section"] }),
   });
@@ -175,6 +186,7 @@ export function useRestoreOfficer() {
         .update({ is_archived: false })
         .eq("id", officerId);
       if (error) throw error;
+      logActivity("restore", "campus_life_officer", officerId, "Restored a section officer");
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["campus-life-section"] }),
   });

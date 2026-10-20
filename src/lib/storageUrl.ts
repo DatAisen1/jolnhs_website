@@ -16,8 +16,17 @@ import { supabase } from "@/lib/supabase";
  * hand-written rows may hold a full URL rather than a storage path.
  */
 export function staffPhotoUrl(path: string | null | undefined): string | null {
+  return storageFileUrl("staff-photos", path);
+}
+
+/**
+ * storageFileUrl — same path→public-URL conversion as staffPhotoUrl but
+ * for any public bucket (news-covers, gallery, documents). Kept generic
+ * so each new bucket doesn't grow its own copy of this helper.
+ */
+export function storageFileUrl(bucket: string, path: string | null | undefined): string | null {
   if (!path) return null;
   if (/^https?:\/\//i.test(path)) return path;
-  const { data } = supabase.storage.from("staff-photos").getPublicUrl(path);
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl || null;
 }

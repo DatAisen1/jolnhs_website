@@ -24,10 +24,10 @@ describe("NotFoundPage", () => {
     }
   });
 
-  it("routes /enroll to the public 404 page", () => {
+  it("routes an unknown path to the public 404 page", () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
-        <MemoryRouter initialEntries={["/enroll"]}>
+        <MemoryRouter initialEntries={["/this-page-definitely-does-not-exist"]}>
           <AppRoutes />
         </MemoryRouter>
       </QueryClientProvider>
@@ -38,5 +38,19 @@ describe("NotFoundPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+  });
+
+  it("routes /enroll to the admissions page (no longer a 404)", async () => {
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter initialEntries={["/enroll"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </QueryClientProvider>
+    );
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Enroll at JOLNHS" })
+    ).toBeInTheDocument();
   });
 });

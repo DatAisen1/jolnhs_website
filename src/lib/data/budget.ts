@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { logActivity } from "@/lib/activity";
 
 /** Mirrors `budget_fiscal_years.status`'s check constraint in
  *  supabase/migrations/0001_init.sql — keep these two in sync. */
@@ -122,6 +123,7 @@ export function useSaveFiscalYearFields() {
         })
         .eq("id", year.id);
       if (error) throw error;
+      logActivity("update", "budget_fiscal_year", year.id, `Updated fiscal year ${year.yearLabel} settings`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
@@ -139,6 +141,7 @@ export function useCreateFiscalYear() {
     mutationFn: async (yearLabel: string): Promise<FiscalYear> => {
       const { data, error } = await supabase.rpc("create_fiscal_year", { p_year_label: yearLabel });
       if (error) throw error;
+      logActivity("create", "budget_fiscal_year", (data as FiscalYear)?.id ?? null, `Created fiscal year ${yearLabel}`);
       return data as FiscalYear;
     },
     onSuccess: () => {
@@ -156,6 +159,7 @@ export function useSetFiscalYearStatus() {
     mutationFn: async ({ id, status }: { id: string; status: FiscalYearStatus }) => {
       const { error } = await supabase.from("budget_fiscal_years").update({ status }).eq("id", id);
       if (error) throw error;
+      logActivity("update", "budget_fiscal_year", id, `Changed fiscal year status to "${status}"`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
@@ -175,6 +179,7 @@ export function useSetCurrentFiscalYear() {
     mutationFn: async (fiscalYearId: string) => {
       const { error } = await supabase.rpc("set_current_fiscal_year", { p_fiscal_year_id: fiscalYearId });
       if (error) throw error;
+      logActivity("update", "budget_fiscal_year", fiscalYearId, "Marked a fiscal year as current");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-fiscal-years"] });
@@ -238,6 +243,13 @@ export function useSaveBudgetCategory() {
         description: category.description,
       });
       if (error) throw error;
+      logActivity(
+        category.id ? "update" : "create",
+        "budget_category",
+        category.id ?? null,
+        `${category.id ? "Updated" : "Added"} budget category "${category.name}"`,
+        { amount: category.amount },
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
@@ -256,6 +268,7 @@ export function useDeleteBudgetCategory() {
     mutationFn: async (categoryId: string) => {
       const { error } = await supabase.from("budget_categories").delete().eq("id", categoryId);
       if (error) throw error;
+      logActivity("delete", "budget_category", categoryId, "Deleted a budget category");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
@@ -296,6 +309,7 @@ export function useArchiveBudgetCategory() {
         .update({ is_archived: true })
         .eq("id", categoryId);
       if (error) throw error;
+      logActivity("archive", "budget_category", categoryId, "Archived a budget category");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
@@ -314,6 +328,7 @@ export function useRestoreBudgetCategory() {
         .update({ is_archived: false })
         .eq("id", categoryId);
       if (error) throw error;
+      logActivity("restore", "budget_category", categoryId, "Restored a budget category");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-categories"] });
@@ -348,6 +363,12 @@ export function useSaveBudgetAccomplishment() {
         description: accomplishment.description,
       });
       if (error) throw error;
+      logActivity(
+        accomplishment.id ? "update" : "create",
+        "budget_accomplishment",
+        accomplishment.id ?? null,
+        `${accomplishment.id ? "Updated" : "Added"} accomplishment "${accomplishment.title}"`,
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] });
@@ -364,6 +385,7 @@ export function useDeleteBudgetAccomplishment() {
     mutationFn: async (accomplishmentId: string) => {
       const { error } = await supabase.from("budget_accomplishments").delete().eq("id", accomplishmentId);
       if (error) throw error;
+      logActivity("delete", "budget_accomplishment", accomplishmentId, "Deleted a budget accomplishment");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget-accomplishments"] });

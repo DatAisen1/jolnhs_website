@@ -7,6 +7,7 @@ import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { getErrorMessage } from "@/lib/errors";
+import { logActivity } from "@/lib/activity";
 import { settingsSchema, type SettingsFormValues } from "@/lib/validation/settingsSchema";
 
 // Map database keys to form field names
@@ -23,6 +24,11 @@ const SETTINGS_KEYS = {
   programs_offered: "programs_offered",
   mission_statement: "mission_statement",
   office_hours: "office_hours",
+  home_hero_title: "home_hero_title",
+  home_hero_subtitle: "home_hero_subtitle",
+  home_welcome_title: "home_welcome_title",
+  home_welcome_body: "home_welcome_body",
+  about_intro: "about_intro",
 } as const;
 
 function SettingsForm({ initialValues, onSave, isSaving, saveError, showSuccess }: {
@@ -144,6 +150,21 @@ function SettingsForm({ initialValues, onSave, isSaving, saveError, showSuccess 
         </div>
       </AdminCard>
 
+      {/* Page Content Section */}
+      <AdminCard>
+        <h3 className="text-subtitle font-semibold text-text-primary mb-1">Page Content</h3>
+        <p className="text-small text-text-secondary mb-4">
+          Copy shown on public pages. Leave a field empty to use the built-in default text.
+        </p>
+        <div className="space-y-4">
+          {renderTextField("home_hero_title", "Homepage — Hero title")}
+          {renderTextField("home_hero_subtitle", "Homepage — Hero subtitle")}
+          {renderTextField("home_welcome_title", "Homepage — Welcome section title")}
+          {renderTextField("home_welcome_body", "Homepage — Welcome section text", "text", true)}
+          {renderTextField("about_intro", "About — Intro paragraphs (blank line between paragraphs)", "text", true)}
+        </div>
+      </AdminCard>
+
       <div className="flex justify-end">
         <AdminButton type="submit" disabled={isSaving}>
           <Save size={16} aria-hidden="true" />
@@ -175,6 +196,7 @@ export function SettingsPage() {
       // Update all settings in a single transaction
       const { error } = await supabase.from("site_settings").upsert(updates, { onConflict: "key" });
       if (error) throw error;
+      logActivity("update", "site_setting", null, "Saved site settings");
     },
     onSuccess: () => {
       // Invalidate the site-settings query so the public site updates

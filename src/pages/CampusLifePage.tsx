@@ -15,6 +15,7 @@ import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { QuoteCard } from "@/components/campusLife/QuoteCard";
 import { campusLifeOverview } from "@/data/campusLifeOverview";
 import { useAllCampusLifeSections } from "@/lib/data/publicCampusLife";
+import { galleryPhotoUrl, useGalleryTeaser } from "@/lib/data/gallery";
 import { fadeUp, fadeIn, staggerContainer, viewportOnce } from "@/lib/motion";
 
 /**
@@ -37,8 +38,22 @@ export function CampusLifePage() {
     "Explore student organizations, athletics, the PTA, and campus journalism at Julia Ortiz Luis National High School."
   );
   const { data: campusLifeSections = [], isLoading, error } = useAllCampusLifeSections();
+  const { data: teaserPhotos } = useGalleryTeaser();
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion ? "show" : "hidden";
+
+  // One admin-uploaded photo per section where one exists; sections
+  // without uploads fall back to the static "coming soon" slot so the
+  // grid keeps its shape.
+  const teaserItems = campusLifeSections.map((section) => {
+    const photo = teaserPhotos?.[section.slug];
+    const src = photo ? galleryPhotoUrl(photo.storage_path) ?? undefined : undefined;
+    return (
+      src
+        ? { src, label: photo?.caption || `${section.name} photo`, imageSize: "800×600" }
+        : section.gallery[0]
+    );
+  });
 
   return (
     <>
@@ -136,10 +151,7 @@ export function CampusLifePage() {
             Campus Life in Pictures
           </motion.h2>
           <div className="mt-10">
-            <GalleryGrid
-              items={campusLifeSections.map((section) => section.gallery[0])}
-              columns={4}
-            />
+            <GalleryGrid items={teaserItems} columns={4} />
           </div>
 
           <PrivacyNotice className="mt-10" />

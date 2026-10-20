@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { heroChild, heroReveal } from "@/lib/motion";
 import { heroMedia } from "@/data/heroMedia";
+import { usePageContent } from "@/lib/data/pageContent";
 
 /**
  * Full-bleed hero VIDEO with a dark gradient overlay and type-dominant
@@ -41,6 +42,13 @@ export function HeroBanner() {
   const prefersReducedMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
+  // Admin-editable copy (site_settings, 'content' category) — stored
+  // values render with line breaks intact via whitespace-pre-line.
+  const heroTitle = usePageContent("home_hero_title", "Molding Minds.\nBuilding Futures.");
+  const heroSubtitle = usePageContent(
+    "home_hero_subtitle",
+    "A public secondary school committed to quality, inclusive, and community-centered education for every learner.",
+  );
 
   const togglePlayback = () => {
     const video = videoRef.current;
@@ -104,18 +112,15 @@ export function HeroBanner() {
           </motion.p>
           <motion.h1
             variants={heroChild}
-            className="text-[44px] font-bold leading-[1.02] tracking-tight text-white sm:text-[60px] lg:text-hero"
+            className="whitespace-pre-line text-[44px] font-bold leading-[1.02] tracking-tight text-white sm:text-[60px] lg:text-hero"
           >
-            Molding Minds.
-            <br />
-            Building Futures.
+            {heroTitle}
           </motion.h1>
           <motion.p
             variants={heroChild}
             className="mt-5 max-w-md text-body text-secondary-50"
           >
-            A public secondary school committed to quality, inclusive, and
-            community-centered education for every learner.
+            {heroSubtitle}
           </motion.p>
 
           {/* One grouped CTA decision — a solid primary pill next to a

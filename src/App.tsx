@@ -17,6 +17,10 @@ import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ContactPage } from "@/pages/ContactPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { CookiePolicyPage } from "@/pages/CookiePolicyPage";
+import { NewsPage } from "@/pages/NewsPage";
+import { NewsDetailPage } from "@/pages/NewsDetailPage";
+import { EnrollPage } from "@/pages/EnrollPage";
+import { DownloadsPage } from "@/pages/DownloadsPage";
 import { CookieBanner } from "@/components/privacy/CookieBanner";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -42,6 +46,24 @@ const BudgetManagePage = lazy(() =>
 );
 const SettingsPage = lazy(() =>
   import("@/pages/admin/SettingsPage").then((m) => ({ default: m.SettingsPage }))
+);
+const AnnouncementsManagePage = lazy(() =>
+  import("@/pages/admin/AnnouncementsManagePage").then((m) => ({ default: m.AnnouncementsManagePage }))
+);
+const MessagesPage = lazy(() =>
+  import("@/pages/admin/MessagesPage").then((m) => ({ default: m.MessagesPage }))
+);
+const AdminUsersPage = lazy(() =>
+  import("@/pages/admin/AdminUsersPage").then((m) => ({ default: m.AdminUsersPage }))
+);
+const ActivityLogPage = lazy(() =>
+  import("@/pages/admin/ActivityLogPage").then((m) => ({ default: m.ActivityLogPage }))
+);
+const GalleryManagePage = lazy(() =>
+  import("@/pages/admin/GalleryManagePage").then((m) => ({ default: m.GalleryManagePage }))
+);
+const DocumentsManagePage = lazy(() =>
+  import("@/pages/admin/DocumentsManagePage").then((m) => ({ default: m.DocumentsManagePage }))
 );
 
 /** Scrolls to the top on every route change. React Router keeps scroll
@@ -111,6 +133,10 @@ export function AppRoutes() {
         <Route path="/campus-life/:slug" element={<CampusLifeSectionPage />} />
         <Route path="/budget" element={<BudgetPage />} />
         <Route path="/budget/*" element={<BudgetPage />} />
+        <Route path="/news" element={<NewsPage />} />
+        <Route path="/news/:slug" element={<NewsDetailPage />} />
+        <Route path="/enroll" element={<EnrollPage />} />
+        <Route path="/downloads" element={<DownloadsPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/cookie-policy" element={<CookiePolicyPage />} />
@@ -166,6 +192,54 @@ export function AppRoutes() {
           element={
             <Suspense fallback={null}>
               <CampusLifeManagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/announcements"
+          element={
+            <Suspense fallback={null}>
+              <AnnouncementsManagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/messages"
+          element={
+            <Suspense fallback={null}>
+              <MessagesPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <Suspense fallback={null}>
+              <AdminUsersPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/activity"
+          element={
+            <Suspense fallback={null}>
+              <ActivityLogPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/gallery"
+          element={
+            <Suspense fallback={null}>
+              <GalleryManagePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/documents"
+          element={
+            <Suspense fallback={null}>
+              <DocumentsManagePage />
             </Suspense>
           }
         />

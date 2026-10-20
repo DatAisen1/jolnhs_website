@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { welcome } from "@/data/welcome";
 import { fadeUp, scaleIn, viewportOnce } from "@/lib/motion";
+import { usePageContent } from "@/lib/data/pageContent";
 
 /**
  * White, image-paired block — deliberately NOT another flat navy section.
@@ -14,6 +15,8 @@ import { fadeUp, scaleIn, viewportOnce } from "@/lib/motion";
  */
 export function WelcomeBanner() {
   const shouldReduceMotion = useReducedMotion();
+  const heading = usePageContent("home_welcome_title", welcome.heading);
+  const paragraph = usePageContent("home_welcome_body", welcome.paragraph);
 
   return (
     <section className="bg-surface py-section-sm md:py-section" aria-labelledby="welcome-heading">
@@ -28,10 +31,10 @@ export function WelcomeBanner() {
             Community
           </p>
           <h2 id="welcome-heading" className="text-heading text-text-primary">
-            {welcome.heading}
+            {heading}
           </h2>
           <p className="mt-5 max-w-md text-body text-text-secondary">
-            {welcome.paragraph}
+            {paragraph}
           </p>
           <Button variant="primary" href="/about" arrow className="mt-6">
             {welcome.buttonLabel}
