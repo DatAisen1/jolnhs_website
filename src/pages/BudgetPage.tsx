@@ -1,4 +1,4 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Landmark } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
@@ -88,16 +88,13 @@ export function BudgetPage() {
 
   const stats = getBudgetStats(overview, uiCategories, uiAccomplishments);
 
-  // The page shell (hero, intro, disclaimer, CTA) always renders; only
-  // the data sections swap to a status message while loading, on error,
-  // or before any fiscal year has been marked current.
-  const dataStatus = isLoading ? (
-    <div className="mt-10"><SkeletonRows count={4} /></div>
-  ) : error ? (
-    <PageStatus variant="error" message="We couldn't load the budget information. Please try again later." />
-  ) : !budgetData ? (
-    <PageStatus variant="error" message="Budget figures for the current fiscal year haven't been published yet." />
-  ) : null;
+  // "Not published yet" is a normal state — the site ships before the
+  // first fiscal year is marked current — so it gets one calm, designed
+  // empty panel, not three red error alerts. The anchor section nav is
+  // hidden too: its three links would point at sections with nothing in
+  // them. The data sections (and their nav) appear once a current
+  // fiscal year exists.
+  const isDataReady = !isLoading && !error && Boolean(budgetData);
 
   return (
     <>
@@ -114,7 +111,7 @@ export function BudgetPage() {
       />
 
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Budget Transparency" }]} />
-      <BudgetSectionNav />
+      {isDataReady ? <BudgetSectionNav /> : null}
 
       {/* Intro copy */}
       <section className="bg-white py-section-sm md:py-section">
@@ -149,7 +146,9 @@ export function BudgetPage() {
         </Container>
       </section>
 
-      {budgetData ? <BudgetStatsBand stats={stats} /> : null}
+      {isDataReady ? (
+        <>
+      <BudgetStatsBand stats={stats} />
 
       {/* Section 1: Proposed Budget */}
       <section id="proposed-budget" className="scroll-mt-36 bg-background py-section-sm md:py-section">
@@ -165,15 +164,11 @@ export function BudgetPage() {
             </p>
           </motion.div>
 
-          {dataStatus ?? (
-            <>
-              <div className="mt-10">
-                <ProposedBudgetTable categories={uiCategories} total={overview.totalProposedBudget} />
-              </div>
+          <div className="mt-10">
+            <ProposedBudgetTable categories={uiCategories} total={overview.totalProposedBudget} />
+          </div>
 
-              <p className="mt-4 text-small text-text-secondary">Last updated: {overview.lastUpdated}</p>
-            </>
-          )}
+          <p className="mt-4 text-small text-text-secondary">Last updated: {overview.lastUpdated}</p>
         </Container>
       </section>
 
@@ -189,11 +184,9 @@ export function BudgetPage() {
             </p>
           </motion.div>
 
-          {dataStatus ?? (
-            <div className="mt-10 max-w-3xl">
-              <BudgetAllocationChart categories={uiCategories} />
-            </div>
-          )}
+          <div className="mt-10 max-w-3xl">
+            <BudgetAllocationChart categories={uiCategories} />
+          </div>
         </Container>
       </section>
 
@@ -208,13 +201,44 @@ export function BudgetPage() {
             </p>
           </motion.div>
 
-          {dataStatus ?? (
-            <div className="mt-10">
-              <AccomplishmentsGrid accomplishments={uiAccomplishments} categories={uiCategories} />
-            </div>
-          )}
+          <div className="mt-10">
+            <AccomplishmentsGrid accomplishments={uiAccomplishments} categories={uiCategories} />
+          </div>
         </Container>
       </section>
+        </>
+      ) : (
+        /* One status block for the whole not-ready page: skeleton while
+           loading, a red alert only for genuine fetch failures, and a
+           designed "coming soon" panel while no fiscal year is current. */
+        <section className="bg-background py-section-sm md:py-section">
+          <Container>
+            {isLoading ? (
+              <SkeletonRows count={4} />
+            ) : error ? (
+              <PageStatus variant="error" message="We couldn't load the budget information. Please try again later." />
+            ) : (
+              <motion.div
+                variants={fadeUp}
+                initial={initial}
+                whileInView="show"
+                viewport={viewportOnce}
+                className="mx-auto max-w-xl rounded-card border border-border bg-white p-10 text-center shadow-sm"
+              >
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-50">
+                  <Landmark className="h-8 w-8 text-primary" aria-hidden="true" strokeWidth={1.5} />
+                </div>
+                <h2 className="text-subtitle text-text-primary">Budget figures coming soon</h2>
+                <p className="mt-4 text-body text-text-secondary">
+                  The school is finalizing its annual budget. Once it's approved and published by the
+                  administration, the proposed figures, allocation breakdown, and funded projects will
+                  appear here — this page updates automatically, no announcement needed.
+                </p>
+              </motion.div>
+            )}
+          </Container>
+        </section>
+      )}
 
       {/* Closing CTA */}
       <section className="bg-primary py-section-sm md:py-section">
