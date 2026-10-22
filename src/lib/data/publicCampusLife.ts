@@ -17,6 +17,7 @@ export interface CampusLifeHighlight {
   id: string;
   title: string;
   description: string;
+  image_path: string | null;
   sort_order: number;
 }
 

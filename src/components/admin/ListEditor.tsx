@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { ImagePlus, Plus, X } from "lucide-react";
 import { ConfirmButton } from "@/components/admin/ConfirmButton";
 
 interface ListEditorProps<T extends { id: string }> {
@@ -21,6 +21,19 @@ interface ListEditorProps<T extends { id: string }> {
    *  ListEditor stays agnostic to *how* errors are computed (Zod, or
    *  anything else) — it only knows how to render them. */
   errors?: Array<Partial<Record<keyof T, string>>>;
+  /** Optional per-row image slot. ListEditor doesn't know where images
+   *  live — the caller supplies the thumbnail src and handles the file.
+   *  Kept generic (not part of `fields`) because a file input is a
+   *  different beast from the text fields this component exists for. */
+  imageField?: {
+    label: string;
+    /** item → thumbnail src; undefined renders an empty pick tile. */
+    previewFor: (item: T) => string | undefined;
+    onPick: (index: number, file: File) => void;
+    onClear?: (index: number) => void;
+    /** item → true while that row's upload is in flight (disables input). */
+    isUploading?: (item: T) => boolean;
+  };
 }
 
 /** Generic add/edit/remove list editor. Works for both Stats
@@ -35,6 +48,7 @@ export function ListEditor<T extends { id: string }>({
   emptyItem,
   addLabel,
   errors,
+  imageField,
 }: ListEditorProps<T>) {
   function updateItem(index: number, key: keyof T, value: string) {
     const next = [...items];
@@ -60,6 +74,54 @@ export function ListEditor<T extends { id: string }>({
     <div className="space-y-3">
       {items.map((item, index) => (
         <div key={item.id} className="flex gap-2 rounded-lg border border-border bg-background p-3">
+          {imageField && (
+            <div className="flex w-20 shrink-0 flex-col items-center gap-1.5 self-start">
+              {imageField.previewFor(item) ? (
+                <div className="relative">
+                  <img
+                    src={imageField.previewFor(item)}
+                    alt=""
+                    className="h-20 w-20 rounded-md border border-border object-cover"
+                  />
+                  {imageField.onClear && (
+                    <button
+                      type="button"
+                      onClick={() => imageField.onClear?.(index)}
+                      aria-label={`Remove ${imageField.label} for item ${index + 1}`}
+                      className="absolute -right-1.5 -top-1.5 rounded-full bg-surface p-0.5 text-text-secondary shadow-sm ring-1 ring-border transition-colors hover:text-status-error-text focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <label
+                  htmlFor={`${item.id}-image`}
+                  className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border bg-surface text-text-secondary transition-colors hover:border-primary hover:text-primary has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary"
+                >
+                  <ImagePlus size={18} />
+                  <span className="px-1 text-center text-[10px] leading-tight">{imageField.label}</span>
+                </label>
+              )}
+              <input
+                id={`${item.id}-image`}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                disabled={imageField.isUploading?.(item)}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) imageField.onPick(index, file);
+                  e.target.value = "";
+                }}
+                className="sr-only"
+              />
+              {imageField.previewFor(item) && (
+                <label htmlFor={`${item.id}-image`} className="cursor-pointer text-[10px] text-text-secondary hover:text-primary">
+                  {imageField.isUploading?.(item) ? "Uploading…" : "Replace"}
+                </label>
+              )}
+            </div>
+          )}
           <div className="flex-1 space-y-2">
             {fields.map((field) => {
               const fieldError = errors?.[index]?.[field.key];

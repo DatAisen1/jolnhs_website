@@ -7,7 +7,8 @@ import { ListEditor } from "@/components/admin/ListEditor";
 import { OfficerManager } from "@/components/admin/OfficerManager";
 import { CampusLifeGroupManager } from "@/components/admin/CampusLifeGroupManager";
 import { groupSectionConfigs } from "@/data/campusLifeGroups";
-import { useCampusLifeSection, useSaveCampusLifeSection } from "@/lib/data/campusLife";
+import { useCampusLifeSection, useSaveCampusLifeSection, uploadHighlightImage } from "@/lib/data/campusLife";
+import { storageFileUrl } from "@/lib/storageUrl";
 import { getErrorMessage } from "@/lib/errors";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { highlightSchema, rowErrors, sectionInfoSchema, statSchema } from "@/lib/validation/campusLife";
@@ -28,7 +29,9 @@ export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; 
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
   const [stats, setStats] = useState<Array<{ id: string; label: string; value: string }>>([]);
-  const [highlights, setHighlights] = useState<Array<{ id: string; title: string; description: string }>>([]);
+  const [highlights, setHighlights] = useState<Array<{ id: string; title: string; description: string; imagePath: string }>>([]);
+  const [uploadingIds, setUploadingIds] = useState<ReadonlySet<string>>(new Set());
+  const [highlightImageError, setHighlightImageError] = useState("");
   const [initialized, setInitialized] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
@@ -41,7 +44,7 @@ export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; 
     setTagline(data.tagline ?? "");
     setDescription(data.description ?? "");
     setStats(data.stats.map((stat) => ({ id: stat.id, label: stat.label, value: stat.value })));
-    setHighlights(data.highlights.map((highlight) => ({ id: highlight.id, title: highlight.title, description: highlight.description })));
+    setHighlights(data.highlights.map((highlight) => ({ id: highlight.id, title: highlight.title, description: highlight.description, imagePath: highlight.image_path ?? "" })));
     setInitialized(true);
   }, [data, initialized]);
 
@@ -85,7 +88,7 @@ export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; 
       tagline: infoResult.data.tagline,
       description: infoResult.data.description,
       stats: stats.map(({ label, value }) => ({ label, value })),
-      highlights: highlights.map(({ title, description: itemDescription }) => ({ title, description: itemDescription })),
+      highlights: highlights.map(({ title, description: itemDescription, imagePath }) => ({ title, description: itemDescription, imagePath })),
     }, {
       onSuccess: () => {
         setIsDirty(false);
@@ -138,7 +141,42 @@ export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; 
           <h2 id="section-highlights-heading" className="text-small font-semibold text-text-primary">Highlights</h2>
           <p className="mt-1 text-small text-text-secondary">Manage the supporting highlights for this section.</p>
         </div>
-        <ListEditor items={highlights} onChange={(next) => { setHighlights(next); markDirty(); }} errors={highlightErrors} fields={[{ key: "title", label: "Highlight title", placeholder: "Highlight title" }, { key: "description", label: "Highlight description", placeholder: "Description", type: "textarea" }]} emptyItem={{ title: "", description: "" }} addLabel="Add highlight" />
+        <ListEditor
+          items={highlights}
+          onChange={(next) => { setHighlights(next); markDirty(); }}
+          errors={highlightErrors}
+          fields={[{ key: "title", label: "Highlight title", placeholder: "Highlight title" }, { key: "description", label: "Highlight description", placeholder: "Description", type: "textarea" }]}
+          emptyItem={{ title: "", description: "", imagePath: "" }}
+          addLabel="Add highlight"
+          imageField={{
+            label: "Image",
+            previewFor: (item) => (item.imagePath ? storageFileUrl("gallery", item.imagePath) ?? undefined : undefined),
+            isUploading: (item) => uploadingIds.has(item.id),
+            onPick: async (index, file) => {
+              const item = highlights[index];
+              setHighlightImageError("");
+              setUploadingIds((prev) => new Set(prev).add(item.id));
+              try {
+                const path = await uploadHighlightImage(file, slug);
+                setHighlights((prev) => prev.map((h) => (h.id === item.id ? { ...h, imagePath: path } : h)));
+                markDirty();
+              } catch (uploadError) {
+                setHighlightImageError(getErrorMessage(uploadError, "Couldn't upload the image."));
+              } finally {
+                setUploadingIds((prev) => {
+                  const next = new Set(prev);
+                  next.delete(item.id);
+                  return next;
+                });
+              }
+            },
+            onClear: (index) => {
+              setHighlights((prev) => prev.map((h, i) => (i === index ? { ...h, imagePath: "" } : h)));
+              markDirty();
+            },
+          }}
+        />
+        {highlightImageError && <p className="mt-2 text-small text-status-error-text">{highlightImageError}</p>}
       </AdminCard>
 
       {groupSectionConfigs[slug] ? (

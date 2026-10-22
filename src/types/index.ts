@@ -109,6 +109,8 @@ export interface CampusLifeStat {
 export interface CampusLifeHighlight {
   title: string;
   description: string;
+  /** Resolved public URL — set only when an admin uploaded a photo. */
+  image?: string;
 }
 
 export interface CampusLifeGalleryItem {

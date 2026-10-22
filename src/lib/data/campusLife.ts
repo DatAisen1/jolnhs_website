@@ -14,6 +14,8 @@ export interface CampusLifeHighlight {
   id: string;
   title: string;
   description: string;
+  /** Raw gallery-bucket path — resolved to a URL only at render. */
+  image_path: string | null;
   sort_order: number;
 }
 
@@ -89,6 +91,17 @@ export function useCampusLifeSection(slug: string) {
   });
 }
 
+/** Highlight ("What We Do") card images live in the shared gallery
+ *  bucket under highlights/<slug>/ — the upload returns the raw
+ *  storage path, which the section save then persists on the row. */
+export async function uploadHighlightImage(file: File, sectionSlug: string): Promise<string> {
+  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const path = `highlights/${sectionSlug}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from("gallery").upload(path, file);
+  if (error) throw error;
+  return path;
+}
+
 /** Saves the section's own text fields (name, tagline, description) plus
  *  a full replace of its stats and highlights lists.
  *
@@ -113,7 +126,7 @@ export function useSaveCampusLifeSection() {
       tagline: string;
       description: string;
       stats: Array<{ label: string; value: string }>;
-      highlights: Array<{ title: string; description: string }>;
+      highlights: Array<{ title: string; description: string; imagePath?: string }>;
     }) => {
       const { error } = await supabase.rpc("save_campus_life_section", {
         p_section_id: input.sectionId,

@@ -14,6 +14,7 @@ import { groupSectionConfigs } from "@/data/campusLifeGroups";
 import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { campusLifeSections as staticCampusLifeSections } from "@/data/campusLife";
 import { useCampusLifeSectionDetail, type CampusLifeSectionDetail } from "@/lib/data/publicCampusLife";
+import { storageFileUrl } from "@/lib/storageUrl";
 import { fadeUp, scaleIn, staggerContainer, viewportOnce } from "@/lib/motion";
 import type { CampusLifeSection } from "@/types";
 import { Users } from "lucide-react";
@@ -36,7 +37,7 @@ function mapSectionDetailWithUIProperties(detail: CampusLifeSectionDetail): Camp
       description: detail.description || "",
       theme: "light",
       stats: detail.stats.map((s) => ({ label: s.label, value: s.value })),
-      highlights: detail.highlights.map((h) => ({ title: h.title, description: h.description })),
+      highlights: detail.highlights.map((h) => ({ title: h.title, description: h.description, image: h.image_path ? storageFileUrl("gallery", h.image_path) ?? undefined : undefined })),
       gallery: [],
       ctaLabel: "Learn More",
       ctaHref: "/contact",
@@ -51,8 +52,11 @@ function mapSectionDetailWithUIProperties(detail: CampusLifeSectionDetail): Camp
     tagline: detail.tagline || staticSection.tagline,
     description: detail.description || staticSection.description,
     theme: staticSection.theme,
-    stats: detail.stats.map((s) => ({ label: s.label, value: s.value })),
-    highlights: detail.highlights.map((h) => ({ title: h.title, description: h.description })),
+    // Same fallback contract as tagline/description: an empty DB list
+    // shows the seeded copy rather than a blank band — a section whose
+    // admin cleared everything reads as unfinished, not intentional.
+    stats: detail.stats.length > 0 ? detail.stats.map((s) => ({ label: s.label, value: s.value })) : staticSection.stats,
+    highlights: detail.highlights.length > 0 ? detail.highlights.map((h) => ({ title: h.title, description: h.description, image: h.image_path ? storageFileUrl("gallery", h.image_path) ?? undefined : undefined })) : staticSection.highlights,
     gallery: staticSection.gallery,
     ctaLabel: staticSection.ctaLabel,
     ctaHref: staticSection.ctaHref,
@@ -218,10 +222,20 @@ export function CampusLifeSectionPage() {
               <motion.div
                 key={highlight.title}
                 variants={scaleIn}
-                className="rounded-card border border-border bg-surface p-6"
+                className="overflow-hidden rounded-card border border-border bg-surface"
               >
-                <h3 className="text-subtitle text-text-primary">{highlight.title}</h3>
-                <p className="mt-3 text-body text-text-secondary">{highlight.description}</p>
+                {highlight.image && (
+                  <img
+                    src={highlight.image}
+                    alt=""
+                    loading="lazy"
+                    className="aspect-[16/9] w-full object-cover"
+                  />
+                )}
+                <div className="p-6">
+                  <h3 className="text-subtitle text-text-primary">{highlight.title}</h3>
+                  <p className="mt-3 text-body text-text-secondary">{highlight.description}</p>
+                </div>
               </motion.div>
             ))}
           </motion.div>
