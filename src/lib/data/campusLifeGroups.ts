@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { storageFileUrl, staffPhotoUrl } from "@/lib/storageUrl";
+import { compareMembersByPosition } from "@/lib/positionRank";
 import { logActivity } from "@/lib/activity";
 import type { GroupMemberRole } from "@/data/campusLifeGroups";
 
@@ -102,12 +103,15 @@ export function useCampusLifeGroups(sectionSlug: string, opts?: { admin?: boolea
       if (membersError) throw membersError;
       if (photosError) throw photosError;
 
+      // Rosters read by rank (Adviser > President > VP > Secretary…),
+      // not alphabetically — see lib/positionRank.ts.
       return groups.map((group) => ({
         ...group,
         cover_image_url: storageFileUrl("gallery", group.cover_image_path),
         members: (members ?? [])
           .filter((m) => m.group_id === group.id)
-          .map((m) => ({ ...m, photo_url: staffPhotoUrl(m.photo_path) })),
+          .map((m) => ({ ...m, photo_url: staffPhotoUrl(m.photo_path) }))
+          .sort(compareMembersByPosition),
         photos: (photos ?? [])
           .filter((p) => p.group_id === group.id)
           .map((p) => ({ ...p, url: storageFileUrl("gallery", p.storage_path) ?? p.storage_path })),

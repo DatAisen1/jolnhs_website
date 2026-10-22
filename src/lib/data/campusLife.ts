@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { compareMembersByPosition } from "@/lib/positionRank";
 import { logActivity } from "@/lib/activity";
 
 export interface CampusLifeStat {
@@ -76,7 +77,14 @@ export function useCampusLifeSection(slug: string) {
       if (highlightsError) throw highlightsError;
       if (officersError) throw officersError;
 
-      return { ...section, stats: stats ?? [], highlights: highlights ?? [], officers: officers ?? [] };
+      return {
+        ...section,
+        stats: stats ?? [],
+        highlights: highlights ?? [],
+        // Rank order (Adviser > President > VP…), not A-Z — see
+        // lib/positionRank.ts.
+        officers: (officers ?? []).sort(compareMembersByPosition),
+      };
     },
   });
 }
