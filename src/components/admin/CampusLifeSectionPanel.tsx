@@ -5,6 +5,8 @@ import { AdminErrorState, AdminListSkeleton } from "@/components/admin/AdminStat
 import { InlineNotice } from "@/components/ui/InlineNotice";
 import { ListEditor } from "@/components/admin/ListEditor";
 import { OfficerManager } from "@/components/admin/OfficerManager";
+import { CampusLifeGroupManager } from "@/components/admin/CampusLifeGroupManager";
+import { groupSectionConfigs } from "@/data/campusLifeGroups";
 import { useCampusLifeSection, useSaveCampusLifeSection } from "@/lib/data/campusLife";
 import { getErrorMessage } from "@/lib/errors";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
@@ -139,13 +141,32 @@ export function CampusLifeSectionPanel({ slug, onDirtyChange }: { slug: string; 
         <ListEditor items={highlights} onChange={(next) => { setHighlights(next); markDirty(); }} errors={highlightErrors} fields={[{ key: "title", label: "Highlight title", placeholder: "Highlight title" }, { key: "description", label: "Highlight description", placeholder: "Description", type: "textarea" }]} emptyItem={{ title: "", description: "" }} addLabel="Add highlight" />
       </AdminCard>
 
-      <AdminCard as="section" aria-labelledby="people-officers-heading">
-        <div className="mb-4">
-          <h2 id="people-officers-heading" className="text-small font-semibold text-text-primary">People / Officers</h2>
-          <p className="mt-1 text-small text-text-secondary">Manage officers associated with this section.</p>
-        </div>
-        <OfficerManager sectionId={data.id} officers={data.officers} />
-      </AdminCard>
+      {groupSectionConfigs[slug] ? (
+        <AdminCard as="section" aria-labelledby="section-groups-heading">
+          <div className="mb-4">
+            <h2 id="section-groups-heading" className="text-small font-semibold text-text-primary">
+              {groupSectionConfigs[slug].groupNoun}s
+            </h2>
+            <p className="mt-1 text-small text-text-secondary">
+              Add {configNounPlural(slug)}, then assign their members and photos. Each one expands on the public page.
+            </p>
+          </div>
+          <CampusLifeGroupManager config={groupSectionConfigs[slug]} sectionId={data.id} />
+        </AdminCard>
+      ) : (
+        <AdminCard as="section" aria-labelledby="people-officers-heading">
+          <div className="mb-4">
+            <h2 id="people-officers-heading" className="text-small font-semibold text-text-primary">People / Officers</h2>
+            <p className="mt-1 text-small text-text-secondary">Manage officers associated with this section.</p>
+          </div>
+          <OfficerManager sectionId={data.id} officers={data.officers} />
+        </AdminCard>
+      )}
     </div>
   );
+}
+
+function configNounPlural(slug: string) {
+  const noun = groupSectionConfigs[slug]?.groupNoun.toLowerCase() ?? "group";
+  return `${noun}s`;
 }

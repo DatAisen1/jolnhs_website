@@ -246,6 +246,42 @@ test('footer and contact page show settings stored in Supabase', async ({ page, 
   }
 });
 
+test('campus-life sections render groups from Supabase', async ({ page, request }) => {
+  // campus_life_groups exists only after migration 0015 runs. Until
+  // then the pages must still render healthy — this test verifies both
+  // states instead of assuming the migration already landed.
+  const sections: Array<{ id: string; slug: string }> = await supabaseGet(
+    request,
+    'campus_life_sections?select=id,slug',
+  );
+
+  const groupsRes = await request.get(
+    `${SUPABASE_URL}/rest/v1/campus_life_groups?select=id,name,section_id&is_archived=eq.false`,
+    {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    },
+  );
+  const tableReady = groupsRes.ok();
+  const groups: Array<{ name: string; section_id: string }> = tableReady ? await groupsRes.json() : [];
+
+  for (const slug of ['organizations', 'athletes', 'journalists']) {
+    await page.goto(`/campus-life/${slug}`);
+    await expectHealthyPage(page, `/campus-life/${slug}`);
+    if (!tableReady) continue;
+    const section = sections.find((s) => s.slug === slug);
+    const sectionGroups = groups.filter((g) => g.section_id === section?.id);
+    for (const group of sectionGroups) {
+      await expect(
+        page.locator('#main-content').getByText(group.name, { exact: false }).first(),
+        `${slug}: group "${group.name}"`,
+      ).toBeVisible();
+    }
+  }
+});
+
 test('budget page shows the current fiscal year label', async ({ page, request }) => {
   const years: Array<{ year_label: string }> = await supabaseGet(
     request,

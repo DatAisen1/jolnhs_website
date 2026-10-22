@@ -8,6 +8,8 @@ import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
 import { SectionPhotoGallery } from "@/components/campusLife/SectionPhotoGallery";
+import { CampusLifeGroups } from "@/components/campusLife/CampusLifeGroups";
+import { groupSectionConfigs } from "@/data/campusLifeGroups";
 import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { campusLifeSections as staticCampusLifeSections } from "@/data/campusLife";
 import { useCampusLifeSectionDetail, type CampusLifeSectionDetail } from "@/lib/data/publicCampusLife";
@@ -214,70 +216,81 @@ export function CampusLifeSectionPage() {
         </Container>
       </section>
 
-      {/* Officers — only renders when the section actually has officers
-          in Supabase (PTA, Organizations, Journalists). Athletes and
-          Gallery legitimately have none, so the band disappears rather
-          than showing an empty state on pages where it doesn't apply. */}
-      {sectionDetail.officers.length > 0 && (
-        <section className="bg-surface py-section-sm md:py-section">
-          <Container>
-            <motion.div
-              variants={fadeUp}
-              initial={initial}
-              whileInView="show"
-              viewport={viewportOnce}
-              className="text-center"
-            >
-              <p className="text-small font-semibold uppercase tracking-[0.18em] text-primary">
-                Leadership
-              </p>
-              <h2 className="mt-3 text-section text-text-primary">Section Officers</h2>
-            </motion.div>
+      {/* Grouped sections (organizations, athletes, journalists) render
+          their admin-managed groups — expandable org/sport/publication
+          cards. The officers band stays as a FALLBACK while the groups
+          table is unreachable (migration not applied), so pre-move SSLG
+          officers never vanish from the page. PTA uses it directly. */}
+      {(() => {
+        const officersBand = sectionDetail.officers.length > 0 && (
+          <section className="bg-surface py-section-sm md:py-section">
+            <Container>
+              <motion.div
+                variants={fadeUp}
+                initial={initial}
+                whileInView="show"
+                viewport={viewportOnce}
+                className="text-center"
+              >
+                <p className="text-small font-semibold uppercase tracking-[0.18em] text-primary">
+                  Leadership
+                </p>
+                <h2 className="mt-3 text-section text-text-primary">Section Officers</h2>
+              </motion.div>
 
-            <motion.div
-              variants={staggerContainer}
-              initial={initial}
-              whileInView="show"
-              viewport={viewportOnce}
-              className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4"
-            >
-              {sectionDetail.officers.map((officer) => (
-                <motion.div
-                  key={officer.id}
-                  variants={scaleIn}
-                  className="flex flex-col items-center rounded-card border border-border bg-background p-6 text-center"
-                >
-                  {officer.photo_path ? (
-                    <img
-                      src={officer.photo_path}
-                      alt={`${officer.name}, ${officer.position}`}
-                      loading="lazy"
-                      className="h-24 w-24 rounded-full border-2 border-primary/15 object-cover"
-                    />
-                  ) : (
-                    <span
-                      aria-hidden="true"
-                      className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-primary/15 bg-primary/10 font-heading text-subtitle text-primary"
-                    >
-                      {officer.name
-                        .split(/\s+/)
-                        .map((word) => word[0])
-                        .filter(Boolean)
-                        .slice(0, 2)
-                        .join("")}
-                    </span>
-                  )}
-                  <h3 className="mt-4 text-body font-semibold text-text-primary">{officer.name}</h3>
-                  <p className="mt-1 text-small text-text-secondary">{officer.position}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </Container>
-        </section>
-      )}
+              <motion.div
+                variants={staggerContainer}
+                initial={initial}
+                whileInView="show"
+                viewport={viewportOnce}
+                className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4"
+              >
+                {sectionDetail.officers.map((officer) => (
+                  <motion.div
+                    key={officer.id}
+                    variants={scaleIn}
+                    className="flex flex-col items-center rounded-card border border-border bg-background p-6 text-center"
+                  >
+                    {officer.photo_path ? (
+                      <img
+                        src={officer.photo_path}
+                        alt={`${officer.name}, ${officer.position}`}
+                        loading="lazy"
+                        className="h-24 w-24 rounded-full border-2 border-primary/15 object-cover"
+                      />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-primary/15 bg-primary/10 font-heading text-subtitle text-primary"
+                      >
+                        {officer.name
+                          .split(/\s+/)
+                          .map((word) => word[0])
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .join("")}
+                      </span>
+                    )}
+                    <h3 className="mt-4 text-body font-semibold text-text-primary">{officer.name}</h3>
+                    <p className="mt-1 text-small text-text-secondary">{officer.position}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </Container>
+          </section>
+        );
 
-      {/* Photo gallery */}
-      <section className={`${sectionDetail.officers.length > 0 ? "bg-background" : "bg-surface"} py-section-sm md:py-section`}>
+        return groupSectionConfigs[section.slug] ? (
+          <CampusLifeGroups sectionSlug={section.slug} fallback={officersBand} />
+        ) : (
+          officersBand
+        );
+      })()}
+
+      {/* Photo gallery — alternates background with whichever people
+          band precedes it (groups band is bg-surface; PTA's officers
+          band is bg-surface only when it has officers). */}
+      <section className={`${groupSectionConfigs[section.slug] || sectionDetail.officers.length > 0 ? "bg-background" : "bg-surface"} py-section-sm md:py-section`}>
         <Container>
           <motion.h2
             variants={fadeUp}
