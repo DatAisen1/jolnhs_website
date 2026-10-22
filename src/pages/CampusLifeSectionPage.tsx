@@ -328,7 +328,7 @@ export function CampusLifeSectionPage() {
             Gallery
           </motion.h2>
           <div className="mt-10">
-            <SectionPhotoGallery slug={section.slug} />
+            <SectionPhotoGallery slug={section.slug} layout={section.slug === "gallery" ? "masonry" : "grid"} />
           </div>
 
           <PrivacyNotice className="mt-10" />
