@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, ShieldCheck, ClipboardList, Megaphone, Mail, Images, FileText } from "lucide-react";
+import { LayoutDashboard, Users, Building2, Wallet, LogOut, Menu, X, Settings, ShieldCheck, ClipboardList, Megaphone, Mail, Images, FileText, LifeBuoy } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useIdleSignOut } from "@/hooks/useIdleSignOut";
 import { useNoIndex } from "@/hooks/useNoIndex";
@@ -44,6 +44,7 @@ const NAV_GROUPS: ReadonlyArray<{ label: string; items: ReadonlyArray<NavItem> }
       { to: "/admin/users", label: "Admin Users", icon: ShieldCheck, end: false },
       { to: "/admin/activity", label: "Activity Log", icon: ClipboardList, end: false },
       { to: "/admin/settings", label: "Settings", icon: Settings, end: false },
+      { to: "/admin/help", label: "Help & Guide", icon: LifeBuoy, end: false },
     ],
   },
 ] as const;

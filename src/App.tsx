@@ -47,6 +47,9 @@ const BudgetManagePage = lazy(() =>
 const SettingsPage = lazy(() =>
   import("@/pages/admin/SettingsPage").then((m) => ({ default: m.SettingsPage }))
 );
+const HelpPage = lazy(() =>
+  import("@/pages/admin/HelpPage").then((m) => ({ default: m.HelpPage }))
+);
 const AnnouncementsManagePage = lazy(() =>
   import("@/pages/admin/AnnouncementsManagePage").then((m) => ({ default: m.AnnouncementsManagePage }))
 );
@@ -264,6 +267,14 @@ export function AppRoutes() {
           element={
             <Suspense fallback={null}>
               <SettingsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/admin/help"
+          element={
+            <Suspense fallback={null}>
+              <HelpPage />
             </Suspense>
           }
         />

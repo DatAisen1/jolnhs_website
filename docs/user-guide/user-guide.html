@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>JOLNHS Website — User Guide</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 20mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1f2a44;
+    font-size: 11.5pt;
+    line-height: 1.55;
+    margin: 0;
+  }
+  h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; color: #1b3a7a; line-height: 1.25; }
+  h2 { font-size: 20pt; margin: 0 0 6px; padding-bottom: 6px; border-bottom: 3px solid #8acff8; }
+  h3 { font-size: 14pt; margin: 22px 0 6px; }
+  p { margin: 6px 0; }
+  ol, ul { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+  b { color: #10224d; }
+  .page-break { page-break-before: always; }
+  .avoid { page-break-inside: avoid; }
+
+  /* Cover */
+  .cover {
+    height: 250mm;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+  }
+  .cover .badge {
+    width: 92px; height: 92px; border-radius: 50%;
+    background: #1b3a7a; color: #fff; font: bold 30pt Georgia, serif;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 26px;
+  }
+  .cover h1 { font-size: 30pt; margin: 0 0 8px; }
+  .cover .sub { font-size: 15pt; color: #4a5a7a; margin: 0 0 30px; }
+  .cover .for { display: inline-block; background: #eef7fe; border: 1px solid #8acff8; border-radius: 10px; padding: 12px 22px; font-size: 11.5pt; }
+  .cover .small { margin-top: 40px; font-size: 10pt; color: #6a7894; }
+
+  /* Boxes */
+  .tip, .warn, .note {
+    border-radius: 8px; padding: 10px 14px; margin: 10px 0; page-break-inside: avoid;
+  }
+  .tip  { background: #eef7fe; border-left: 5px solid #3b8fd8; }
+  .warn { background: #fff4e5; border-left: 5px solid #e08a00; }
+  .note { background: #f2f4f8; border-left: 5px solid #8a96ad; }
+  .tip b:first-child, .warn b:first-child, .note b:first-child { display: block; margin-bottom: 2px; }
+
+  .btn {
+    display: inline-block; background: #1b3a7a; color: #fff; border-radius: 5px;
+    padding: 0 7px; font-size: 10pt; font-weight: 600; white-space: nowrap;
+  }
+  .path { font-family: Consolas, monospace; background: #f2f4f8; border-radius: 4px; padding: 0 5px; font-size: 10pt; }
+
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 10.5pt; page-break-inside: avoid; }
+  th, td { border: 1px solid #d5dbe6; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #1b3a7a; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f7f9fc; }
+
+  .toc { columns: 2; column-gap: 30px; }
+  .toc li { break-inside: avoid; }
+  .part { font-size: 10pt; letter-spacing: 2px; text-transform: uppercase; color: #3b8fd8; font-weight: 700; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="badge">J</div>
+  <h1>JOLNHS Website<br/>User Guide</h1>
+  <p class="sub">Julia Ortiz Luis National High School</p>
+  <div class="for">
+    <b>Part 1:</b> How to use the public website (for everyone)<br/>
+    <b>Part 2:</b> How to use the Admin page (for school staff in charge)
+  </div>
+  <p class="small">Written in simple words. Read the part you need — you do not have to read everything.</p>
+</section>
+
+<!-- ============ CONTENTS ============ -->
+<section class="page-break">
+  <h2>What is inside</h2>
+  <ol class="toc">
+    <li>How the website works (the big idea)</li>
+    <li><b>Part 1 — The public website</b></li>
+    <li>Moving around the website</li>
+    <li>What each page is for</li>
+    <li>Changing the colors</li>
+    <li>Using it on a phone</li>
+    <li><b>Part 2 — The Admin page</b></li>
+    <li>Logging in and logging out</li>
+    <li>The Dashboard</li>
+    <li>Announcements (News)</li>
+    <li>Staff &amp; Faculty</li>
+    <li>Campus Life</li>
+    <li>Gallery</li>
+    <li>Documents (Downloads)</li>
+    <li>Budget</li>
+    <li>Messages</li>
+    <li>Admin Users</li>
+    <li>Activity Log</li>
+    <li>Settings</li>
+    <li>Good habits and safety</li>
+    <li>When something goes wrong</li>
+    <li>Quick answer table</li>
+  </ol>
+
+  <h3>How the website works (the big idea)</h3>
+  <p>The website has <b>two sides</b>:</p>
+  <table>
+    <tr><th style="width:28%">Side</th><th>Who uses it</th><th>What it does</th></tr>
+    <tr><td><b>Public website</b></td><td>Students, parents, visitors — anyone</td><td>Shows school news, teachers, programs, budget, and more. People can only <b>look</b>.</td></tr>
+    <tr><td><b>Admin page</b></td><td>Only school staff who were given access</td><td>The place where you <b>add, change, or remove</b> what the public sees.</td></tr>
+  </table>
+  <p>Think of it like a <b>bulletin board</b>. The public website is the board everyone reads. The Admin page is the key to the glass case — only trusted people can open it and change the posters.</p>
+  <div class="tip"><b>The most important thing to know</b>When you save something on the Admin page, it shows on the public website <b>right away</b>. You do not need to call anyone or wait for a programmer.</div>
+</section>
+
+<!-- ============ PART 1 ============ -->
+<section class="page-break">
+  <p class="part">Part 1</p>
+  <h2>The public website</h2>
+  <p>This part is for everyone who visits the school website.</p>
+
+  <h3>Moving around the website</h3>
+  <p>At the <b>top</b> of every page is the <b>menu bar</b>. It stays there even when you scroll down.</p>
+  <ul>
+    <li><b>Home</b> — the front page.</li>
+    <li><b>About JOLNHS</b> — point at it (or tap it) to see more choices: <i>Overview</i> and <i>Faculty &amp; Staff</i>.</li>
+    <li><b>Academics</b> — shows the school programs. Point at it to pick one program.</li>
+    <li><b>Campus Life</b> — student activities. Point at it to pick a group.</li>
+    <li><b>Budget Transparency</b> — where the school money goes.</li>
+    <li><b>News</b> — school announcements.</li>
+    <li><span class="btn">Enroll</span> — the dark blue button. Click it to learn how to enroll.</li>
+  </ul>
+  <p>Below the top part of most pages you will see a small line like <span class="path">Home › Campus Life › Athletes</span>. This shows <b>where you are</b>. Click any word in it to go back to that page.</p>
+  <p>At the <b>bottom</b> of every page (the footer) you will find the school address, phone, email, office hours, a map, and quick links like <i>Downloads</i> and <i>Contact</i>.</p>
+  <div class="tip"><b>Lost?</b>Click the school logo at the top-left corner. It always brings you back to the Home page.</div>
+</section>
+
+<section class="page-break">
+  <h3>What each page is for</h3>
+  <table>
+    <tr><th style="width:26%">Page</th><th>What you can do there</th></tr>
+    <tr><td><b>Home</b></td><td>See the welcome video, latest news, school programs, and why people choose JOLNHS.</td></tr>
+    <tr><td><b>About › Overview</b></td><td>Read the school history, mission, and vision.</td></tr>
+    <tr><td><b>About › Faculty &amp; Staff</b></td><td>See the teachers and staff with their photos and jobs. Use the buttons on top to show only one group (for example, only SHS Faculty).</td></tr>
+    <tr><td><b>Academics</b></td><td>See all programs. Click one to read what students learn, who can join, and what is needed to apply.</td></tr>
+    <tr><td><b>Campus Life</b></td><td>See student life: <i>Organizations, Athletes, Journalists, PTA,</i> and <i>Gallery</i>.</td></tr>
+    <tr><td><b>Budget Transparency</b></td><td>See how much money the school got and how it is used, by category.</td></tr>
+    <tr><td><b>News</b></td><td>Read announcements. Use the tabs to show only one kind (for example, only Events). Click a news item to read all of it.</td></tr>
+    <tr><td><b>Enroll</b></td><td>Learn the steps to enroll, what papers to bring, and the office hours.</td></tr>
+    <tr><td><b>Downloads</b></td><td>Get school forms and files. Click a file to open or save it.</td></tr>
+    <tr><td><b>Contact</b></td><td>Send a message to the school using the form. Fill in your name, email, and message, then press <span class="btn">Send message</span>.</td></tr>
+    <tr><td><b>Privacy / Cookie Policy</b></td><td>Read how the website handles your information.</td></tr>
+  </table>
+
+  <h3>Campus Life pages, a closer look</h3>
+  <ul>
+    <li><b>Organizations, Athletes, Journalists</b> — each group (like SSLG, Basketball, or the school paper) is shown as a <b>card</b>. <b>Click the card</b> to open it and see its officers, coaches, players, and photos. Click again to close it.</li>
+    <li><b>PTA</b> — shows the PTA officers in a simple list.</li>
+    <li><b>Gallery</b> — a wall of school photos in different sizes, like Pinterest.</li>
+  </ul>
+  <div class="note"><b>About student privacy</b>For sports teams, players are shown with <b>name and position only</b> — no photos. This protects our students because they are minors.</div>
+</section>
+
+<section class="page-break">
+  <h3>Changing the colors</h3>
+  <p>At the bottom-right corner of the screen there is a small round button with a <b>paint palette</b> picture. Click it to choose a color style:</p>
+  <ul>
+    <li><b>Light</b> — white background (the normal look).</li>
+    <li><b>Dark</b> — dark background, easier on the eyes at night.</li>
+    <li><b>Sky Blue</b> — a light blue look.</li>
+  </ul>
+  <p>The website remembers your choice the next time you visit on the same device.</p>
+  <p>The other round button with an <b>arrow pointing up</b> takes you back to the top of the page.</p>
+
+  <h3>The cookie message</h3>
+  <p>The first time you visit, a small box asks about <b>cookies</b>. This is only about the Google Map at the bottom of the page.</p>
+  <ul>
+    <li>Press <span class="btn">Accept</span> to show the map.</li>
+    <li>Press <b>Decline</b> if you do not want it. You can still get directions using the link instead.</li>
+  </ul>
+
+  <h3>Using it on a phone</h3>
+  <ul>
+    <li>On a phone, the menu is hidden. Tap the <b>three lines (☰)</b> at the top-right to open it.</li>
+    <li>Tap a menu item with an arrow to see more choices under it.</li>
+    <li>The <span class="btn">Enroll</span> button, <i>Downloads</i>, and <i>Contact Us</i> are at the bottom of the open menu.</li>
+    <li>Tap the <b>X</b> or tap outside the menu to close it.</li>
+  </ul>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<section class="page-break">
+  <p class="part">Part 2</p>
+  <h2>The Admin page</h2>
+  <p>This part is only for school staff who were given admin access. The Admin page is where you change what the public sees.</p>
+
+  <h3>Logging in</h3>
+  <ol>
+    <li>Go to the website address and add <span class="path">/admin</span> at the end. You can also scroll to the very bottom of any page and click the small <b>Admin Login</b> link.</li>
+    <li>Type your <b>Email</b> and <b>Password</b>.</li>
+    <li>Press <span class="btn">Sign in</span>.</li>
+  </ol>
+  <div class="warn"><b>If you type the wrong password 5 times</b>The login will stop you for <b>1 minute</b>. This keeps strangers from guessing passwords. Just wait 1 minute and try again carefully.</div>
+  <div class="note"><b>"You do not have access" message?</b>Having an account is not enough — another admin must also add you on the <b>Admin Users</b> page (see later). Ask the main admin.</div>
+
+  <h3>Logging out — and when the website logs you out by itself</h3>
+  <ul>
+    <li>To log out, press the <b>Sign out</b> button in the admin menu.</li>
+    <li>If you do <b>nothing for 30 minutes</b>, you are logged out by itself.</li>
+    <li>If you <b>close the browser tab</b>, you are logged out too.</li>
+  </ul>
+  <p>This is for safety. If you forget to log out on a shared school computer, no one else can use your access.</p>
+  <div class="tip"><b>Tip</b>Save your work often. If you are logged out by the 30-minute rule, unsaved typing is lost.</div>
+
+  <h3>The admin menu</h3>
+  <p>On the left side (or behind the ☰ button on a phone) is the admin menu. It is split into groups:</p>
+  <table>
+    <tr><th style="width:24%">Group</th><th>Pages inside</th></tr>
+    <tr><td>Overview</td><td>Dashboard</td></tr>
+    <tr><td>Content</td><td>Announcements, Staff &amp; Faculty, Campus Life, Gallery, Documents</td></tr>
+    <tr><td>Transparency</td><td>Budget</td></tr>
+    <tr><td>Inbox</td><td>Messages</td></tr>
+    <tr><td>System</td><td>Admin Users, Activity Log, Settings</td></tr>
+  </table>
+</section>
+
+<section class="page-break">
+  <h3>The Dashboard</h3>
+  <p>This is the first page you see after logging in. It shows a <b>summary</b>: how many staff, Campus Life groups, and budget items there are, plus quick buttons like <i>Add staff</i> and <i>Update budget</i>. Use it as your starting point.</p>
+
+  <h3>Announcements (News)</h3>
+  <p><b>Shows on:</b> the <i>News</i> page and the "Latest updates" part of the Home page.</p>
+  <p><b>To add a new announcement:</b></p>
+  <ol>
+    <li>Open <b>Announcements</b> and press the button to add a new one.</li>
+    <li>Fill in the <b>Title</b>.</li>
+    <li>Pick a <b>Category</b> (for example, Event or Advisory).</li>
+    <li>Add a <b>Cover image</b> if you want (not required).</li>
+    <li>Write a short <b>Excerpt</b> — 1 or 2 sentences shown on the news card.</li>
+    <li>Write the full message in <b>Body</b>.</li>
+    <li>Tick <b>Published — visible on the public site</b>.</li>
+    <li>Press <span class="btn">Save</span>.</li>
+  </ol>
+  <div class="warn"><b>Your news does not show on the website?</b>Most likely it is still a <b>Draft</b>. Only items with the <b>Published</b> box ticked can be seen by the public. Edit it, tick the box, and save again.</div>
+  <ul>
+    <li><b>Pin</b> — keeps an important announcement at the top of the list.</li>
+    <li><b>Filipino version</b> — you may also type a Filipino title and message. It shows under the English one.</li>
+    <li><b>Archive</b> — hides an old announcement without deleting it forever. You can bring it back from the <i>Archived</i> tab.</li>
+  </ul>
+
+  <h3>Staff &amp; Faculty</h3>
+  <p><b>Shows on:</b> <i>About › Faculty &amp; Staff</i>.</p>
+  <ol>
+    <li>Press <span class="btn">Add Staff</span>.</li>
+    <li>Type the person's <b>name</b> and <b>position</b>.</li>
+    <li>Pick their group: <b>Administrators</b>, <b>JHS Faculty</b>, <b>SHS Faculty</b>, or <b>Staff</b>.</li>
+    <li>Add a <b>photo</b> (JPG, PNG, or WebP).</li>
+    <li>Press <span class="btn">Save</span>.</li>
+  </ol>
+  <ul>
+    <li>To <b>change</b> someone, click their row, edit, and save.</li>
+    <li>If a teacher leaves, use <b>Archive</b> instead of deleting. You can see archived people again using the filter at the top.</li>
+    <li>Use the search box to find someone fast.</li>
+    <li><b>Export to CSV</b> downloads the staff list as a file you can open in Excel.</li>
+  </ul>
+  <div class="tip"><b>For nice-looking photos</b>Use photos where the person faces the camera, from the shoulders up, with a plain background.</div>
+</section>
+
+<section class="page-break">
+  <h3>Campus Life</h3>
+  <p><b>Shows on:</b> the Campus Life pages. At the top there are <b>tabs</b>: <i>Athletes, PTA, Journalists, Organizations</i>. Pick the tab you want to change.</p>
+  <p>Each tab has these parts:</p>
+
+  <p><b>1. Section information</b> — the title, short tagline, description, and the numbers shown in the "By the Numbers" box (for example, "Student Athletes — 180+").</p>
+
+  <p><b>2. Highlights</b> — the cards under <b>"What We Do"</b> on the public page. Each card has:</p>
+  <ul>
+    <li>a <b>title</b> and a <b>description</b>, and</li>
+    <li>an <b>image</b> (not required). Click the small picture box on the left of the card to add one. Click <b>Replace</b> to change it, or the small <b>✕</b> to remove it.</li>
+  </ul>
+  <p>Press <b>Add highlight</b> for a new card. Press the trash button to remove one.</p>
+  <div class="warn"><b>Very important — press Save Changes</b>The <span class="btn">Save Changes</span> button is in the <b>Section information</b> box. It saves the section text, the numbers, <b>and</b> the highlight cards all at once. If you leave without pressing it, your changes are lost (the page will warn you first).</div>
+
+  <p><b>3. Groups</b> (Organizations, Athletes, Journalists only)</p>
+  <table>
+    <tr><th style="width:22%">Tab</th><th style="width:28%">You add a…</th><th>Inside each one you add…</th></tr>
+    <tr><td>Organizations</td><td>Organization (like SSLG)</td><td>Advisers and Officers, with photos</td></tr>
+    <tr><td>Athletes</td><td>Sport (like Basketball)</td><td>Coaches with photos, and Players (<b>name and position only</b>, no photos)</td></tr>
+    <tr><td>Journalists</td><td>Publication (like the school paper)</td><td>Adviser and Staff, with photos</td></tr>
+  </table>
+  <ol>
+    <li>Press the button to add a new group. Type its <b>name</b>, a short <b>description</b>, and add a <b>cover picture</b>.</li>
+    <li>Save it. Then click the group to <b>open</b> it.</li>
+    <li>Inside, add its people. For each person type the <b>name</b> and <b>position</b> (for example, "President").</li>
+    <li>Add photos to the group's <b>photo strip</b> (up to 12) — team photos, events, and so on.</li>
+  </ol>
+  <div class="tip"><b>The order of officers is automatic</b>The website puts people in order by their position: Adviser → President → Vice President → Secretary → Treasurer → Auditor → P.I.O. → Grade Representatives (Grade 7 to 12) → Committees. You do not need to arrange them by hand. Just type the position clearly.</div>
+
+  <p><b>4. People / Officers</b> (PTA tab only) — a simple list of PTA officers with name, position, and photo.</p>
+</section>
+
+<section class="page-break">
+  <h3>Gallery</h3>
+  <p><b>Shows on:</b> the photo part of each Campus Life page. Photos in the <b>Campus Gallery</b> tab show on the Gallery page as a Pinterest-style wall.</p>
+  <ol>
+    <li>Open <b>Gallery</b>.</li>
+    <li>Click the <b>tab</b> of the section the photos belong to.</li>
+    <li>Press <span class="btn">Upload photos</span>. You can pick <b>many photos at once</b>.</li>
+    <li>Under each photo, type a <b>caption</b> if you want, then press <span class="btn">Save</span>.</li>
+  </ol>
+  <ul>
+    <li>Photos must be <b>JPG, PNG, or WebP</b> and <b>5 MB or smaller</b> each.</li>
+    <li>Tall and wide photos are both fine — the Gallery wall shows each one in its own shape.</li>
+    <li>To remove a photo, press the trash button and confirm.</li>
+  </ul>
+
+  <h3>Documents (Downloads)</h3>
+  <p><b>Shows on:</b> the <i>Downloads</i> page.</p>
+  <ol>
+    <li>Open <b>Documents</b>.</li>
+    <li>Type the <b>Title</b> (for example, "Enrollment Form 2025").</li>
+    <li>Pick a <b>Category</b>.</li>
+    <li>Choose the <b>File</b> — PDF, Word, or image, up to <b>20 MB</b>.</li>
+    <li>Add a short <b>Description</b> if you want.</li>
+    <li>Press <span class="btn">Publish</span>.</li>
+  </ol>
+  <p>To take down an old file, use <b>Archive</b>.</p>
+
+  <h3>Budget</h3>
+  <p><b>Shows on:</b> the <i>Budget Transparency</i> page. The budget is organized by <b>fiscal year</b> (school money year).</p>
+  <ol>
+    <li>Press <span class="btn">New Fiscal Year</span> to start a new year (for example, "FY 2025").</li>
+    <li>In <b>Fiscal year details</b>, type the <b>total budget</b> and the short texts shown on top of the public page.</li>
+    <li>In <b>Budget categories</b>, add each category (for example, "Learning Materials") with its amount.</li>
+    <li>Press <b>Set as current year</b> on the year you want the public to see. <b>The public Budget page shows only the current year.</b></li>
+    <li>Set the year's <b>status</b> to keep your records in order:
+      <ul>
+        <li><b>Draft</b> — still being worked on.</li>
+        <li><b>Published / Active</b> — finished and in use.</li>
+        <li><b>Archived</b> — an old year. It is locked and cannot be changed.</li>
+      </ul>
+    </li>
+  </ol>
+  <div class="warn"><b>Do not set a year as "current" until it is ready</b>As soon as a year is the current year, the public can see it — even if its status still says Draft. Finish typing the numbers first, then press <b>Set as current year</b>.</div>
+  <div class="note"><b>Why some years cannot be edited</b>Old (archived) years are locked on purpose so past records stay honest and are not changed by mistake.</div>
+</section>
+
+<section class="page-break">
+  <h3>Messages</h3>
+  <p>When someone uses the <b>Contact</b> form on the public website, the message comes here.</p>
+  <ul>
+    <li>New messages are marked <b>unread</b>. The top of the Messages page shows how many are unread (for example, "3 unread").</li>
+    <li>Click a message to read it.</li>
+    <li>Press <b>Reply via email</b> to answer — this opens your email app with the sender's address already filled in.</li>
+    <li>Press <b>Archive</b> when you are done, to keep the inbox clean.</li>
+  </ul>
+
+  <h3>Admin Users</h3>
+  <p>This is where you decide <b>who can use the Admin page</b>.</p>
+  <ol>
+    <li>The new person must first have a <b>login account</b> (email and password).</li>
+    <li>In <b>Grant admin access</b>, type their email and confirm.</li>
+  </ol>
+  <ul>
+    <li>To remove someone's access, press remove beside their name.</li>
+    <li>You <b>cannot remove yourself</b>. This stops the school from being locked out by mistake.</li>
+  </ul>
+  <div class="warn"><b>Give access carefully</b>Every admin can change the public website. Only add people the school trusts. Remove access right away when someone leaves their job.</div>
+
+  <h3>Activity Log</h3>
+  <p>A list of <b>who changed what, and when</b>. Every save on the Admin page is written here — for example, "Maria updated staff Juan Cruz, 10:15 AM." Use the filters to look for a certain person or type of change. It is useful when you need to know who made a change.</p>
+
+  <h3>Settings</h3>
+  <p>Changes for the <b>whole website</b>:</p>
+  <ul>
+    <li><b>Site Identity</b> — the school name shown on the site.</li>
+    <li><b>Contact Information</b> — address, phone, email (shows in the footer and Contact page).</li>
+    <li><b>School Information</b> — other school details.</li>
+    <li><b>Page Content</b> — the big welcome words on the Home page, the welcome message, the About page history, and the mission statement.</li>
+  </ul>
+  <p>Press <span class="btn">Save</span> after changing anything. If you leave a box empty, the website shows its original text instead.</p>
+</section>
+
+<section class="page-break">
+  <h3>Good habits and safety</h3>
+  <ul>
+    <li><b>Never share your password.</b> Each admin should have their own account.</li>
+    <li><b>Log out</b> when you finish, especially on a shared computer.</li>
+    <li><b>Check your work</b> on the public website after saving. Open the page and press <b>Ctrl + F5</b> to refresh.</li>
+    <li><b>Use Archive, not delete,</b> when possible. Archived things can be brought back.</li>
+    <li><b>Protect student privacy.</b> Do not post students' home addresses, phone numbers, or birthdays. Use only photos the school is allowed to share.</li>
+    <li><b>Use clear, small photos.</b> Big photos make the website slow. Keep them under 5 MB.</li>
+    <li><b>Check spelling of names and positions</b> — this is what parents and students will read.</li>
+  </ul>
+
+  <h3>When something goes wrong</h3>
+  <table>
+    <tr><th style="width:38%">Problem</th><th>What to do</th></tr>
+    <tr><td>I saved something but it does not show on the website.</td><td>1) For news, make sure it is <b>Published</b> (not Draft). For budget, make sure the year is set as the <b>current year</b>. 2) For Campus Life, make sure you pressed <b>Save Changes</b>. 3) Refresh the public page with <b>Ctrl + F5</b>.</td></tr>
+    <tr><td>I cannot log in.</td><td>Check your email and password spelling. If you tried 5 times, wait 1 minute. If it says you have no access, ask the main admin to add you in Admin Users.</td></tr>
+    <tr><td>I was logged out suddenly.</td><td>You were inactive for 30 minutes, or the tab was closed. Log in again.</td></tr>
+    <tr><td>My photo will not upload.</td><td>Use JPG, PNG, or WebP and make it smaller than 5 MB. You can make a photo smaller by taking a screenshot of it or using a photo app.</td></tr>
+    <tr><td>A page shows a red error with "Try again".</td><td>Press <b>Try again</b>. Check your internet. If it keeps happening, tell the person who manages the website.</td></tr>
+    <tr><td>I made a mistake.</td><td>Edit it and save again. If you archived something by mistake, bring it back from the Archived view. The Activity Log shows what was changed.</td></tr>
+    <tr><td>Someone's name appears twice.</td><td>Open that group, find the extra copy, and archive or remove it.</td></tr>
+  </table>
+</section>
+
+<section class="page-break">
+  <h3>Quick answer table — "I want to…"</h3>
+  <table>
+    <tr><th style="width:44%">I want to…</th><th>Go to</th></tr>
+    <tr><td>Post school news or an event</td><td>Admin › <b>Announcements</b></td></tr>
+    <tr><td>Add or update a teacher</td><td>Admin › <b>Staff &amp; Faculty</b></td></tr>
+    <tr><td>Add a club, sport, or school paper</td><td>Admin › <b>Campus Life</b> › pick the tab</td></tr>
+    <tr><td>Add officers to a club</td><td>Admin › <b>Campus Life</b> › Organizations › open the club</td></tr>
+    <tr><td>Add coaches or players to a sport</td><td>Admin › <b>Campus Life</b> › Athletes › open the sport</td></tr>
+    <tr><td>Change the "What We Do" cards</td><td>Admin › <b>Campus Life</b> › Highlights → press <b>Save Changes</b></td></tr>
+    <tr><td>Change PTA officers</td><td>Admin › <b>Campus Life</b> › PTA › People / Officers</td></tr>
+    <tr><td>Upload event photos</td><td>Admin › <b>Gallery</b> › pick the tab</td></tr>
+    <tr><td>Share a form for download</td><td>Admin › <b>Documents</b></td></tr>
+    <tr><td>Update the school budget</td><td>Admin › <b>Budget</b> (the public sees the <b>current</b> year)</td></tr>
+    <tr><td>Read messages from parents/visitors</td><td>Admin › <b>Messages</b></td></tr>
+    <tr><td>Give a co-worker admin access</td><td>Admin › <b>Admin Users</b></td></tr>
+    <tr><td>See who changed something</td><td>Admin › <b>Activity Log</b></td></tr>
+    <tr><td>Change the phone, email, or welcome words</td><td>Admin › <b>Settings</b></td></tr>
+  </table>
+
+  <div class="tip" style="margin-top:22px"><b>Remember the three golden rules</b>
+    1. <b>Save</b> after every change.<br/>
+    2. Make sure news is <b>Published</b>.<br/>
+    3. <b>Log out</b> when you are done.
+  </div>
+</section>
+
+</body>
+</html>
