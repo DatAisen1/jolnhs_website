@@ -88,7 +88,7 @@ export function NewsPage() {
         eyebrow="Stay informed"
         title="News & Announcements"
         description="Official announcements, school news, events, and advisories from Julia Ortiz Luis National High School."
-        watermarkIcon={Megaphone}
+        origami="megaphone"
       />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "News" }]} />
       <section className="bg-background py-section-sm md:py-section">

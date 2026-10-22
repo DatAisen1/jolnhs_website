@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { OrigamiIcon, type OrigamiIconName } from "@/components/ui/OrigamiIcon";
 import { heroChild, heroReveal } from "@/lib/motion";
 
 interface PageHeroPhoto {
@@ -42,6 +43,14 @@ interface PageHeroProps {
    * the imagery (About). Mutually exclusive with `photo`/`watermarkIcon`.
    */
   logoWatermark?: string;
+  /**
+   * Origami emblem variant: a page-specific folded-paper icon rendered
+   * as a centered emblem ABOVE the eyebrow — the site's signature hero
+   * treatment. Full-color faceted artwork (not a faint watermark), so
+   * it reads as the page's identity marker. Mutually exclusive with
+   * the other visual variants.
+   */
+  origami?: OrigamiIconName;
 }
 
 /**
@@ -64,11 +73,28 @@ export function PageHero({
   watermarkIcon: WatermarkIcon,
   overlayVariant = "flat",
   logoWatermark,
+  origami,
 }: PageHeroProps) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-primary-700 py-16 sm:min-h-[400px]">
+      {/* Origami emblem: no background imagery — the navy band plus the
+          radial glow keeps the composition quiet, and the faceted icon
+          below the eyebrow supplies ALL the page's visual identity. A
+          very faint oversized duplicate drifts top-right for depth, the
+          same ambient motion the other variants use. */}
+      {origami && (
+        <motion.div
+          className="pointer-events-none absolute -right-10 -top-10 opacity-[0.08]"
+          animate={shouldReduceMotion ? undefined : { y: [0, -10, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          aria-hidden="true"
+        >
+          <OrigamiIcon name={origami} className="h-64 w-64 sm:h-96 sm:w-96" />
+        </motion.div>
+      )}
+
       {photo ? (
         <>
           <ImagePlaceholder
@@ -138,6 +164,23 @@ export function PageHero({
         animate="show"
         className="relative px-6 text-center text-white"
       >
+        {/* The origami emblem leads the type stack — centered above the
+            eyebrow, entrance-staggered like the text, with a gentle
+            ambient float once settled (nested so entrance and ambient
+            motion never fight). */}
+        {origami ? (
+          <motion.div variants={heroChild} className="mb-5 flex justify-center">
+            <motion.div
+              animate={shouldReduceMotion ? undefined : { y: [0, -7, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+            >
+              <OrigamiIcon
+                name={origami}
+                className="h-24 w-24 drop-shadow-[0_12px_28px_rgba(8,17,32,0.45)] sm:h-32 sm:w-32"
+              />
+            </motion.div>
+          </motion.div>
+        ) : null}
         {eyebrow ? (
           <motion.p
             variants={heroChild}

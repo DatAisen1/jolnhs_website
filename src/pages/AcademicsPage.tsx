@@ -33,12 +33,7 @@ export function AcademicsPage() {
       <PageHero
         title={academicsOverview.heroHeading}
         description={academicsOverview.heroDescription}
-        photo={{
-          alt: "JOLNHS students eagerly raising their hands in class",
-          label: "Insert Academics Hero Photo Here",
-          recommendedSize: "1920 x 900",
-          src: "/images/site/hero-academics.webp",
-        }}
+        origami="mortarboard"
       />
 
       <Breadcrumbs

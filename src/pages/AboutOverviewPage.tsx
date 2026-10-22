@@ -50,7 +50,7 @@ export function AboutOverviewPage() {
       <PageHero
         title={aboutOverview.heroHeading}
         description={aboutOverview.heroDescription}
-        logoWatermark="/images/logo-jolnhs-transparent.webp"
+        origami="school"
       />
 
       <Breadcrumbs

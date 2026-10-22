@@ -35,7 +35,7 @@ export function DownloadsPage() {
         eyebrow="Resources"
         title="Downloads"
         description="Official school documents — enrollment forms, request forms, and handbooks — ready to download."
-        watermarkIcon={FileText}
+        origami="box"
       />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Downloads" }]} />
       <section className="bg-background py-section-sm md:py-section">

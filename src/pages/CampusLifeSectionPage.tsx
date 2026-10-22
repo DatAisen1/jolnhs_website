@@ -4,6 +4,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
+import type { OrigamiIconName } from "@/components/ui/OrigamiIcon";
 import { PageStatus } from "@/components/ui/PageStatus";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CampusLifeSubNav } from "@/components/ui/CampusLifeSubNav";
@@ -69,13 +70,24 @@ function mapSectionDetailWithUIProperties(detail: CampusLifeSectionDetail): Camp
  * The section's own gallery (further down the page) is where real
  * photos belong.
  */
+/** Each section's origami emblem — chosen per page, not derived from
+ *  the card icon, so the hero always shows page-related folded-paper
+ *  art (star = unity of orgs, kite-free trophy = athletics, etc.). */
+const SECTION_ORIGAMI: Record<string, OrigamiIconName> = {
+  organizations: "star",
+  pta: "heart",
+  athletes: "trophy",
+  journalists: "newspaper",
+  gallery: "camera",
+};
+
 function SectionHero({ section }: { section: CampusLifeSection }) {
   return (
     <PageHero
       eyebrow={section.eyebrow}
       title={section.name}
       description={section.tagline}
-      watermarkIcon={section.icon}
+      origami={SECTION_ORIGAMI[section.slug] ?? "star"}
     />
   );
 }

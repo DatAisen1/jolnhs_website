@@ -39,6 +39,7 @@ export function ContactPage() {
         eyebrow="Get in touch"
         title="Contact Us"
         description="Reach Julia Ortiz Luis National High School for inquiries, concerns, or visits."
+        origami="envelope"
       />
       <Breadcrumbs
         items={[

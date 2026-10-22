@@ -60,11 +60,7 @@ export function CampusLifePage() {
       <PageHero
         title={campusLifeOverview.heroHeading}
         description={campusLifeOverview.heroDescription}
-        photo={{
-          alt: "JOLNHS students at a campus event",
-          label: "Insert Campus Life Hero Photo Here",
-          recommendedSize: "1920 x 900",
-        }}
+        origami="kite"
       />
 
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Campus Life" }]} />

@@ -24,6 +24,7 @@ export function PrivacyPolicyPage() {
         eyebrow={privacyPolicy.eyebrow}
         title={privacyPolicy.pageTitle}
         description={privacyPolicy.description}
+        origami="shield"
       />
       <Breadcrumbs
         items={[

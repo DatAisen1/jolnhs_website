@@ -5,6 +5,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
+import type { OrigamiIconName } from "@/components/ui/OrigamiIcon";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { AcademicsSubNav } from "@/components/ui/AcademicsSubNav";
 import { ProgramPhotoGallery } from "@/components/academics/ProgramPhotoGallery";
@@ -22,22 +23,25 @@ import type { AcademicProgram } from "@/types";
  * no physical place to photograph for a curriculum track, so a fabricated
  * "photo" placeholder would be misleading rather than just unfinished.
  */
+/** Each program's origami emblem — rocket for STE's science ambition,
+ *  mouse for SP-ICT's computing focus, heart for SNED's care-centered
+ *  education, the open book for the Regular track, and the mortarboard
+ *  for Senior High's path to graduation. */
+const PROGRAM_ORIGAMI: Record<string, OrigamiIconName> = {
+  ste: "rocket",
+  "sp-ict": "mouse",
+  sned: "heart",
+  regular: "book",
+  shs: "mortarboard",
+};
+
 function ProgramHero({ program }: { program: AcademicProgram }) {
   return (
     <PageHero
       eyebrow={program.eyebrow}
       title={program.name}
       description={program.fullName}
-      {...(program.visual.kind === "photo"
-        ? {
-            photo: {
-              alt: `Photo of ${program.name} students`,
-              label: `Insert ${program.name} Hero Photo Here`,
-              recommendedSize: program.visual.imageSize,
-              src: program.visual.src,
-            },
-          }
-        : { watermarkIcon: program.visual.icon })}
+      origami={PROGRAM_ORIGAMI[program.slug] ?? "book"}
     />
   );
 }

@@ -31,6 +31,7 @@ export function CookiePolicyPage() {
         eyebrow={cookiePolicy.eyebrow}
         title={cookiePolicy.pageTitle}
         description={cookiePolicy.description}
+        origami="cookie"
       />
       <Breadcrumbs
         items={[

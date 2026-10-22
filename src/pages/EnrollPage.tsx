@@ -1,4 +1,4 @@
-import { CalendarCheck, ClipboardList, Download, GraduationCap, HelpCircle, Mail } from "lucide-react";
+import { CalendarCheck, ClipboardList, Download, HelpCircle, Mail } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -63,7 +63,7 @@ export function EnrollPage() {
         eyebrow="Admissions"
         title="Enroll at JOLNHS"
         description="Everything you need to join Julia Ortiz Luis National High School — requirements, steps, and where to get help."
-        watermarkIcon={GraduationCap}
+        origami="crane"
       />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Enroll" }]} />
 

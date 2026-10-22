@@ -102,12 +102,7 @@ export function BudgetPage() {
       <PageHero
         title={overview.heroHeading}
         description={overview.heroDescription}
-        overlayVariant="gradient"
-        photo={{
-          alt: "JOLNHS campus building, representing the school's public budget",
-          label: "Insert Budget Transparency Hero Photo Here",
-          recommendedSize: "1920 x 900",
-        }}
+        origami="piggy"
       />
 
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Budget Transparency" }]} />
