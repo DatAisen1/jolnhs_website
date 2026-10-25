@@ -14,6 +14,8 @@ import { PrivacyNotice } from "@/components/privacy/PrivacyNotice";
 import { FacultyFilterTabs } from "@/components/faculty/FacultyFilterTabs";
 import { staffCategories } from "@/data/facultyStaff";
 import { useAllStaffMembers } from "@/lib/data/publicStaff";
+import { usePublicStaffDepartments } from "@/lib/data/staffDepartments";
+import { DepartmentCards } from "@/components/faculty/DepartmentCards";
 import { scaleIn, staggerContainer } from "@/lib/motion";
 
 const VALID_CATEGORY_IDS = new Set(staffCategories.map((c) => c.id));
@@ -96,6 +98,23 @@ export function FacultyStaffPage() {
     });
   }, [activeCategory, query, staffMembers]);
 
+  // Departments: expandable cards when a specific category is picked
+  // and nobody is searching — the flat grid must stay for "All Staff"
+  // and for search, which has to find people across every department.
+  // If the departments table isn't migrated yet, the query errors and
+  // we keep the original flat grid — nothing breaks mid-upgrade.
+  const { data: allDepartments } = usePublicStaffDepartments();
+  const categoryDepartments = useMemo(
+    () => (allDepartments ?? []).filter((d) => d.category === activeCategory),
+    [allDepartments, activeCategory],
+  );
+  const departmentNameById = useMemo(
+    () => new Map((allDepartments ?? []).map((d) => [d.id, d.name])),
+    [allDepartments],
+  );
+  const showDepartmentCards =
+    activeCategory !== "all" && query.trim() === "" && categoryDepartments.length > 0;
+
   return (
     <>
       <PageHero
@@ -161,7 +180,13 @@ export function FacultyStaffPage() {
 
               <PrivacyNotice className="mt-8" />
 
-              {filteredMembers.length > 0 ? (
+              {showDepartmentCards ? (
+                <DepartmentCards
+                  key={activeCategory}
+                  departments={categoryDepartments}
+                  members={filteredMembers}
+                />
+              ) : filteredMembers.length > 0 ? (
                 <motion.div
                   key={activeCategory}
                   variants={staggerContainer}
@@ -171,7 +196,10 @@ export function FacultyStaffPage() {
                 >
                   {filteredMembers.map((member) => (
                     <motion.div key={member.id} variants={scaleIn} className={MEMBER_CARD_WIDTH}>
-                      <FacultyCard member={member} />
+                      <FacultyCard
+                        member={member}
+                        department={member.department_id ? departmentNameById.get(member.department_id) : undefined}
+                      />
                     </motion.div>
                   ))}
                 </motion.div>

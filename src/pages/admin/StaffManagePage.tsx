@@ -7,6 +7,8 @@ import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ListItemCard } from "@/pages/admin/ListItemCard";
 import { SectionTabs } from "@/components/admin/SectionTabs";
 import { StaffFormDrawer } from "@/components/admin/StaffFormDrawer";
+import { StaffDepartmentManager } from "@/components/admin/StaffDepartmentManager";
+import { useStaffDepartments } from "@/lib/data/staffDepartments";
 import { useArchiveStaffMember, useRestoreStaffMember, useStaffMembers, type StaffCategory, type StaffMember } from "@/lib/data/staff";
 import { getErrorMessage } from "@/lib/errors";
 import { AdminListSkeleton } from "@/components/admin/AdminStates";
@@ -46,10 +48,12 @@ function sortMembers(members: StaffMember[], sort: StaffSort) {
 function StaffList({
   members,
   archived,
+  departmentNames,
   onEdit,
 }: {
   members: StaffMember[];
   archived: boolean;
+  departmentNames: Map<string, string>;
   onEdit: (member: StaffMember) => void;
 }) {
   const archiveMember = useArchiveStaffMember();
@@ -62,7 +66,12 @@ function StaffList({
           <div className="min-w-0 flex-1">
             <ListItemCard
               title={member.name}
-              subtitle={member.position}
+              subtitle={
+                member.department_id && departmentNames.get(member.department_id)
+                  ? `${member.position} · ${departmentNames.get(member.department_id)}`
+                  : member.position
+              }
+              badge={member.is_department_head ? { label: "Department Head", variant: "success" } : undefined}
               leadingVisual={{ kind: "photo", photoUrl: buildPublicPhotoUrl(member.photo_path), alt: `Photo for ${member.name}` }}
               fields={[]}
               onDelete={() => archiveMember.mutate(member.id)}
@@ -102,16 +111,27 @@ export function StaffManagePage() {
   const [archived, setArchived] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<StaffSort>("name-asc");
+  const [departmentFilter, setDepartmentFilter] = useState<string>("all");
   const [drawerMember, setDrawerMember] = useState<StaffMember | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const debouncedSearch = useDebouncedValue(search, 300);
   const { data, isLoading, isError, error, refetch, isFetching } = useStaffMembers(activeTab, archived);
+  const { data: departments } = useStaffDepartments(activeTab);
+  const departmentNames = useMemo(
+    () => new Map((departments ?? []).map((d) => [d.id, d.name])),
+    [departments],
+  );
 
   const filteredMembers = useMemo(() => {
     const query = debouncedSearch.trim().toLowerCase();
-    const matching = (data ?? []).filter((member) => member.name.toLowerCase().includes(query));
+    const matching = (data ?? []).filter((member) => {
+      if (!member.name.toLowerCase().includes(query)) return false;
+      if (departmentFilter === "all") return true;
+      if (departmentFilter === "none") return !member.department_id;
+      return member.department_id === departmentFilter;
+    });
     return sortMembers(matching, sort);
-  }, [data, debouncedSearch, sort]);
+  }, [data, debouncedSearch, sort, departmentFilter]);
 
   function openAdd() {
     setDrawerMember(null);
@@ -119,10 +139,12 @@ export function StaffManagePage() {
   }
 
   function exportToCSV() {
-    const headers = ["Name", "Position", "Category", "Archived"];
+    const headers = ["Name", "Position", "Department", "Department Head", "Category", "Archived"];
     const rows = filteredMembers.map((member) => [
       member.name,
       member.position,
+      member.department_id ? departmentNames.get(member.department_id) ?? "" : "",
+      member.is_department_head ? "Yes" : "No",
       member.category,
       member.is_archived ? "Yes" : "No",
     ]);
@@ -159,14 +181,26 @@ export function StaffManagePage() {
         }
       />
 
-      <SectionTabs tabs={TABS} activeTab={activeTab} onTabChange={setActiveTab} />
+      <SectionTabs tabs={TABS} activeTab={activeTab} onTabChange={(tab) => { setActiveTab(tab); setDepartmentFilter("all"); }} />
 
-      <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
+      {!archived && <StaffDepartmentManager category={activeTab} members={data ?? []} />}
+
+      <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
         <label className="relative block">
           <span className="sr-only">Search staff by name</span>
           <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" aria-hidden="true" />
           <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by name" className="w-full rounded-md border border-border bg-surface py-2 pl-9 pr-3 text-small focus:outline-none focus:ring-2 focus:ring-primary" />
         </label>
+        {(departments?.length ?? 0) > 0 && (
+          <label className="flex items-center gap-2 text-small text-text-secondary">
+            <span>Department</span>
+            <select value={departmentFilter} onChange={(event) => setDepartmentFilter(event.target.value)} className="rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="all">All</option>
+              <option value="none">No department</option>
+              {departments!.map((dept) => <option key={dept.id} value={dept.id}>{dept.name}</option>)}
+            </select>
+          </label>
+        )}
         <label className="flex items-center gap-2 text-small text-text-secondary">
           <span>Status</span>
           <select value={archived ? "archived" : "active"} onChange={(event) => setArchived(event.target.value === "archived")} className="rounded-md border border-border bg-surface px-3 py-2 text-small text-text-primary focus:outline-none focus:ring-2 focus:ring-primary">
@@ -195,7 +229,7 @@ export function StaffManagePage() {
           action={!archived && !search ? <AdminButton type="button" onClick={openAdd}><UserPlus size={15} aria-hidden="true" />Add Staff</AdminButton> : undefined}
         />
       )}
-      {!isLoading && !isError && filteredMembers.length > 0 && <StaffList members={filteredMembers} archived={archived} onEdit={(member) => { setDrawerMember(member); setDrawerOpen(true); }} />}
+      {!isLoading && !isError && filteredMembers.length > 0 && <StaffList members={filteredMembers} archived={archived} departmentNames={departmentNames} onEdit={(member) => { setDrawerMember(member); setDrawerOpen(true); }} />}
 
       {drawerOpen && <StaffFormDrawer member={drawerMember ?? undefined} defaultCategory={activeTab} onClose={() => setDrawerOpen(false)} />}
     </div>

@@ -6,8 +6,11 @@ export const staffSchema = z.object({
   name: z.string().trim().min(1, "Full name is required").max(120, "Name must be 120 characters or fewer"),
   position: z.string().trim().min(1, "Position is required").max(120, "Position must be 120 characters or fewer"),
   category: staffCategorySchema,
-  // TODO: Persist department after the staff_members table gains a department column.
-  department: z.string().trim().max(120, "Department must be 120 characters or fewer"),
+  /** NULL = "no department" — the member lands in the public "Other"
+   *  group. Head flag is a plain boolean; the one-head-per-department
+   *  rule lives in the database (0017 partial index). */
+  departmentId: z.string().nullable(),
+  isDepartmentHead: z.boolean(),
   photo: z
     .instanceof(File)
     .refine((file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type), "Use a JPEG, PNG, or WebP image")

@@ -11,6 +11,12 @@ export interface StaffMember {
   name: string;
   position: string;
   category: StaffCategory;
+  /** Department this person belongs to (migration 0017). Optional —
+   *  members with NULL render in the "Other" group publicly. */
+  department_id?: string | null;
+  /** At most one active member per department may be head — enforced
+   *  by the one_head_per_department index. */
+  is_department_head?: boolean;
   photo_path: string | null;
   sort_order: number;
   is_archived: boolean;
@@ -58,16 +64,42 @@ export function useSaveStaffMember() {
       name: string;
       position: string;
       category: StaffCategory;
+      departmentId?: string | null;
+      isDepartmentHead?: boolean;
       photoPath?: string | null;
     }) => {
-      const { error } = await supabase.from("staff_members").upsert({
+      // Only one head per department (0017's unique index). Clear the
+      // seat BEFORE upserting the new head — reversing the order would
+      // make the upsert violate the index whenever a head already sits
+      // there. If the upsert itself then fails, the dept is briefly
+      // headless; the admin just re-ticks the checkbox.
+      if (member.isDepartmentHead && member.departmentId) {
+        let clear = supabase
+          .from("staff_members")
+          .update({ is_department_head: false })
+          .eq("department_id", member.departmentId)
+          .eq("is_department_head", true);
+        // Keep our own flag — a member re-saving as head shouldn't be
+        // cleared by their own write. New members have no id to exclude.
+        if (member.id) clear = clear.neq("id", member.id);
+        const { error: clearError } = await clear;
+        if (clearError) throw clearError;
+      }
+
+      const payload: Record<string, unknown> = {
         id: member.id,
         name: member.name,
         position: member.position,
         category: member.category,
         photo_path: member.photoPath ?? null,
         updated_at: new Date().toISOString(),
-      });
+      };
+      // Department columns are included only when the caller sent them —
+      // a save made before migration 0017 lands keeps working untouched.
+      if (member.departmentId !== undefined) payload.department_id = member.departmentId;
+      if (member.isDepartmentHead !== undefined) payload.is_department_head = member.isDepartmentHead;
+
+      const { error } = await supabase.from("staff_members").upsert(payload);
       if (error) throw error;
       logActivity(
         member.id ? "update" : "create",

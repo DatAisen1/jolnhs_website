@@ -4,7 +4,8 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { InlineNotice } from "@/components/ui/InlineNotice";
 import { useStaffForm } from "@/hooks/useStaffForm";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
-import type { StaffCategory, StaffMember } from "@/lib/data/staff";
+import { useStaffDepartments } from "@/lib/data/staffDepartments";
+import { useStaffMembers, type StaffCategory, type StaffMember } from "@/lib/data/staff";
 
 const CATEGORY_OPTIONS: ReadonlyArray<{ value: StaffCategory; label: string }> = [
   { value: "administrators", label: "Administrators" },
@@ -25,7 +26,15 @@ export function StaffFormDrawer({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
   const form = useStaffForm(member, onClose);
+  const { data: departments } = useStaffDepartments(form.values.category);
+  // Cached from the list page — lets us name whoever currently holds
+  // the "Department Head" seat the admin is about to reassign.
+  const { data: categoryMembers } = useStaffMembers(form.values.category);
   useUnsavedChangesWarning(dirty);
+
+  const currentHead = categoryMembers?.find(
+    (m) => m.department_id === form.values.departmentId && m.is_department_head && m.id !== member?.id,
+  );
 
   useEffect(() => {
     if (member || form.values.category !== "administrators") return;
@@ -92,16 +101,67 @@ export function StaffFormDrawer({
 
             <div>
               <label htmlFor="staff-category" className="mb-1 block text-small font-medium text-text-primary">Category *</label>
-              <select id="staff-category" value={form.values.category} onChange={(event) => { setDirty(true); form.updateValue("category", event.target.value as StaffCategory); }} className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small focus:outline-none focus:ring-2 focus:ring-primary">
+              <select
+                id="staff-category"
+                value={form.values.category}
+                onChange={(event) => {
+                  setDirty(true);
+                  form.updateValue("category", event.target.value as StaffCategory);
+                  // Departments belong to a category — a JHS pick can't
+                  // survive a switch to SHS, so the assignment resets.
+                  form.updateValue("departmentId", null);
+                  form.updateValue("isDepartmentHead", false);
+                }}
+                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small focus:outline-none focus:ring-2 focus:ring-primary"
+              >
                 {CATEGORY_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
               </select>
             </div>
 
             <div>
               <label htmlFor="staff-department" className="mb-1 block text-small font-medium text-text-primary">Department</label>
-              <input id="staff-department" value={form.values.department} disabled placeholder="Not available yet" className="w-full rounded-md border border-border bg-background px-3 py-2 text-small text-text-secondary" />
-              <p className="mt-1 text-small text-text-secondary">Department storage is not available in the current staff table.</p>
+              <select
+                id="staff-department"
+                value={form.values.departmentId ?? ""}
+                onChange={(event) => {
+                  setDirty(true);
+                  form.updateValue("departmentId", event.target.value || null);
+                  if (!event.target.value) form.updateValue("isDepartmentHead", false);
+                }}
+                className="w-full rounded-md border border-border bg-surface px-3 py-2 text-small focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">No department</option>
+                {(departments ?? []).map((dept) => <option key={dept.id} value={dept.id}>{dept.name}</option>)}
+              </select>
+              {departments?.length === 0 && (
+                <p className="mt-1 text-small text-text-secondary">No departments in this category yet — add them from the Departments box on this page.</p>
+              )}
             </div>
+
+            {form.values.departmentId && (
+              <div className="rounded-md border border-border bg-background p-3">
+                <label htmlFor="staff-dept-head" className="flex items-start gap-2.5 text-small text-text-primary">
+                  <input
+                    id="staff-dept-head"
+                    type="checkbox"
+                    checked={form.values.isDepartmentHead}
+                    onChange={(event) => { setDirty(true); form.updateValue("isDepartmentHead", event.target.checked); }}
+                    className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-2 focus:ring-primary"
+                  />
+                  <span>
+                    <span className="font-medium">Department Head</span>
+                    {currentHead && !form.values.isDepartmentHead && (
+                      <span className="mt-0.5 block text-small text-text-secondary">
+                        {currentHead.name} is currently the head — ticking this will replace them.
+                      </span>
+                    )}
+                    {form.values.isDepartmentHead && (
+                      <span className="mt-0.5 block text-small text-text-secondary">Shows first inside this department on the public page.</span>
+                    )}
+                  </span>
+                </label>
+              </div>
+            )}
 
             <div>
               <label htmlFor="staff-photo" className="mb-1 block text-small font-medium text-text-primary">Photo</label>

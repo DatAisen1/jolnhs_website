@@ -19,6 +19,7 @@ const ACTION_STYLES: Record<ActivityEntry["action"], { label: string; className:
 const ENTITY_LABELS: Record<string, string> = {
   announcement: "Announcement",
   staff_member: "Staff member",
+  staff_department: "Staff department",
   campus_life: "Campus Life",
   campus_life_officer: "Campus Life officer",
   campus_life_group: "Campus Life group",

@@ -13,7 +13,19 @@ import type { StaffMember } from "@/lib/data/publicStaff";
  *           the moment to add a "Read more" link here — not before there's
  *           actually something to link to.
  */
-export function FacultyCard({ member }: { member: StaffMember }) {
+export function FacultyCard({
+  member,
+  department,
+  isHead = false,
+}: {
+  member: StaffMember;
+  /** Shown under the position in flat-grid views (All Staff tab).
+   *  Omit inside department cards — context already says which dept. */
+  department?: string;
+  /** Adds a "Department Head" tag — only rendered inside a department
+   *  card, where the label's context is unambiguous. */
+  isHead?: boolean;
+}) {
   return (
     <article className="group overflow-hidden rounded-card border border-border bg-surface transition-[transform,box-shadow] duration-300 ease-apple hover:-translate-y-1 hover:shadow-md">
       <div className="aspect-[4/5] w-full overflow-hidden">
@@ -37,6 +49,12 @@ export function FacultyCard({ member }: { member: StaffMember }) {
       <div className="p-4 text-center">
         <p className="text-body font-semibold text-primary">{member.name}</p>
         <p className="mt-1 text-small text-text-secondary">{member.position}</p>
+        {department && <p className="mt-0.5 text-small text-text-secondary">{department}</p>}
+        {isHead && (
+          <p className="mx-auto mt-2 inline-block rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
+            Department Head
+          </p>
+        )}
       </div>
     </article>
   );

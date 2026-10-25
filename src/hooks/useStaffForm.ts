@@ -7,7 +7,8 @@ const EMPTY_VALUES: StaffFormValues = {
   name: "",
   position: "",
   category: "administrators",
-  department: "",
+  departmentId: null,
+  isDepartmentHead: false,
 };
 
 export function useStaffForm(member?: StaffMember, onSuccess?: () => void) {
@@ -17,6 +18,8 @@ export function useStaffForm(member?: StaffMember, onSuccess?: () => void) {
     name: member?.name ?? "",
     position: member?.position ?? "",
     category: member?.category ?? "administrators",
+    departmentId: member?.department_id ?? null,
+    isDepartmentHead: member?.is_department_head ?? false,
   }));
   const [errors, setErrors] = useState<Partial<Record<keyof StaffFormValues, string>>>({});
 
@@ -49,11 +52,18 @@ export function useStaffForm(member?: StaffMember, onSuccess?: () => void) {
       if (error) throw error;
     }
 
+    // Only send the department columns when they're actually in play —
+    // either the form assigns one or the member already had one. A
+    // plain name/photo edit on an unassigned member then keeps working
+    // even before migration 0017 creates the columns.
+    const hasDeptFields = result.data.departmentId !== null || member?.department_id != null;
     await saveMember.mutateAsync({
       id: member?.id,
       name: result.data.name,
       position: result.data.position,
       category: result.data.category as StaffCategory,
+      departmentId: hasDeptFields ? result.data.departmentId : undefined,
+      isDepartmentHead: hasDeptFields ? (result.data.departmentId ? result.data.isDepartmentHead : false) : undefined,
       photoPath,
     });
     onSuccess?.();

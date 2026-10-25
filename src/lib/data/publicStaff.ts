@@ -9,6 +9,8 @@ export interface StaffMember {
   name: string;
   position: string;
   category: StaffCategory;
+  department_id?: string | null;
+  is_department_head?: boolean;
   /** Despite the column name, consumers get a ready-to-render public
    *  URL here — the storage path is converted at this boundary via
    *  staffPhotoUrl, so components can put it straight into <img src>. */
