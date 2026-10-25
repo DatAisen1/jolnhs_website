@@ -36,7 +36,11 @@ export const academicPrograms: AcademicProgram[] = [
           caption: "Microscopy Session",
           src: "/images/site/program-ste-gallery-2.webp",
         },
-        { alt: "STE students at a school science fair", caption: "Science Fair" },
+        {
+          alt: "The JOLNHS Science Laboratory — lab tables, skeleton model, DNA model, and equipment cabinets",
+          caption: "Science Laboratory",
+          src: "/images/site/program-ste-gallery-3.webp",
+        },
       ],
     },
     quickFacts: [
