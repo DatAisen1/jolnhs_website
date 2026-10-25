@@ -10,7 +10,7 @@ export const facilities: Facility[] = [
       "A quiet, well-organized space with a growing print and digital collection, dedicated reading areas, and research assistance for students and faculty.",
     imageSize: "1200 x 800",
     src: "/images/site/facility-library.webp",
-    imagePosition: "right",
+    imagePosition: "left",
     theme: "light",
   },
   {
