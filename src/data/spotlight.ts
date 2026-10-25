@@ -21,7 +21,9 @@ export const spotlights: ProgramSpotlightItem[] = [
     title: "Special Program in ICT",
     description:
       "Julia Ortiz Luis National High School offers the Special Program in ICT (SP-ICT) under its academic department, developing programming, digital media, and systems thinking skills for the next generation of technology-driven graduates.",
-    imageSize: "800 x 800",
+    // Landscape file — the slot is a wide panel, so a square crop
+    // here would zoom into the middle of the photo.
+    imageSize: "1200 x 900",
     src: "/images/site/spotlight-sp-ict.webp",
     imagePosition: "left",
   },
