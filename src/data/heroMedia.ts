@@ -10,6 +10,6 @@
 // prefers-reduced-motion still frame.
 
 export const heroMedia = {
-  videoSrc: undefined as string | undefined,
+  videoSrc: "/videos/hero.mp4" as string | undefined,
   posterSrc: "/images/site/hero-poster.webp" as string | undefined,
 };

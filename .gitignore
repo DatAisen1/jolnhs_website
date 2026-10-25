@@ -2,7 +2,6 @@ node_modules
 dist
 .DS_Store
 *.local
-public/videos/*.mp4
 public/videos/*.mov
 
 # Raw photo inbox — optimize-image.mjs reads from here and writes
