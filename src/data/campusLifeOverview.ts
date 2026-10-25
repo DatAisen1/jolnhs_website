@@ -42,10 +42,8 @@ export const campusLifeOverview = {
     },
   ] satisfies CampusLifeQuote[],
 
-  /** Photo behind the mid-page tagline band — set once the real asset
-   *  exists (recommended 1920 x 700). Leave undefined for the
-   *  placeholder. */
-  communityBandSrc: undefined as string | undefined,
+  /** Photo behind the mid-page tagline band (recommended 1920 x 700). */
+  communityBandSrc: "/images/site/campus-community-band.webp" as string | undefined,
 
   taglineHeading: "Every Day Here Is a Chance to Belong.",
 
