@@ -32,7 +32,7 @@ export const spotlights: ProgramSpotlightItem[] = [
     title: "Science, Technology, and Engineering (STE)",
     description:
       "Julia Ortiz Luis National High School offers the Special Program in Science, Technology, and Engineering (STE) under its academic department, strengthening laboratory research, advanced mathematics, and scientific inquiry skills for the next generation of STEM-driven graduates.",
-    imageSize: "800 x 800",
+    imageSize: "1200 x 900",
     src: "/images/site/spotlight-ste.webp",
     imagePosition: "right",
   },
